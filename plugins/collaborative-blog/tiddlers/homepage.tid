@@ -1,0 +1,61 @@
+title: Home
+type: text/vnd.tiddlywiki
+
+\define post-excerpt()
+<$transclude field="excerpt"><$transclude field="text" mode="block" /></$transclude>
+\end
+
+\define post-list-item(featured:"no")
+<div class="cb-post-list-item $if$">
+  <$list filter="[<featured>match[yes]]" variable="null">
+    <div class="cb-featured-badge">Featured</div>
+  </$list>
+
+  <h2 class="cb-post-list-title">
+    <$link to=<<currentTiddler>>><$view field="title"/></$link>
+  </h2>
+
+  <div class="cb-post-meta">
+    <$list filter="[<currentTiddler>has[author]]" variable="null">
+      <span class="cb-post-author">
+        By <$view field="author"/>
+      </span>
+    </$list>
+    <$list filter="[<currentTiddler>has[date]]" variable="null">
+      <span class="cb-post-date">
+        <$view field="date" format="date" template="DD MMM YYYY"/>
+      </span>
+    </$list>
+    <$list filter="[<currentTiddler>tags[]!tag[Post]!tag[Featured]!tag[Draft]]" variable="tag">
+      <span class="cb-post-categories">
+        <a class="cb-category-tag" href={{{ [<tag>addprefix[#]] }}}>
+          <<tag>>
+        </a>
+      </span>
+    </$list>
+  </div>
+
+  <div class="cb-post-excerpt">
+    <<post-excerpt>>
+  </div>
+
+  <$link to=<<currentTiddler>> class="cb-read-more">
+    Read more →
+  </$link>
+</div>
+\end
+
+<!-- Featured Posts -->
+<$list filter="[tag[Post]tag[Featured]!tag[Draft]has[date]!sort[date]limit[1]]">
+  <div class="cb-featured-post">
+    <<post-list-item featured:"yes">>
+  </div>
+</$list>
+
+<!-- Recent Posts -->
+<$list filter="[tag[Post]!tag[Featured]!tag[Draft]has[date]!sort[date]limit[10]]">
+  <<post-list-item>>
+</$list>
+
+<$list filter="[tag[Post]!tag[Draft]count[]compare:number:gt[0]]" variable="null" emptyMessage="<div class='cb-post-list-item'><p>No posts yet. Use the Admin link in the sidebar to create your first post!</p></div>">
+</$list>

@@ -1,0 +1,61 @@
+title: $:/plugins/collaborative-blog/readme
+type: text/vnd.tiddlywiki
+
+! Collaborative Blog Plugin
+
+This plugin transforms TiddlyWiki into a WordPress-style collaborative blog with a clean, professional interface.
+
+!! Features
+
+* Clean blog layout with hidden wiki controls
+* Left sidebar navigation
+* Multiple author support
+* Featured posts
+* Categories and tags
+* Post archive and table of contents
+* Discrete admin panel
+* Historical society / nonprofit aesthetic
+
+!! Quick Start
+
+!!! Creating a Blog Post
+
+# Click ''Admin'' in the left sidebar
+# Click ''New Post''
+# Add fields:
+#* Title: Your post title
+#* Tags: `Post` plus category tags (e.g., `Post News Events`)
+#* Author: Your name
+#* Date: YYYYMMDD format (e.g., `20251108`)
+#* Excerpt: Brief summary (optional)
+# Write your content
+# Save
+
+!!! Creating a Featured Post
+
+Add `Featured` to the tags field (e.g., `Post Featured News`)
+
+!!! Creating a Static Page
+
+# Click ''New Page'' in admin panel
+# Add Title and set Tags to `Page`
+# Write content and save
+
+!!! Saving as Draft
+
+Add `Draft` to tags to hide from public view
+
+!! Customization
+
+* Edit `$:/SiteTitle` and `$:/SiteSubtitle` to change site name
+* Edit `$:/plugins/collaborative-blog/Navigation` to customize menu
+* Edit `$:/plugins/collaborative-blog/styles` to change colors and fonts
+
+!! Documentation
+
+For full documentation, see the README.md file in the repository.
+
+!! Support
+
+* GitHub: https://github.com/BenSweaterVest/TiddlySite
+* TiddlyWiki Community: https://talk.tiddlywiki.org/

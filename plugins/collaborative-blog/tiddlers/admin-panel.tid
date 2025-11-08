@@ -1,0 +1,33 @@
+title: $:/plugins/collaborative-blog/AdminPanel
+tags: $:/tags/PageTemplate
+type: text/vnd.tiddlywiki
+
+<div class="cb-admin-panel">
+  <h3>Admin Panel</h3>
+  <div class="cb-admin-actions">
+    <$button class="cb-admin-button">
+      {{$:/core/images/new-button}} New Post
+      <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
+    </$button>
+
+    <$button class="cb-admin-button">
+      {{$:/core/images/new-button}} New Page
+      <$action-sendmessage $message="tm-new-tiddler" tags="Page" />
+    </$button>
+
+    <$button class="cb-admin-button">
+      {{$:/core/images/options-button}} Control Panel
+      <$action-sendmessage $message="tm-modal" $param="$:/ControlPanel" />
+    </$button>
+
+    <$button class="cb-admin-button">
+      {{$:/core/images/save-button}} Save Changes
+      <$action-sendmessage $message="tm-save-wiki" />
+    </$button>
+
+    <$button class="cb-admin-button">
+      {{$:/core/images/advanced-search-button}} Advanced Search
+      <$action-sendmessage $message="tm-modal" $param="$:/AdvancedSearch" />
+    </$button>
+  </div>
+</div>

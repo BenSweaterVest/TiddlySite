@@ -1,0 +1,32 @@
+title: $:/plugins/collaborative-blog/Navigation
+tags: $:/tags/PageTemplate
+type: text/vnd.tiddlywiki
+
+\define site-title()
+<$view tiddler="$:/SiteTitle" field="text"/>
+\end
+
+\define site-subtitle()
+<$view tiddler="$:/SiteSubtitle" field="text"/>
+\end
+
+<div class="cb-sidebar">
+  <div class="cb-site-title"><<site-title>></div>
+  <div class="cb-site-subtitle"><<site-subtitle>></div>
+
+  <nav>
+    <ul class="cb-nav-menu">
+      <li><$link to="Home">Home</$link></li>
+      <li><$link to="About">About</$link></li>
+      <li><$link to="All Posts">Archive</$link></li>
+      <li><$link to="Categories">Categories</$link></li>
+      <li><$link to="Contact">Contact</$link></li>
+    </ul>
+  </nav>
+
+  <div class="cb-login-link">
+    <a href="javascript:void(0);" onclick="document.querySelector('.cb-admin-panel').classList.toggle('active');">
+      Admin
+    </a>
+  </div>
+</div>
