@@ -1,0 +1,205 @@
+# TiddlyWiki Collaborative Blog Plugin
+
+A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a clean, professional website with a non-wiki feel. Perfect for historical societies, nonprofits, and small organizations.
+
+## Features
+
+- **Clean, blog-style interface** - Hides typical wiki elements (edit buttons, sidebar) for a professional look
+- **Multiple authors** - Built-in support for author attribution on posts
+- **Left sidebar navigation** - Fixed navigation menu with customizable links
+- **Featured posts** - Highlight important content on the homepage
+- **Categories/tags** - Organize content by topic
+- **Post archive** - Automatic table of contents for all posts
+- **Static pages** - Create About, Contact, and other non-blog pages
+- **Responsive design** - Works on desktop and mobile devices
+- **Discrete admin panel** - Hidden "Admin" link reveals editing controls
+- **Historical society aesthetic** - Professional, trustworthy design with serif fonts
+
+## Installation
+
+### Method 1: Import Plugin Files
+
+1. Open your TiddlyWiki file (e.g., `empty.html`)
+2. Drag and drop all `.tid` files from the `plugins/collaborative-blog/tiddlers/` directory onto your wiki
+3. Save your wiki
+4. Refresh the page
+
+### Method 2: Use Node.js (Advanced)
+
+If you're running TiddlyWiki on Node.js:
+
+1. Copy the `plugins/collaborative-blog/` directory to your wiki's `plugins/` folder
+2. Add the plugin to your `tiddlywiki.info` file:
+   ```json
+   {
+     "plugins": [
+       "collaborative-blog"
+     ]
+   }
+   ```
+3. Restart your TiddlyWiki server
+
+## Usage
+
+### Creating Blog Posts
+
+1. Click the **Admin** link in the left sidebar
+2. Click **New Post** in the admin panel
+3. Add the following fields to your tiddler:
+   - **Title**: Your post title
+   - **Tags**: `Post` (required), plus any category tags (e.g., `News`, `Events`, `History`)
+   - **Author**: Author name (e.g., `Sarah Johnson`)
+   - **Date**: Date in YYYYMMDD format (e.g., `20251108`)
+   - **Excerpt**: Brief summary (optional but recommended)
+4. Write your content using TiddlyWiki markup
+5. Save the tiddler
+
+### Creating Featured Posts
+
+To feature a post on the homepage:
+
+1. Edit the post
+2. Add `Featured` to the tags field (e.g., `Post Featured News`)
+3. Save the tiddler
+
+**Note**: Only the most recent featured post will display in the featured section.
+
+### Creating Static Pages
+
+1. Click **New Page** in the admin panel
+2. Add the following fields:
+   - **Title**: Page name (e.g., `About`, `Contact`)
+   - **Tags**: `Page` (required)
+3. Write your content
+4. Save the tiddler
+5. The page will automatically appear in the navigation (edit `navigation.tid` to customize menu links)
+
+### Managing Draft Posts
+
+To save a post as a draft (not visible on the site):
+
+1. Create or edit a post
+2. Add `Draft` to the tags field
+3. Save the tiddler
+
+### Customizing the Site
+
+#### Change Site Title and Subtitle
+
+Edit these tiddlers:
+- `$:/SiteTitle` - Main site title
+- `$:/SiteSubtitle` - Tagline/subtitle
+
+#### Customize Navigation Menu
+
+Edit `$:/plugins/collaborative-blog/Navigation` to change menu links.
+
+#### Modify Color Scheme
+
+Edit `$:/plugins/collaborative-blog/styles` to customize colors, fonts, and layout.
+
+#### Change Homepage Layout
+
+Edit the `Home` tiddler to modify which posts appear and how they're displayed.
+
+## Content Organization
+
+### Tags
+
+The plugin uses tags to organize content:
+
+- **Post** - Marks content as a blog post
+- **Page** - Marks content as a static page
+- **Featured** - Highlights post on homepage
+- **Draft** - Hides content from public view
+- **Category tags** (e.g., `News`, `Events`, `History`) - Organize posts by topic
+
+### Custom Fields
+
+Blog posts support these custom fields:
+
+- **author** - Author name (displays in post metadata)
+- **date** - Date in YYYYMMDD format (used for sorting and display)
+- **excerpt** - Brief summary (shown on homepage and archive pages)
+
+## File Structure
+
+```
+plugins/collaborative-blog/
+├── plugin.info                    # Plugin metadata
+└── tiddlers/
+    ├── styles.tid                 # Main stylesheet
+    ├── navigation.tid             # Left sidebar navigation
+    ├── admin-panel.tid            # Admin interface
+    ├── homepage.tid               # Homepage template
+    ├── viewtemplate-post.tid      # Blog post layout
+    ├── viewtemplate-page.tid      # Static page layout
+    ├── all-posts.tid              # Post archive page
+    ├── categories.tid             # Category browser
+    ├── about.tid                  # Example About page
+    ├── contact.tid                # Example Contact page
+    ├── post1.tid                  # Example blog post (featured)
+    ├── post2.tid                  # Example blog post
+    ├── post3.tid                  # Example blog post
+    ├── post4.tid                  # Example blog post
+    ├── site-title.tid             # Site title configuration
+    ├── site-subtitle.tid          # Site subtitle configuration
+    └── default-tiddlers.tid       # Default page on load
+```
+
+## Tips and Best Practices
+
+1. **Use excerpts** - Always add an excerpt field to posts for better homepage display
+2. **Consistent dates** - Use YYYYMMDD format for dates (e.g., `20251108`)
+3. **Tag consistently** - Establish category tags early and use them consistently
+4. **One featured post** - Only feature one post at a time for best visual impact
+5. **Save regularly** - Click the Save button in the admin panel frequently
+6. **Backup your wiki** - Regularly download a copy of your HTML file
+
+## Customization Ideas
+
+- Add a search box to the sidebar
+- Create author profile pages
+- Add social media links
+- Implement a newsletter signup form
+- Add image galleries for posts
+- Create custom post templates for different content types
+
+## Troubleshooting
+
+**Posts not showing on homepage:**
+- Check that the post has the `Post` tag
+- Verify the post doesn't have the `Draft` tag
+- Ensure the post has a `date` field in YYYYMMDD format
+
+**Navigation links not working:**
+- Make sure target pages exist with exact title matches
+- Check capitalization (TiddlyWiki is case-sensitive)
+
+**Styles not applying:**
+- Clear your browser cache
+- Check that `styles.tid` has the `$:/tags/Stylesheet` tag
+
+**Admin panel not appearing:**
+- Click the Admin link in the sidebar
+- Check that JavaScript is enabled in your browser
+
+## Support
+
+For questions, issues, or suggestions:
+- GitHub Issues: https://github.com/BenSweaterVest/TiddlySite/issues
+- TiddlyWiki Community: https://talk.tiddlywiki.org/
+
+## License
+
+This plugin is released under the same license as TiddlyWiki (BSD 3-Clause).
+
+## Credits
+
+Built with [TiddlyWiki](https://tiddlywiki.com/) by Jeremy Ruston and the TiddlyWiki community.
+
+---
+
+**Version**: 1.0.0
+**Author**: BenSweaterVest
+**Last Updated**: November 2025

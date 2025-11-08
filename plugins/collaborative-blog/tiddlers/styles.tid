@@ -1,0 +1,396 @@
+title: $:/plugins/collaborative-blog/styles
+tags: $:/tags/Stylesheet
+type: text/css
+
+/* ===== HIDE WIKI ELEMENTS ===== */
+
+/* Hide default edit, save, new buttons */
+.tc-page-controls,
+.tc-tiddler-controls,
+.tc-sidebar-scrollable,
+button[aria-label="new tiddler"],
+button[aria-label="save wiki"],
+.tc-topbar-right,
+.tc-unfold-banner {
+  display: none !important;
+}
+
+/* Hide the default sidebar */
+.tc-sidebar-scrollable {
+  display: none !important;
+}
+
+/* ===== LAYOUT STRUCTURE ===== */
+
+/* Main page container - add left margin for sidebar */
+.tc-page-container {
+  margin-left: 280px;
+  max-width: 900px;
+  padding: 2rem;
+}
+
+/* Story river (main content area) */
+.tc-story-river {
+  width: 100%;
+  padding: 0;
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+/* Base font styling - professional, readable */
+html body.tc-body {
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.7;
+  color: #333;
+  background: #f8f8f6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  color: #2c3e50;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* ===== LEFT SIDEBAR NAVIGATION ===== */
+
+.cb-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.cb-site-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.cb-site-subtitle {
+  font-size: 0.9rem;
+  color: #95a5a6;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.cb-nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cb-nav-menu li {
+  margin-bottom: 0.5rem;
+}
+
+.cb-nav-menu a {
+  color: #ecf0f1;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.cb-nav-menu a:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.cb-login-link {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.cb-login-link a {
+  color: #95a5a6;
+  font-size: 0.85rem;
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.cb-login-link a:hover {
+  opacity: 1;
+  color: #bdc3c7;
+}
+
+/* ===== BLOG POST STYLING ===== */
+
+.cb-post,
+.cb-page {
+  background: #fff;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cb-post-title {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  line-height: 1.2;
+}
+
+.cb-post-meta {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.cb-post-author {
+  font-weight: 600;
+  color: #34495e;
+}
+
+.cb-post-date {
+  margin-left: 1rem;
+}
+
+.cb-post-categories {
+  margin-left: 1rem;
+}
+
+.cb-post-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.cb-post-content p {
+  margin-bottom: 1.2rem;
+}
+
+/* ===== HOMEPAGE POST LIST ===== */
+
+.cb-post-list-item {
+  background: #fff;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s;
+}
+
+.cb-post-list-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.cb-post-list-title {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.cb-post-list-title a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.cb-post-list-title a:hover {
+  color: #3498db;
+}
+
+.cb-post-excerpt {
+  color: #555;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+.cb-read-more {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.cb-read-more:hover {
+  color: #2980b9;
+}
+
+/* ===== FEATURED POST ===== */
+
+.cb-featured-post {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.cb-featured-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.cb-featured-post .cb-post-list-title a {
+  color: #fff;
+  font-size: 2.5rem;
+}
+
+.cb-featured-post .cb-post-meta,
+.cb-featured-post .cb-post-excerpt {
+  color: rgba(255,255,255,0.9);
+}
+
+.cb-featured-post .cb-read-more {
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.5);
+  padding: 0.5rem 1.5rem;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.cb-featured-post .cb-read-more:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
+
+/* ===== CATEGORY TAGS ===== */
+
+.cb-category-tag {
+  display: inline-block;
+  background: #ecf0f1;
+  color: #34495e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.cb-category-tag:hover {
+  background: #bdc3c7;
+  color: #2c3e50;
+}
+
+/* ===== TABLE OF CONTENTS ===== */
+
+.cb-toc {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cb-toc h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.cb-toc-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cb-toc-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.cb-toc-list li:last-child {
+  border-bottom: none;
+}
+
+/* ===== ADMIN PANEL ===== */
+
+.cb-admin-panel {
+  position: fixed;
+  top: 0;
+  left: 280px;
+  right: 0;
+  background: #fff;
+  border-bottom: 3px solid #e74c3c;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 999;
+  display: none;
+}
+
+.cb-admin-panel.active {
+  display: block;
+}
+
+.cb-admin-panel h3 {
+  margin-top: 0;
+  color: #e74c3c;
+  font-size: 1.25rem;
+}
+
+.cb-admin-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cb-admin-button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.cb-admin-button:hover {
+  background: #2980b9;
+}
+
+.cb-admin-button.danger {
+  background: #e74c3c;
+}
+
+.cb-admin-button.danger:hover {
+  background: #c0392b;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+  .cb-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .tc-page-container {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .cb-admin-panel {
+    left: 0;
+  }
+}

@@ -1,0 +1,22 @@
+title: $:/plugins/collaborative-blog/ViewTemplate/Page
+tags: $:/tags/ViewTemplate
+type: text/vnd.tiddlywiki
+list-after: $:/plugins/collaborative-blog/ViewTemplate/Post
+
+\define page-body()
+<div class="cb-page">
+  <h1 class="cb-post-title"><$view field="title"/></h1>
+
+  <div class="cb-post-content">
+    <$transclude field="text" mode="block"/>
+  </div>
+
+  <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ecf0f1;">
+    <$link to="Home" style="color: #3498db; text-decoration: none;">← Back to Home</$link>
+  </div>
+</div>
+\end
+
+<$list filter="[<currentTiddler>tag[Page]]" variable="null">
+  <<page-body>>
+</$list>
