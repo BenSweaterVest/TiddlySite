@@ -17,23 +17,31 @@ A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a
 
 ## Installation
 
-### Method 1: Drag and Drop (Recommended)
+You have three easy options to install this plugin:
 
-**The easiest way to install:**
+### Method 1: Drag and Drop - Complete Package (Recommended for Testing)
+
+**Install everything at once - plugin + example content:**
 
 1. Open your TiddlyWiki file in your browser (e.g., `empty.html`)
-2. Download `collaborative-blog-plugin.json` from this repository
-3. Drag and drop the JSON file onto your TiddlyWiki
-4. Click the "Import" button to import all tiddlers
-5. Save your wiki (use the Admin panel button after installation)
-6. Refresh the page to see your new blog!
+2. Download **`collaborative-blog-plugin.json`** from this repository
+3. Drag and drop the JSON file onto your TiddlyWiki page
+4. Click the "Import" button to import all tiddlers (plugin + 4 example posts + example pages)
+5. Click "Admin" in the sidebar, then "Save Changes"
+6. Refresh the page to see your new blog with example content!
 
-### Method 2: Import Individual Tiddlers
+### Method 2: Drag and Drop - Plugin Only (Recommended for Production)
 
-1. Open your TiddlyWiki file (e.g., `empty.html`)
-2. Drag and drop all `.tid` files from the `plugins/collaborative-blog/tiddlers/` directory onto your wiki
-3. Save your wiki
-4. Refresh the page
+**Install just the plugin, start with a clean slate:**
+
+1. Open your TiddlyWiki file in your browser (e.g., `empty.html`)
+2. Download **`collaborative-blog-plugin.tid`** from this repository
+3. Drag and drop the `.tid` file onto your TiddlyWiki page
+4. Click the "Import" button
+5. Save and refresh
+6. Click "Admin" to start creating your own posts!
+
+*Optional:* To add example content later, drag the individual `.tid` files from `plugins/collaborative-blog/tiddlers/` onto your wiki.
 
 ### Method 3: Use Node.js (Advanced)
 
