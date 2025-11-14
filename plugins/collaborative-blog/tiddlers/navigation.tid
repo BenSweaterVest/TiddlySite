@@ -2,18 +2,50 @@ title: $:/plugins/collaborative-blog/Navigation
 tags: $:/tags/PageTemplate
 type: text/vnd.tiddlywiki
 
+<!--
+  Left Sidebar Navigation Component
+
+  This template creates the fixed left sidebar navigation that appears on every page
+  Tagged with $:/tags/PageTemplate to render as part of the page template
+
+  Features:
+  - Fixed position sidebar (280px wide on desktop)
+  - Site title and subtitle displayed at top
+  - Main navigation menu
+  - Discrete "Admin" link to toggle admin panel
+  - Responsive design (full width on mobile)
+
+  Customization:
+  - Edit $:/SiteTitle and $:/SiteSubtitle to change site branding
+  - Modify the menu items below to add/remove navigation links
+  - Styles defined in styles.tid (.cb-sidebar, .cb-nav-menu, etc.)
+-->
+
+<!-- Macro: site-title
+     Retrieves the site title from $:/SiteTitle tiddler
+     Allows users to change the site title in one place
+-->
 \define site-title()
 <$view tiddler="$:/SiteTitle" field="text"/>
 \end
 
+<!-- Macro: site-subtitle
+     Retrieves the site subtitle/tagline from $:/SiteSubtitle tiddler
+     Displayed below the main title in muted text
+-->
 \define site-subtitle()
 <$view tiddler="$:/SiteSubtitle" field="text"/>
 \end
 
 <div class="cb-sidebar">
+  <!-- Site branding: title and subtitle -->
   <div class="cb-site-title"><<site-title>></div>
   <div class="cb-site-subtitle"><<site-subtitle>></div>
 
+  <!-- Main navigation menu
+       To customize: Add or remove <li> items below
+       Each <$link> creates a link to the specified tiddler title
+  -->
   <nav>
     <ul class="cb-nav-menu">
       <li><$link to="Home">Home</$link></li>
@@ -24,6 +56,14 @@ type: text/vnd.tiddlywiki
     </ul>
   </nav>
 
+  <!-- Admin link
+       Toggles the admin panel visibility using JavaScript
+       The onclick handler finds the .cb-admin-panel element and toggles the .active class
+       When .active class is present, admin panel displays (see styles.tid)
+
+       Note: Uses inline JavaScript for simplicity
+       Alternative: Create a custom TiddlyWiki action widget (more complex)
+  -->
   <div class="cb-login-link">
     <a href="javascript:void(0);" onclick="document.querySelector('.cb-admin-panel').classList.toggle('active');">
       Admin

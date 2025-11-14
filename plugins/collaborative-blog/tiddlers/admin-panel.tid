@@ -2,30 +2,66 @@ title: $:/plugins/collaborative-blog/AdminPanel
 tags: $:/tags/PageTemplate
 type: text/vnd.tiddlywiki
 
+<!--
+  Admin Panel Component
+
+  This panel appears at the top of the page when activated via the "Admin" link in the sidebar
+  Provides quick access to common blog management tasks
+
+  Features:
+  - Hidden by default (display: none in CSS)
+  - Activated by clicking "Admin" link which toggles .active class
+  - Contains buttons for creating posts, pages, and accessing settings
+  - Fixed position at top of page when active
+
+  JavaScript required: The Admin link in navigation.tid uses JavaScript to toggle visibility
+-->
+
 <div class="cb-admin-panel">
   <h3>Admin Panel</h3>
   <div class="cb-admin-actions">
-    <$button class="cb-admin-button">
+
+    <!-- New Post Button
+         Creates a new tiddler with the "Post" tag pre-applied
+         ARIA: Screen readers will announce "Create new blog post"
+    -->
+    <$button class="cb-admin-button" aria-label="Create new blog post">
       {{$:/core/images/new-button}} New Post
       <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
     </$button>
 
-    <$button class="cb-admin-button">
+    <!-- New Page Button
+         Creates a new tiddler with the "Page" tag pre-applied
+         ARIA: Screen readers will announce "Create new static page"
+    -->
+    <$button class="cb-admin-button" aria-label="Create new static page">
       {{$:/core/images/new-button}} New Page
       <$action-sendmessage $message="tm-new-tiddler" tags="Page" />
     </$button>
 
-    <$button class="cb-admin-button">
+    <!-- Control Panel Button
+         Opens TiddlyWiki's control panel modal for advanced settings
+         ARIA: Screen readers will announce "Open TiddlyWiki control panel"
+    -->
+    <$button class="cb-admin-button" aria-label="Open TiddlyWiki control panel">
       {{$:/core/images/options-button}} Control Panel
       <$action-sendmessage $message="tm-modal" $param="$:/ControlPanel" />
     </$button>
 
-    <$button class="cb-admin-button">
+    <!-- Save Changes Button
+         Triggers the save operation to download the updated HTML file
+         ARIA: Screen readers will announce "Save all changes to wiki"
+    -->
+    <$button class="cb-admin-button" aria-label="Save all changes to wiki">
       {{$:/core/images/save-button}} Save Changes
       <$action-sendmessage $message="tm-save-wiki" />
     </$button>
 
-    <$button class="cb-admin-button">
+    <!-- Advanced Search Button
+         Opens TiddlyWiki's advanced search modal
+         ARIA: Screen readers will announce "Open advanced search"
+    -->
+    <$button class="cb-admin-button" aria-label="Open advanced search">
       {{$:/core/images/advanced-search-button}} Advanced Search
       <$action-sendmessage $message="tm-modal" $param="$:/AdvancedSearch" />
     </$button>
