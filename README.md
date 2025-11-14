@@ -141,6 +141,69 @@ Blog posts support these custom fields:
 - **date** - Date in YYYYMMDD format (used for sorting and display)
 - **excerpt** - Brief summary (shown on homepage and archive pages)
 
+### Data Validation and Format Requirements
+
+To ensure your blog functions correctly, follow these data format requirements:
+
+#### Date Field Format
+
+**Required format:** `YYYYMMDD` (8 digits, no separators)
+
+- ✅ **Correct:** `20251108` (November 8, 2025)
+- ❌ **Incorrect:** `2025-11-08`, `11/08/2025`, `2025/11/8`
+
+**Why it matters:**
+- The date field is used for chronological sorting
+- Incorrect formats will cause posts to appear out of order or not display at all
+- TiddlyWiki's date formatting converts YYYYMMDD to human-readable format (e.g., "08 Nov 2025")
+
+#### Tags Field Requirements
+
+**Required tags:**
+- Posts MUST have the `Post` tag (case-sensitive)
+- Pages MUST have the `Page` tag (case-sensitive)
+
+**Optional tags:**
+- `Featured` - Shows post in featured section on homepage
+- `Draft` - Hides post from public view
+- Category tags (e.g., `News`, `Events`, `History`) - Organize and filter posts
+
+**Best practices:**
+- Use consistent capitalization for category tags
+- Avoid special characters in tag names
+- Keep tag names concise and descriptive
+
+#### Excerpt Field Format
+
+**Recommended:** Plain text only (no TiddlyWiki markup)
+
+- ✅ **Correct:** `"This post discusses the history of our organization."`
+- ⚠️ **Avoid:** Complex wikitext formatting, links, or embedded widgets
+
+**Why it matters:**
+- Excerpts appear on the homepage in a simplified format
+- Complex wikitext may not render correctly in excerpt context
+- Keep excerpts brief (1-2 sentences, ~150-200 characters)
+
+#### Author Field Format
+
+**Format:** Plain text name
+
+- ✅ **Correct:** `Sarah Johnson`, `Dr. Emily Chen`, `The Editorial Team`
+- ✅ **Also okay:** Author with credentials or title
+
+**Note:** The plugin does not currently support author profile linking, but author names display prominently on posts.
+
+#### Common Validation Errors
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Post doesn't appear on homepage | Missing `Post` tag or `date` field | Add both required fields |
+| Post appears in wrong order | Invalid date format | Use YYYYMMDD format |
+| Post shows as "Draft" | Has `Draft` tag | Remove `Draft` tag to publish |
+| Categories not showing | Using system tags as categories | Use custom tags (not `Post`, `Page`, `Featured`, or `Draft`) |
+| Excerpt not displaying | Excerpt field missing | Add excerpt field (or it will show full text) |
+
 ## File Structure
 
 ```
