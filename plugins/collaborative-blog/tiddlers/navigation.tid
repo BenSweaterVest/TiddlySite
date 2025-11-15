@@ -56,6 +56,45 @@ type: text/vnd.tiddlywiki
     </ul>
   </nav>
 
+  <!-- Recently Updated Section
+       Shows the 5 most recently modified posts
+       Uses TiddlyWiki's automatic 'modified' field for sorting
+  -->
+  <div class="cb-sidebar-section">
+    <h4 class="cb-sidebar-heading">Recently Updated</h4>
+    <ul class="cb-sidebar-list">
+      <$list filter="[tag[Post]!tag[Draft]has[modified]!sort[modified]limit[5]]">
+        <li class="cb-sidebar-list-item">
+          <$link to=<<currentTiddler>>>
+            <$view field="title"/>
+          </$link>
+        </li>
+      </$list>
+    </ul>
+  </div>
+
+  <!-- Favorite Articles Section
+       Shows posts tagged with "Favorite"
+       Limited to 5 items
+  -->
+  <div class="cb-sidebar-section">
+    <h4 class="cb-sidebar-heading">Favorite Articles</h4>
+    <ul class="cb-sidebar-list">
+      <$list filter="[tag[Post]tag[Favorite]!tag[Draft]limit[5]]">
+        <li class="cb-sidebar-list-item">
+          <$link to=<<currentTiddler>>>
+            <$view field="title"/>
+          </$link>
+        </li>
+      </$list>
+      <$list filter="[tag[Post]tag[Favorite]!tag[Draft]count[]compare:number:eq[0]]" variable="null">
+        <li class="cb-sidebar-list-item cb-sidebar-empty">
+          No favorites yet
+        </li>
+      </$list>
+    </ul>
+  </div>
+
   <!-- Admin link
        Toggles the admin panel visibility using TiddlyWiki state management
        Uses a state tiddler ($:/state/admin-panel-visible) to track open/closed state

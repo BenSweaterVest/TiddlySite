@@ -36,6 +36,7 @@ core_tiddlers = [
     'plugins/collaborative-blog/tiddlers/styles.tid',
     'plugins/collaborative-blog/tiddlers/navigation.tid',
     'plugins/collaborative-blog/tiddlers/admin-panel.tid',
+    'plugins/collaborative-blog/tiddlers/viewtemplate-systemtiddler.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-post.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-page.tid',
     'plugins/collaborative-blog/tiddlers/readme.tid',
