@@ -15,6 +15,10 @@ Transform your TiddlyWiki into a WordPress-style collaborative blog with a clean
 - **Accessibility** - ARIA labels and screen reader support
 - **Comprehensive documentation** - Inline code comments and detailed README
 
+## 🐛 Bug Fixes
+
+- **Admin button toggle** - Fixed using TiddlyWiki's native state management instead of inline JavaScript for better reliability
+
 ## 📦 Installation
 
 Download one of the files below and drag it onto your TiddlyWiki:
