@@ -57,16 +57,21 @@ type: text/vnd.tiddlywiki
   </nav>
 
   <!-- Admin link
-       Toggles the admin panel visibility using JavaScript
-       The onclick handler finds the .cb-admin-panel element and toggles the .active class
-       When .active class is present, admin panel displays (see styles.tid)
-
-       Note: Uses inline JavaScript for simplicity
-       Alternative: Create a custom TiddlyWiki action widget (more complex)
+       Toggles the admin panel visibility using TiddlyWiki state management
+       Uses a state tiddler ($:/state/admin-panel-visible) to track open/closed state
+       The $button widget with action-setfield toggles the state value
+       Admin panel checks this state to show/hide itself
   -->
   <div class="cb-login-link">
-    <a href="javascript:void(0);" onclick="document.querySelector('.cb-admin-panel').classList.toggle('active');">
+    <$button class="tc-btn-invisible tc-tiddlylink">
       Admin
-    </a>
+      <$action-setfield $tiddler="$:/state/admin-panel-visible" text={{$:/state/admin-panel-visible}} />
+      <$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]">
+        <$action-setfield $tiddler="$:/state/admin-panel-visible" text="no" />
+      </$list>
+      <$list filter="[[$:/state/admin-panel-visible]get[text]!match[yes]]">
+        <$action-setfield $tiddler="$:/state/admin-panel-visible" text="yes" />
+      </$list>
+    </$button>
   </div>
 </div>

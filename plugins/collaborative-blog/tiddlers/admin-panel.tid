@@ -9,15 +9,17 @@ type: text/vnd.tiddlywiki
   Provides quick access to common blog management tasks
 
   Features:
-  - Hidden by default (display: none in CSS)
-  - Activated by clicking "Admin" link which toggles .active class
+  - Hidden by default (only renders when state tiddler is "yes")
+  - Activated by clicking "Admin" link which toggles state tiddler
   - Contains buttons for creating posts, pages, and accessing settings
   - Fixed position at top of page when active
 
-  JavaScript required: The Admin link in navigation.tid uses JavaScript to toggle visibility
+  State management: Uses $:/state/admin-panel-visible tiddler to track visibility
 -->
 
-<div class="cb-admin-panel">
+<!-- Only render admin panel if state tiddler is set to "yes" -->
+<$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]" variable="null">
+<div class="cb-admin-panel active">
   <h3>Admin Panel</h3>
   <div class="cb-admin-actions">
 
@@ -67,3 +69,4 @@ type: text/vnd.tiddlywiki
     </$button>
   </div>
 </div>
+</$list>
