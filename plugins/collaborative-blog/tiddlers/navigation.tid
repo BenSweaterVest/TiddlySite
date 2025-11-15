@@ -95,22 +95,38 @@ type: text/vnd.tiddlywiki
     </ul>
   </div>
 
-  <!-- Admin link
-       Toggles the admin panel visibility using TiddlyWiki state management
-       Uses a state tiddler ($:/state/admin-panel-visible) to track open/closed state
-       The $button widget with action-setfield toggles the state value
-       Admin panel checks this state to show/hide itself
+  <!-- Admin / Login Section
+       Shows different controls based on authentication state:
+       - If authenticated: Admin panel toggle button + Logout button
+       - If not authenticated: Login button that opens password modal
   -->
   <div class="cb-login-link">
-    <$button class="tc-btn-invisible tc-tiddlylink">
-      Admin
-      <$action-setfield $tiddler="$:/state/admin-panel-visible" text={{$:/state/admin-panel-visible}} />
-      <$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]">
+    <!-- Not authenticated: Show login button -->
+    <$list filter="[[$:/state/collaborative-blog/authenticated]get[text]!match[yes]]" variable="null">
+      <$button class="tc-btn-invisible tc-tiddlylink">
+        Login
+        <$action-sendmessage $message="tm-modal" $param="$:/plugins/collaborative-blog/LoginModal" />
+      </$button>
+    </$list>
+
+    <!-- Authenticated: Show admin toggle and logout -->
+    <$list filter="[[$:/state/collaborative-blog/authenticated]get[text]match[yes]]" variable="null">
+      <$button class="tc-btn-invisible tc-tiddlylink">
+        Admin
+        <$action-setfield $tiddler="$:/state/admin-panel-visible" text={{$:/state/admin-panel-visible}} />
+        <$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]">
+          <$action-setfield $tiddler="$:/state/admin-panel-visible" text="no" />
+        </$list>
+        <$list filter="[[$:/state/admin-panel-visible]get[text]!match[yes]]">
+          <$action-setfield $tiddler="$:/state/admin-panel-visible" text="yes" />
+        </$list>
+      </$button>
+
+      <$button class="tc-btn-invisible tc-tiddlylink cb-logout-btn">
+        Logout
+        <$action-setfield $tiddler="$:/state/collaborative-blog/authenticated" text="no" />
         <$action-setfield $tiddler="$:/state/admin-panel-visible" text="no" />
-      </$list>
-      <$list filter="[[$:/state/admin-panel-visible]get[text]!match[yes]]">
-        <$action-setfield $tiddler="$:/state/admin-panel-visible" text="yes" />
-      </$list>
-    </$button>
+      </$button>
+    </$list>
   </div>
 </div>

@@ -15,10 +15,12 @@ type: text/vnd.tiddlywiki
   - Fixed position at top of page when active
 
   State management: Uses $:/state/admin-panel-visible tiddler to track visibility
+  Authentication: Only renders if user is authenticated ($:/state/collaborative-blog/authenticated = "yes")
 -->
 
-<!-- Only render admin panel if state tiddler is set to "yes" -->
-<$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]" variable="null">
+<!-- Only render admin panel if authenticated AND panel visibility is "yes" -->
+<$list filter="[[$:/state/collaborative-blog/authenticated]get[text]match[yes]]" variable="null">
+  <$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]" variable="null">
 <div class="cb-admin-panel active">
   <h3>Admin Panel</h3>
   <div class="cb-admin-actions">
@@ -69,4 +71,5 @@ type: text/vnd.tiddlywiki
     </$button>
   </div>
 </div>
+  </$list>
 </$list>
