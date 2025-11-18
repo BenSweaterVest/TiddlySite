@@ -8,12 +8,15 @@ This plugin transforms TiddlyWiki into a WordPress-style collaborative blog with
 !! Features
 
 * Clean blog layout with hidden wiki controls
-* Left sidebar navigation
+* Left sidebar navigation with recently updated and favorite articles
 * Multiple author support
 * Featured posts
 * Categories and tags
 * Post archive and table of contents
 * Discrete admin panel
+* Automatic GitHub saving via Cloudflare Functions (integrated)
+* Password-protected saves with session management
+* Save notifications and statistics
 * Historical society / nonprofit aesthetic
 
 !! Quick Start
@@ -57,15 +60,17 @@ For full documentation, see the README.md file in the repository.
 
 !! Automatic Saving & Deployment
 
-This plugin pairs perfectly with the [[TiddlyWiki Cloudflare Saver|https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver]] for automatic GitHub saving and deployment.
+This plugin includes integrated automatic saving to GitHub via Cloudflare Functions.
 
-''Together they provide:''
+''What's included:''
 
-* This plugin → Beautiful blog UI and editing experience
-* Cloudflare Saver → Automatic save and deployment mechanism
-* Result → Edit in browser → Auto-save to GitHub → Instant deployment
+* Beautiful blog UI and editing experience
+* Automatic GitHub save mechanism (built-in)
+* Real-time deployment via Cloudflare Pages
+* Password-protected saves
+* Save statistics and connection monitoring
 
-Learn more: https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver
+''Setup:'' Configure the Cloudflare saver in the Control Panel → Saving tab. You'll need to set up a Cloudflare Pages site with a GitHub repository containing a `functions/save.js` file.
 
 !! Support
 
