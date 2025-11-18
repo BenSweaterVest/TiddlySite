@@ -24,14 +24,40 @@ type: text/vnd.tiddlywiki
   <h3>Admin Panel</h3>
   <div class="cb-admin-actions">
 
-    <!-- New Post Button
-         Creates a new tiddler with the "Post" tag pre-applied
-         ARIA: Screen readers will announce "Create new blog post"
-    -->
-    <$button class="cb-admin-button" aria-label="Create new blog post">
-      {{$:/core/images/new-button}} New Post
-      <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
-    </$button>
+    <!-- New Post Type Selector -->
+    <div class="cb-post-type-group">
+      <div class="cb-post-type-label">Create New:</div>
+
+      <!-- Standard Post -->
+      <$button class="cb-admin-button cb-post-type-button" aria-label="Create standard blog post">
+        📝 Post
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
+      </$button>
+
+      <!-- Event Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-event-button" aria-label="Create event post">
+        📅 Event
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Event" event-status="upcoming" />
+      </$button>
+
+      <!-- Gallery Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-gallery-button" aria-label="Create gallery post">
+        🖼️ Gallery
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Gallery" />
+      </$button>
+
+      <!-- Video Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-video-button" aria-label="Create video post">
+        🎥 Video
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Video" />
+      </$button>
+
+      <!-- Quote Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-quote-button" aria-label="Create quote post">
+        💬 Quote
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Quote" />
+      </$button>
+    </div>
 
     <!-- New Page Button
          Creates a new tiddler with the "Page" tag pre-applied

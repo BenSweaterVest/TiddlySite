@@ -72,6 +72,14 @@ core_tiddlers = [
     'plugins/collaborative-blog/tiddlers/viewtemplate-post.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-page.tid',
     'plugins/collaborative-blog/tiddlers/readme.tid',
+    # Custom post type templates
+    'plugins/collaborative-blog/tiddlers/viewtemplate-post-event.tid',
+    'plugins/collaborative-blog/tiddlers/viewtemplate-post-gallery.tid',
+    'plugins/collaborative-blog/tiddlers/viewtemplate-post-video.tid',
+    'plugins/collaborative-blog/tiddlers/viewtemplate-post-quote.tid',
+    # Theme system
+    'plugins/collaborative-blog/tiddlers/theme-controller.tid',
+    'plugins/collaborative-blog/tiddlers/theme-switcher.tid',
     # Cloudflare saver JavaScript modules
     'plugins/collaborative-blog/tiddlers/cloudflare-saver.js',
     'plugins/collaborative-blog/tiddlers/cloudflare-startup.js',

@@ -9,6 +9,7 @@ A complete blogging solution for TiddlyWiki with WordPress-style UI and automati
 ### Content Management
 - **Clean, blog-style interface** - Hides typical wiki elements for a professional look
 - **Multiple authors** - Built-in support for author attribution on posts
+- **Custom post types** - Specialized templates for Events, Galleries, Videos, and Quotes
 - **Featured posts** - Highlight important content on the homepage
 - **Favorite articles** - Curate a list of your best or most important posts
 - **Recently updated** - Automatic sidebar showing the 5 most recently modified posts
@@ -20,7 +21,8 @@ A complete blogging solution for TiddlyWiki with WordPress-style UI and automati
 ### User Interface
 - **Fixed left sidebar navigation** - Always-visible menu with customizable links
 - **Responsive design** - Works on desktop and mobile devices
-- **Historical society aesthetic** - Professional, trustworthy design with serif fonts
+- **5 professional themes** - Historical, Modern, Dark, Vibrant, and Professional themes with one-click switching
+- **Theme customization** - Complete CSS variable system for full design control
 - **System tiddler hiding** - Control panel and other system tiddlers hidden from story view
 
 ### Automatic Saving & Deployment
@@ -249,9 +251,14 @@ In your Cloudflare Pages project settings:
 
 Click the **Admin** link in the left sidebar to toggle the admin panel. The panel provides quick access to:
 
-- **New Post** - Create a new blog post
+- **Create New (Post Type Selector)** - Create different types of posts:
+  - 📝 **Post** - Standard blog post
+  - 📅 **Event** - Event with date, time, location, and RSVP
+  - 🖼️ **Gallery** - Image gallery with grid layout
+  - 🎥 **Video** - Video post with YouTube/Vimeo embed
+  - 💬 **Quote** - Featured quote with author attribution
 - **New Page** - Create a new static page
-- **Control Panel** - Access TiddlyWiki settings (including Cloudflare saver configuration)
+- **Control Panel** - Access TiddlyWiki settings (including Cloudflare saver and theme configuration)
 - **Save Changes** - Save to GitHub via Cloudflare (prompts for password)
 - **Advanced Search** - Search all tiddlers
 
@@ -272,6 +279,48 @@ Click the **Admin** link in the left sidebar to toggle the admin panel. The pane
 6. Click **Save Changes** in the admin panel
 7. Enter your Cloudflare save password when prompted
 8. Your changes are committed to GitHub and auto-deployed!
+
+### Creating Custom Post Types
+
+The plugin includes specialized templates for different content types:
+
+**Event Posts** (📅 Event button):
+1. Click the Event button in the admin panel
+2. Tags `Post Event` are automatically added
+3. Add custom fields:
+   - **event-date**: Date in YYYY-MM-DD format (e.g., `2025-08-15`)
+   - **event-time**: Time range (e.g., `6:00 PM - 10:00 PM`)
+   - **event-location**: Venue/location name
+   - **event-status**: `upcoming`, `past`, or `cancelled`
+   - **event-rsvp-link**: URL for RSVP/registration
+4. Write event description in the main text area
+5. Save tiddler - displays with event badge and formatted details
+
+**Gallery Posts** (🖼️ Gallery button):
+1. Click the Gallery button in the admin panel
+2. Tags `Post Gallery` are automatically added
+3. Add the **gallery-images** field with comma-separated image URLs:
+   - Example: `https://example.com/img1.jpg, https://example.com/img2.jpg`
+4. Optionally tag image tiddlers to include them in the gallery
+5. Save tiddler - displays in responsive grid layout with hover effects
+
+**Video Posts** (🎥 Video button):
+1. Click the Video button in the admin panel
+2. Tags `Post Video` are automatically added
+3. Add the **video-url** field with YouTube or Vimeo URL
+4. Optionally add **video-transcript** field for accessibility
+5. Write commentary/description in the main text area
+6. Save tiddler - video auto-embeds in responsive 16:9 container
+
+**Quote Posts** (💬 Quote button):
+1. Click the Quote button in the admin panel
+2. Tags `Post Quote` are automatically added
+3. Add custom fields:
+   - **quote-text**: The quotation itself
+   - **quote-author**: Author name
+   - **quote-source**: Book, speech, or source attribution
+4. Optionally add commentary in the main text area
+5. Save tiddler - displays with large centered quote and decorative formatting
 
 ### Creating Featured Posts
 
@@ -319,6 +368,23 @@ To save a post as a draft (not visible on the site):
 
 ## Customization
 
+### Choose a Theme
+
+The plugin includes 5 professionally designed themes:
+
+1. **Historical Society** (Default) - Traditional serif fonts, navy/burgundy palette, perfect for heritage organizations
+2. **Modern Minimalist** - Clean sans-serif, high contrast black/white with blue accents, ideal for contemporary blogs
+3. **Dark Mode** - Eye-friendly dark backgrounds with purple/teal accents, great for tech blogs
+4. **Vibrant Creative** - Bold orange/pink/yellow palette with playful design, perfect for creative portfolios
+5. **Professional Business** - Corporate blue/gray scheme with refined styling, suited for business sites
+
+**To change themes:**
+1. Click **Admin** in sidebar → **Control Panel** → **Appearance** tab
+2. Scroll to "Theme Selection" section
+3. Select your preferred theme from the radio buttons
+4. Theme applies immediately - no save or refresh needed
+5. Preview color palette swatches before selecting
+
 ### Change Site Title and Subtitle
 
 Edit these tiddlers:
@@ -333,16 +399,27 @@ Edit `$:/plugins/collaborative-blog/Navigation` to change menu links. The naviga
 - Favorite Articles section (posts tagged "Favorite")
 - Admin panel toggle link
 
-### Modify Color Scheme
+### Modify Color Scheme and Create Custom Themes
 
-Edit `$:/plugins/collaborative-blog/styles` to customize:
-- Colors (backgrounds, text, links, accents)
-- Fonts (typefaces, sizes, weights)
-- Layout (spacing, widths, breakpoints)
-- Admin panel appearance
-- Notification styling
+The plugin uses CSS custom properties (variables) for easy theme customization:
 
-**Key CSS variables to modify:**
+**Quick customization** - Edit `$:/plugins/collaborative-blog/theme-controller` to modify existing themes or create new ones:
+
+**Available CSS variables** (40+ customizable properties):
+- **Colors**: `--cb-primary`, `--cb-accent`, `--cb-bg-page`, `--cb-text-body`, `--cb-border-light`
+- **Typography**: `--cb-font-serif`, `--cb-font-sans`, `--cb-font-mono`, `--cb-font-body`, `--cb-font-heading`
+- **Shadows**: `--cb-shadow-sm`, `--cb-shadow-md`, `--cb-shadow-lg`, `--cb-shadow-xl`
+- **Spacing**: `--cb-radius-sm`, `--cb-radius-md`, `--cb-radius-lg`
+
+**To create a custom theme:**
+1. Edit `$:/plugins/collaborative-blog/theme-controller`
+2. Copy one of the existing theme blocks (e.g., `<$list filter="[<selectedTheme>match[modern]]">`)
+3. Change the filter to your custom theme name (e.g., `match[mytheme]`)
+4. Modify CSS variable values to your preferences
+5. Edit `$:/plugins/collaborative-blog/theme-switcher` to add radio button for your theme
+6. Save both tiddlers
+
+**Advanced customization** - Edit `$:/plugins/collaborative-blog/styles` to modify base styles, layout, and components:
 - `.cb-sidebar` - Sidebar background and width
 - `.cb-post` - Post card styling
 - `.cb-admin-panel` - Admin panel appearance
@@ -475,12 +552,18 @@ To ensure your blog functions correctly, follow these data format requirements:
 plugins/collaborative-blog/
 ├── plugin.info                          # Plugin metadata
 └── tiddlers/
-    ├── styles.tid                       # Main stylesheet
+    ├── styles.tid                       # Main stylesheet (refactored with CSS variables)
     ├── navigation.tid                   # Left sidebar with recently updated/favorites
-    ├── admin-panel.tid                  # Admin interface
+    ├── admin-panel.tid                  # Admin interface with post type selector
     ├── viewtemplate-systemtiddler.tid   # Hides system tiddlers from story view
-    ├── viewtemplate-post.tid            # Blog post layout
+    ├── viewtemplate-post.tid            # Standard blog post layout
     ├── viewtemplate-page.tid            # Static page layout
+    ├── viewtemplate-post-event.tid      # Event post template with date/time/location
+    ├── viewtemplate-post-gallery.tid    # Gallery post template with image grid
+    ├── viewtemplate-post-video.tid      # Video post template with YouTube/Vimeo embed
+    ├── viewtemplate-post-quote.tid      # Quote post template with large centered display
+    ├── theme-controller.tid             # Dynamic CSS variable injection for themes
+    ├── theme-switcher.tid               # Control Panel theme selection UI
     ├── readme.tid                       # Plugin documentation
     ├── cloudflare-saver.js              # Main save mechanism (module-type: saver)
     ├── cloudflare-startup.js            # Startup initialization
@@ -505,8 +588,8 @@ plugins/collaborative-blog/
     └── default-tiddlers.tid             # Example default page config (not in core plugin)
 
 Distribution Files:
-├── collaborative-blog-plugin.tid        # Single-file plugin (16 core tiddlers, no examples)
-└── collaborative-blog-plugin.json       # Complete package (24 tiddlers with examples)
+├── collaborative-blog-plugin.tid        # Single-file plugin (22 core tiddlers, no examples)
+└── collaborative-blog-plugin.json       # Complete package (30 tiddlers with examples)
 ```
 
 ## Troubleshooting
@@ -806,6 +889,37 @@ To further improve accessibility:
 
 ## Version History
 
+### v2.1.0 (November 2025)
+
+**New Features:**
+
+**Theme System:**
+- **5 Professional Themes** - Historical Society (default), Modern Minimalist, Dark Mode, Vibrant Creative, Professional Business
+- **One-Click Switching** - Select themes in Control Panel → Appearance with instant preview
+- **CSS Variable System** - 40+ customizable properties for complete design control
+- **Theme Controller** - Dynamic CSS injection for theme management
+- **Color Palette Previews** - Visual swatches for each theme before selection
+
+**Custom Post Types:**
+- **Event Posts** - Specialized template with date, time, location, status, and RSVP link fields
+- **Gallery Posts** - Responsive image grid layout with hover effects
+- **Video Posts** - YouTube/Vimeo auto-embed with optional transcripts
+- **Quote Posts** - Large centered quotation display with author/source attribution
+- **Post Type Selector** - Color-coded buttons in admin panel (📝 Post, 📅 Event, 🖼️ Gallery, 🎥 Video, 💬 Quote)
+
+**Architecture:**
+- Added 6 new core files (4 post type templates + 2 theme system files)
+- Refactored `styles.tid` to use CSS variables for themability
+- Updated `admin-panel.tid` with post type selector buttons
+- Core plugin now includes 22 tiddlers (up from 16)
+- Total package size: ~91KB with 30 tiddlers
+
+**Backward Compatibility:**
+- Fully compatible with v2.0.0 content
+- Default theme matches v2.0.0 visual design
+- Standard posts continue to work without changes
+- Existing custom styles override theme variables as expected
+
 ### v2.0.0 (November 2025)
 
 **BREAKING CHANGES:**
@@ -887,7 +1001,7 @@ Cloudflare Functions integration enables seamless GitHub saves and automatic dep
 
 ---
 
-**Version**: 2.0.0
+**Version**: 2.1.0
 **Author**: BenSweaterVest
 **Last Updated**: November 2025
 **Repository**: https://github.com/BenSweaterVest/TiddlySite
