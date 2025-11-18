@@ -80,6 +80,12 @@ core_tiddlers = [
     # Theme system
     'plugins/collaborative-blog/tiddlers/theme-controller.tid',
     'plugins/collaborative-blog/tiddlers/theme-switcher.tid',
+    # Enhanced search
+    'plugins/collaborative-blog/tiddlers/search-panel.tid',
+    'plugins/collaborative-blog/tiddlers/search-results.tid',
+    # Analytics integration
+    'plugins/collaborative-blog/tiddlers/analytics-controller.tid',
+    'plugins/collaborative-blog/tiddlers/analytics-settings.tid',
     # Cloudflare saver JavaScript modules
     'plugins/collaborative-blog/tiddlers/cloudflare-saver.js',
     'plugins/collaborative-blog/tiddlers/cloudflare-startup.js',

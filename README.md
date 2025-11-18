@@ -20,6 +20,7 @@ A complete blogging solution for TiddlyWiki with WordPress-style UI and automati
 
 ### User Interface
 - **Fixed left sidebar navigation** - Always-visible menu with customizable links
+- **Enhanced search** - Quick search in sidebar + advanced search page with filters (post type, category, author)
 - **Responsive design** - Works on desktop and mobile devices
 - **5 professional themes** - Historical, Modern, Dark, Vibrant, and Professional themes with one-click switching
 - **Theme customization** - Complete CSS variable system for full design control
@@ -33,6 +34,12 @@ A complete blogging solution for TiddlyWiki with WordPress-style UI and automati
 - **Save statistics** - Track successful and failed saves
 - **Session password memory** - Optional password caching during session
 - **Admin panel** - Quick access to editing features
+
+### Analytics & Insights
+- **Privacy-friendly analytics** - Built-in support for Plausible and Simple Analytics (cookieless, GDPR compliant)
+- **Google Analytics support** - Optional GA4 integration for advanced analytics
+- **Custom analytics** - Flexible integration for any analytics provider
+- **Easy configuration** - Enable and configure analytics in Control Panel
 
 ### Accessibility
 - **ARIA labels** - Screen reader support for all interactive elements
@@ -366,6 +373,94 @@ To save a post as a draft (not visible on the site):
 2. Remove `Draft` from the tags
 3. Save the tiddler
 
+### Using Search
+
+The plugin includes powerful search capabilities accessible from two locations:
+
+**Quick Search (Sidebar)**:
+1. Click the **Search** tab in the left sidebar
+2. Type your search query in the input box
+3. See instant results (top 5 matches) as you type
+4. View result count and metadata
+5. Click category tags to filter by topic
+6. Click **View All Results →** for advanced search
+
+**Advanced Search Page**:
+1. Navigate to the Advanced Search page (link in search sidebar)
+2. Enter search terms in the large search box
+3. Use filters to narrow results:
+   - **Post Type**: Filter by Standard Post, Event, Gallery, Video, Quote, or Page
+   - **Category**: Select from available category tags
+   - **Author**: Filter by post author
+4. View detailed result cards with:
+   - Post type badges (color-coded)
+   - Publication date and author
+   - Excerpt or preview text
+   - Category tags
+5. Click **Clear** button to reset all filters
+
+**Search Tips**:
+- Search matches both titles and full text content
+- Draft posts are excluded from results
+- Combine filters for precise results
+- Search is case-insensitive
+- Use category filters to explore topics
+
+### Setting Up Analytics
+
+Track visitor statistics with privacy-friendly or traditional analytics services:
+
+**Supported Providers**:
+- **Plausible Analytics** (Recommended) - Privacy-friendly, cookieless, GDPR compliant
+- **Simple Analytics** - Privacy-first alternative, no cookies
+- **Google Analytics (GA4)** - Comprehensive analytics with advanced features
+- **Custom Analytics** - Use any provider with custom script injection
+
+**Configuration Steps**:
+
+1. Navigate to **Control Panel → Settings → Analytics**
+2. Check **Enable analytics tracking**
+3. Select your analytics provider:
+
+**For Plausible Analytics** (Recommended):
+- Select "Plausible Analytics"
+- Enter your domain (e.g., `myblog.com`)
+- Sign up at [plausible.io](https://plausible.io) if you haven't already
+- Add your site in Plausible dashboard
+- Save your wiki
+
+**For Simple Analytics**:
+- Select "Simple Analytics"
+- Sign up at [simpleanalytics.com](https://simpleanalytics.com)
+- Add your site in Simple Analytics dashboard
+- Save your wiki - no additional configuration needed
+
+**For Google Analytics (GA4)**:
+- Select "Google Analytics (GA4)"
+- Enter your Measurement ID (format: G-XXXXXXXXXX)
+- Find your ID in Google Analytics → Admin → Data Streams
+- Save your wiki
+- Consider adding cookie consent banner if required by law
+
+**For Custom Analytics**:
+- Select "Custom Analytics Script"
+- Paste your complete HTML/JavaScript code (including `<script>` tags)
+- Save your wiki
+
+4. After saving, verify analytics is working:
+   - Open browser DevTools (F12)
+   - Go to Network tab
+   - Reload page
+   - Look for analytics script loading
+   - Check provider dashboard for data (may take a few minutes)
+
+**Privacy Considerations**:
+- Plausible and Simple Analytics are privacy-friendly by default (no cookies, GDPR/CCPA compliant)
+- Google Analytics may require cookie consent banners in some jurisdictions (EU, California)
+- Always add a Privacy Policy page explaining your analytics use
+- Respect "Do Not Track" signals when possible
+- Consider using privacy-friendly alternatives to avoid cookie consent requirements
+
 ## Customization
 
 ### Choose a Theme
@@ -564,6 +659,10 @@ plugins/collaborative-blog/
     ├── viewtemplate-post-quote.tid      # Quote post template with large centered display
     ├── theme-controller.tid             # Dynamic CSS variable injection for themes
     ├── theme-switcher.tid               # Control Panel theme selection UI
+    ├── search-panel.tid                 # Quick search interface in sidebar
+    ├── search-results.tid               # Advanced search page with filters
+    ├── analytics-controller.tid         # Analytics script injection controller
+    ├── analytics-settings.tid           # Control Panel analytics configuration UI
     ├── readme.tid                       # Plugin documentation
     ├── cloudflare-saver.js              # Main save mechanism (module-type: saver)
     ├── cloudflare-startup.js            # Startup initialization
@@ -588,8 +687,8 @@ plugins/collaborative-blog/
     └── default-tiddlers.tid             # Example default page config (not in core plugin)
 
 Distribution Files:
-├── collaborative-blog-plugin.tid        # Single-file plugin (22 core tiddlers, no examples)
-└── collaborative-blog-plugin.json       # Complete package (30 tiddlers with examples)
+├── collaborative-blog-plugin.tid        # Single-file plugin (26 core tiddlers, no examples)
+└── collaborative-blog-plugin.json       # Complete package (34 tiddlers with examples)
 ```
 
 ## Troubleshooting
@@ -833,15 +932,6 @@ Add social sharing:
 3. Use services like AddThis or ShareThis
 4. Or create custom share links (Twitter, Facebook, LinkedIn)
 
-### Search Functionality
-
-Add search to sidebar:
-
-1. Edit `$:/plugins/collaborative-blog/Navigation`
-2. Add TiddlyWiki's search widget: `<$search />`
-3. Customize search appearance in `styles.tid`
-4. Consider adding advanced search link
-
 ### Custom Categories Page
 
 Create dynamic category browser:
@@ -853,14 +943,11 @@ Create dynamic category browser:
 
 ## Customization Ideas
 
-- Add a search box to the sidebar for easy content discovery
 - Create author profile pages with bios and photos
 - Add social media links to sidebar or footer
 - Implement a newsletter signup form
-- Add image galleries for photo-heavy posts
-- Create custom post templates for different content types (tutorials, announcements, photo essays)
+- Create custom post templates for different content types (tutorials, announcements, book reviews)
 - Add comment functionality using third-party services (Disqus, Commento)
-- Integrate analytics (Google Analytics, Plausible)
 - Add RSS feed for blog syndication
 - Create landing pages for different audiences
 - Implement related posts suggestions
@@ -868,6 +955,8 @@ Create dynamic category browser:
 - Create author archives (all posts by specific author)
 - Add estimated reading time to posts
 - Implement table of contents for long posts
+- Create custom themes using the CSS variable system
+- Add email subscription forms
 
 ## Accessibility Features
 
@@ -888,6 +977,40 @@ To further improve accessibility:
 - Ensure sufficient color contrast (use WebAIM contrast checker)
 
 ## Version History
+
+### v2.2.0 (November 2025)
+
+**New Features:**
+
+**Enhanced Search:**
+- **Quick Search Panel** - Sidebar search with instant results (top 5 matches)
+- **Advanced Search Page** - Full-featured search with multiple filters
+- **Post Type Filtering** - Filter by Standard Post, Event, Gallery, Video, Quote, or Page
+- **Category Filtering** - Filter results by category tags
+- **Author Filtering** - Find posts by specific authors
+- **Rich Result Cards** - Detailed cards showing post type badges, metadata, excerpts, and tags
+- **Real-time Results** - Search as you type with instant feedback
+
+**Analytics Integration:**
+- **Plausible Analytics** - Privacy-friendly, cookieless analytics (recommended)
+- **Simple Analytics** - Privacy-first alternative with no cookies
+- **Google Analytics (GA4)** - Optional comprehensive analytics support
+- **Custom Analytics** - Flexible custom script injection for any provider
+- **Control Panel Configuration** - Easy setup in Settings → Analytics
+- **Privacy Guidance** - Built-in privacy notices and compliance recommendations
+
+**Architecture:**
+- Added 4 new core files (2 search + 2 analytics)
+- Core plugin now includes 26 tiddlers (up from 22)
+- Total package size: ~112KB with 34 tiddlers
+- Search uses TiddlyWiki's powerful filter operators
+- Analytics uses dynamic script injection via `$:/tags/RawMarkup`
+
+**Backward Compatibility:**
+- Fully compatible with v2.1.0 and v2.0.0
+- Search adds new sidebar tab (non-breaking)
+- Analytics disabled by default (opt-in)
+- No configuration changes required
 
 ### v2.1.0 (November 2025)
 
@@ -1001,7 +1124,7 @@ Cloudflare Functions integration enables seamless GitHub saves and automatic dep
 
 ---
 
-**Version**: 2.1.0
+**Version**: 2.2.0
 **Author**: BenSweaterVest
 **Last Updated**: November 2025
 **Repository**: https://github.com/BenSweaterVest/TiddlySite
