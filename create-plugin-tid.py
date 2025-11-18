@@ -31,17 +31,59 @@ def parse_tid_file(filepath):
 
     return tiddler
 
+def parse_js_file(filepath):
+    """Parse a .js file and return a dictionary of its contents."""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Extract metadata from JS comment block
+    tiddler = {}
+    lines = content.split('\n')
+    in_metadata = False
+    text_lines = []
+
+    for line in lines:
+        if line.strip() == '/*\\':
+            in_metadata = True
+            continue
+        elif line.strip() == '\\*/':
+            in_metadata = False
+            continue
+
+        if in_metadata:
+            if ': ' in line:
+                key, value = line.split(': ', 1)
+                tiddler[key.strip()] = value.strip()
+        else:
+            text_lines.append(line)
+
+    # Everything outside the metadata block is the text
+    tiddler['text'] = '\n'.join(text_lines)
+
+    return tiddler
+
 # Core plugin tiddlers only (no example content)
 core_tiddlers = [
+    # Styles and templates
     'plugins/collaborative-blog/tiddlers/styles.tid',
     'plugins/collaborative-blog/tiddlers/navigation.tid',
     'plugins/collaborative-blog/tiddlers/admin-panel.tid',
-    'plugins/collaborative-blog/tiddlers/login-modal.tid',
-    'plugins/collaborative-blog/tiddlers/password-config.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-systemtiddler.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-post.tid',
     'plugins/collaborative-blog/tiddlers/viewtemplate-page.tid',
     'plugins/collaborative-blog/tiddlers/readme.tid',
+    # Cloudflare saver JavaScript modules
+    'plugins/collaborative-blog/tiddlers/cloudflare-saver.js',
+    'plugins/collaborative-blog/tiddlers/cloudflare-startup.js',
+    'plugins/collaborative-blog/tiddlers/cloudflare-test-action.js',
+    'plugins/collaborative-blog/tiddlers/cloudflare-clear-password-action.js',
+    # Cloudflare saver tiddlers
+    'plugins/collaborative-blog/tiddlers/cloudflare-settings.tid',
+    'plugins/collaborative-blog/tiddlers/cloudflare-wizard.tid',
+    # Notifications
+    'plugins/collaborative-blog/tiddlers/notification-saving.tid',
+    'plugins/collaborative-blog/tiddlers/notification-success.tid',
+    'plugins/collaborative-blog/tiddlers/notification-failure.tid',
 ]
 
 # Parse plugin.info to get metadata
@@ -50,8 +92,11 @@ with open('plugins/collaborative-blog/plugin.info', 'r') as f:
 
 # Build tiddlers object
 tiddlers = {}
-for tid_file in core_tiddlers:
-    tiddler = parse_tid_file(tid_file)
+for file_path in core_tiddlers:
+    if file_path.endswith('.js'):
+        tiddler = parse_js_file(file_path)
+    else:
+        tiddler = parse_tid_file(file_path)
     title = tiddler.get('title')
     if title:
         tiddlers[title] = tiddler
