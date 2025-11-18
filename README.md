@@ -1,12 +1,15 @@
 # TiddlyWiki Collaborative Blog Plugin
 
-A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a clean, professional website with a non-wiki feel. Perfect for historical societies, nonprofits, and small organizations.
+A complete blogging solution for TiddlyWiki with WordPress-style UI and automatic GitHub saving via Cloudflare Functions. Designed to create a clean, professional website with a non-wiki feel. Perfect for historical societies, nonprofits, and small organizations.
+
+**All-in-one package:** Beautiful blog theme + automatic save/deploy mechanism integrated into a single plugin.
 
 ## Features
 
 ### Content Management
 - **Clean, blog-style interface** - Hides typical wiki elements for a professional look
 - **Multiple authors** - Built-in support for author attribution on posts
+- **Custom post types** - Specialized templates for Events, Galleries, Videos, and Quotes
 - **Featured posts** - Highlight important content on the homepage
 - **Favorite articles** - Curate a list of your best or most important posts
 - **Recently updated** - Automatic sidebar showing the 5 most recently modified posts
@@ -17,15 +20,26 @@ A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a
 
 ### User Interface
 - **Fixed left sidebar navigation** - Always-visible menu with customizable links
+- **Enhanced search** - Quick search in sidebar + advanced search page with filters (post type, category, author)
 - **Responsive design** - Works on desktop and mobile devices
-- **Historical society aesthetic** - Professional, trustworthy design with serif fonts
+- **5 professional themes** - Historical, Modern, Dark, Vibrant, and Professional themes with one-click switching
+- **Theme customization** - Complete CSS variable system for full design control
 - **System tiddler hiding** - Control panel and other system tiddlers hidden from story view
 
-### Security & Authentication
-- **Password-protected editing** - Admin features only accessible after login
-- **Login/Logout system** - Discrete login link in sidebar
-- **Admin panel** - Hidden by default, appears after authentication
-- **Session state management** - Maintains login state during browsing session
+### Automatic Saving & Deployment
+- **Cloudflare Functions integration** - Automatic GitHub saves built-in
+- **Password-protected saves** - Server-side authentication via environment variables
+- **Real-time deployment** - Cloudflare Pages auto-deploys on every save
+- **Save notifications** - Visual feedback for save status (saving, success, failure)
+- **Save statistics** - Track successful and failed saves
+- **Session password memory** - Optional password caching during session
+- **Admin panel** - Quick access to editing features
+
+### Analytics & Insights
+- **Privacy-friendly analytics** - Built-in support for Plausible and Simple Analytics (cookieless, GDPR compliant)
+- **Google Analytics support** - Optional GA4 integration for advanced analytics
+- **Custom analytics** - Flexible integration for any analytics provider
+- **Easy configuration** - Enable and configure analytics in Control Panel
 
 ### Accessibility
 - **ARIA labels** - Screen reader support for all interactive elements
@@ -34,36 +48,32 @@ A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a
 
 ## Installation
 
-You have three easy options to install this plugin:
+### Quick Start (Testing Locally)
 
-### Method 1: Drag and Drop - Complete Package (Recommended for Testing)
+1. Download **`collaborative-blog-plugin.json`** from the [latest release](https://github.com/BenSweaterVest/TiddlySite/releases)
+2. Open an empty TiddlyWiki in your browser
+3. Drag and drop the JSON file onto the page
+4. Click "Import" to install the plugin and example content
+5. Save and refresh to see your blog!
 
-**Install everything at once - plugin + example content:**
+**Note:** For local testing, you can edit and use the browser download to save. For production deployment with automatic GitHub saves, follow the Cloudflare Setup below.
 
-1. Open your TiddlyWiki file in your browser (e.g., `empty.html`)
-2. Download **`collaborative-blog-plugin.json`** from this repository or the [latest release](https://github.com/BenSweaterVest/TiddlySite/releases)
-3. Drag and drop the JSON file onto your TiddlyWiki page
-4. Click the "Import" button to import all tiddlers (plugin + 4 example posts + 2 example pages)
-5. Save your wiki (the admin panel will be accessible before you set a password)
-6. Refresh the page to see your new blog with example content!
+### Production Deployment (Recommended)
 
-### Method 2: Drag and Drop - Plugin Only (Recommended for Production)
+For a complete blogging solution with automatic GitHub saves and deployment:
 
-**Install just the plugin, start with a clean slate:**
+**Method 1: Drag and Drop Plugin (Simplest)**
 
-1. Open your TiddlyWiki file in your browser (e.g., `empty.html`)
-2. Download **`collaborative-blog-plugin.tid`** from this repository or the [latest release](https://github.com/BenSweaterVest/TiddlySite/releases)
-3. Drag and drop the `.tid` file onto your TiddlyWiki page
-4. Click the "Import" button
-5. Save and refresh
-6. **IMPORTANT:** Immediately set your admin password (see Security Setup below)
+1. Download **`collaborative-blog-plugin.tid`** from the [latest release](https://github.com/BenSweaterVest/TiddlySite/releases)
+2. Open an empty TiddlyWiki in your browser
+3. Drag and drop the `.tid` file onto the page
+4. Click "Import" and save
+5. Continue to **Cloudflare Setup** below to enable automatic saves
 
-### Method 3: Use Node.js (Advanced)
+**Method 2: Node.js (Advanced)**
 
-If you're running TiddlyWiki on Node.js:
-
-1. Copy the `plugins/collaborative-blog/` directory to your wiki's `plugins/` folder
-2. Add the plugin to your `tiddlywiki.info` file:
+1. Copy `plugins/collaborative-blog/` to your wiki's `plugins/` folder
+2. Add to your `tiddlywiki.info`:
    ```json
    {
      "plugins": [
@@ -72,98 +82,252 @@ If you're running TiddlyWiki on Node.js:
    }
    ```
 3. Restart your TiddlyWiki server
-4. **IMPORTANT:** Immediately set your admin password (see Security Setup below)
+4. Continue to **Cloudflare Setup** below to enable automatic saves
 
-## Security Setup
+## Cloudflare Setup
 
-### ⚠️ CRITICAL: Change the Default Password
+This plugin includes built-in automatic GitHub saving via Cloudflare Functions. Follow these steps to enable automatic saves and deployment:
 
-The plugin ships with a default password of `changeme`. **You MUST change this immediately after installation.**
+### Prerequisites
 
-**To change your password:**
+- GitHub account
+- Cloudflare account (free tier works fine)
+- GitHub Personal Access Token with `repo` scope
 
-1. Search for the tiddler: `$:/config/collaborative-blog/password`
-2. Edit the tiddler
-3. Replace `changeme` with your new password
-4. Save the tiddler
-5. Save your wiki
+### Step 1: Create GitHub Repository
 
-**Security Best Practices:**
+1. Create a new GitHub repository (public or private)
+2. Initialize with a README or push an initial commit
+3. Note your repository name: `username/repository-name`
 
-- ✅ **DO:** Use a strong, unique password
-- ✅ **DO:** Change the password regularly
-- ✅ **DO:** Keep backup copies of your wiki in a secure location
-- ❌ **DON'T:** Share your wiki file with untrusted parties (password is stored in plain text)
-- ❌ **DON'T:** Use the same password as other accounts
-- ❌ **DON'T:** Commit the wiki file with your password to public repositories
+### Step 2: Create Cloudflare Function
 
-### 🔒 Security Limitations
+In your repository, create a file at `functions/save.js`:
 
-**IMPORTANT:** This plugin provides basic password protection suitable for personal blogs and small team collaboration. However, you should understand its limitations:
+```javascript
+export async function onRequest(context) {
+  const { request, env } = context;
 
-1. **Plain text storage** - The password is stored in plain text within the HTML file. Anyone with access to the file can view it by opening it in a text editor.
+  // Only allow POST requests
+  if (request.method !== 'POST') {
+    return new Response('Method not allowed', { status: 405 });
+  }
 
-2. **No encryption** - The wiki file itself is not encrypted. All content is readable without a password if someone has file access.
+  try {
+    const { content, password } = await request.json();
 
-3. **Client-side only** - Password checking happens in the browser. This is NOT suitable for protecting sensitive information or preventing determined attackers.
+    // Verify password
+    if (password !== env.SAVE_PASSWORD) {
+      return new Response('Unauthorized', { status: 401 });
+    }
 
-4. **Session-based** - Login state is only maintained during your browsing session. Refreshing the page requires logging in again.
+    // GitHub API configuration
+    const githubToken = env.GITHUB_TOKEN;
+    const repo = env.GITHUB_REPO; // format: "username/repo-name"
+    const filePath = env.FILE_PATH || 'index.html';
 
-**Recommended use cases:**
-- Personal blogs where you want to prevent accidental edits
-- Small team blogs where all members are trusted
-- Public-facing sites where you want to discourage casual vandalism
-- Educational or demonstration sites
+    // Get current file SHA (required for updates)
+    const getResponse = await fetch(
+      `https://api.github.com/repos/${repo}/contents/${filePath}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'User-Agent': 'TiddlyWiki-Saver'
+        }
+      }
+    );
 
-**NOT recommended for:**
-- Storing confidential information
-- Protecting against determined attackers
-- Compliance with data protection regulations
-- Sites with untrusted visitors who have file access
+    let sha = null;
+    if (getResponse.ok) {
+      const data = await getResponse.json();
+      sha = data.sha;
+    }
 
-**For enhanced security**, consider:
-- Using TiddlyWiki on Node.js with server-side authentication
-- Hosting on platforms with built-in access control (e.g., TiddlyHost, TiddlySpot)
-- Using the [Cloudflare saver](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver) for server-side password protection
-- Implementing full encryption solutions for sensitive data
+    // Update file on GitHub
+    const updateResponse = await fetch(
+      `https://api.github.com/repos/${repo}/contents/${filePath}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'TiddlyWiki-Saver'
+        },
+        body: JSON.stringify({
+          message: 'Update TiddlyWiki',
+          content: btoa(unescape(encodeURIComponent(content))),
+          sha: sha
+        })
+      }
+    );
+
+    if (!updateResponse.ok) {
+      const error = await updateResponse.text();
+      throw new Error(`GitHub API error: ${error}`);
+    }
+
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ success: false, error: error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
+```
+
+Commit and push this file to your repository.
+
+### Step 3: Deploy to Cloudflare Pages
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages
+2. Click "Create application" → "Pages" → "Connect to Git"
+3. Select your GitHub repository
+4. Configure build settings:
+   - **Framework preset:** None
+   - **Build command:** (leave empty)
+   - **Build output directory:** `/`
+5. Click "Save and Deploy"
+
+### Step 4: Set Environment Variables
+
+In your Cloudflare Pages project settings:
+
+1. Go to "Settings" → "Environment variables"
+2. Add these variables (for **Production** and **Preview**):
+   - `SAVE_PASSWORD`: Your chosen save password (keep this secret!)
+   - `GITHUB_TOKEN`: Your GitHub Personal Access Token
+   - `GITHUB_REPO`: Your repository in format `username/repo-name`
+   - `FILE_PATH`: `index.html` (or your wiki filename)
+
+### Step 5: Upload Your TiddlyWiki
+
+1. Add your TiddlyWiki HTML file to the repository as `index.html`
+2. Commit and push:
+   ```bash
+   git add index.html
+   git commit -m "Add TiddlyWiki"
+   git push
+   ```
+3. Cloudflare will automatically deploy your site
+
+### Step 6: Configure the Plugin
+
+1. Open your deployed TiddlyWiki at `https://your-site.pages.dev`
+2. Click **Admin** in the sidebar
+3. Click **Control Panel** → **Saving** tab → **CloudFlare Saver** section
+4. Configure:
+   - ☑ **Enable saving to Cloudflare Functions**
+   - **Endpoint URL:** `https://your-site.pages.dev/save`
+   - Optionally enable **Remember password for session**
+5. Click the save button in the admin panel
+6. Enter your `SAVE_PASSWORD` when prompted
+7. Your wiki will save to GitHub and auto-deploy!
+
+### Security Best Practices
+
+- ✅ **DO:** Use a strong, unique `SAVE_PASSWORD`
+- ✅ **DO:** Keep environment variables secret
+- ✅ **DO:** Use GitHub token with minimal required scope (`repo` only)
+- ✅ **DO:** Regularly rotate your GitHub token and save password
+- ❌ **DON'T:** Commit environment variables to your repository
+- ❌ **DON'T:** Share your Cloudflare dashboard access
+- ❌ **DON'T:** Use the same password for multiple services
+
+### How It Works
+
+1. **Edit** - Make changes to your blog (posts, pages, settings)
+2. **Save** - Click "Save Changes" in the admin panel
+3. **Authenticate** - Enter your save password (stored in Cloudflare environment variable)
+4. **Commit** - Cloudflare Function commits changes to GitHub
+5. **Deploy** - Cloudflare Pages automatically deploys the updated site
+
+**Benefits:**
+- Server-side password authentication (more secure than client-side)
+- Automatic deployment on every save
+- Version control via Git
+- No manual file uploads needed
+- Works from any browser
 
 ## Usage
 
-### Logging In
-
-1. Click the **Login** link in the left sidebar
-2. Enter your admin password
-3. Click **Login**
-4. If successful, you'll see **Admin** and **Logout** links replace the Login link
-
-**Notes:**
-- Login state persists during your browsing session
-- You'll need to log in again after refreshing the page
-- Invalid password attempts show an error message
-
 ### Admin Panel
 
-After logging in, click the **Admin** link to toggle the admin panel. The panel provides quick access to:
+Click the **Admin** link in the left sidebar to toggle the admin panel. The panel provides quick access to:
 
-- **New Post** - Create a new blog post
+- **Create New (Post Type Selector)** - Create different types of posts:
+  - 📝 **Post** - Standard blog post
+  - 📅 **Event** - Event with date, time, location, and RSVP
+  - 🖼️ **Gallery** - Image gallery with grid layout
+  - 🎥 **Video** - Video post with YouTube/Vimeo embed
+  - 💬 **Quote** - Featured quote with author attribution
 - **New Page** - Create a new static page
-- **Control Panel** - Access TiddlyWiki settings
-- **Save Changes** - Download updated wiki file
+- **Control Panel** - Access TiddlyWiki settings (including Cloudflare saver and theme configuration)
+- **Save Changes** - Save to GitHub via Cloudflare (prompts for password)
 - **Advanced Search** - Search all tiddlers
+
+**Note:** The admin panel is always accessible - password authentication happens when you save, not when you access the panel.
 
 ### Creating Blog Posts
 
-1. Log in and click **Admin** in the sidebar
+1. Click **Admin** in the sidebar
 2. Click **New Post** in the admin panel
 3. Add the following fields to your tiddler:
    - **Title**: Your post title
    - **Tags**: `Post` (required), plus any category tags (e.g., `News`, `Events`, `History`)
    - **Author**: Author name (e.g., `Sarah Johnson`)
-   - **Date**: Date in YYYYMMDD format (e.g., `20251115`)
+   - **Date**: Date in YYYYMMDD format (e.g., `20251118`)
    - **Excerpt**: Brief summary (optional but recommended)
 4. Write your content using TiddlyWiki markup
-5. Save the tiddler
-6. Click **Save Changes** in the admin panel to persist your work
+5. Save the tiddler (checkmark button)
+6. Click **Save Changes** in the admin panel
+7. Enter your Cloudflare save password when prompted
+8. Your changes are committed to GitHub and auto-deployed!
+
+### Creating Custom Post Types
+
+The plugin includes specialized templates for different content types:
+
+**Event Posts** (📅 Event button):
+1. Click the Event button in the admin panel
+2. Tags `Post Event` are automatically added
+3. Add custom fields:
+   - **event-date**: Date in YYYY-MM-DD format (e.g., `2025-08-15`)
+   - **event-time**: Time range (e.g., `6:00 PM - 10:00 PM`)
+   - **event-location**: Venue/location name
+   - **event-status**: `upcoming`, `past`, or `cancelled`
+   - **event-rsvp-link**: URL for RSVP/registration
+4. Write event description in the main text area
+5. Save tiddler - displays with event badge and formatted details
+
+**Gallery Posts** (🖼️ Gallery button):
+1. Click the Gallery button in the admin panel
+2. Tags `Post Gallery` are automatically added
+3. Add the **gallery-images** field with comma-separated image URLs:
+   - Example: `https://example.com/img1.jpg, https://example.com/img2.jpg`
+4. Optionally tag image tiddlers to include them in the gallery
+5. Save tiddler - displays in responsive grid layout with hover effects
+
+**Video Posts** (🎥 Video button):
+1. Click the Video button in the admin panel
+2. Tags `Post Video` are automatically added
+3. Add the **video-url** field with YouTube or Vimeo URL
+4. Optionally add **video-transcript** field for accessibility
+5. Write commentary/description in the main text area
+6. Save tiddler - video auto-embeds in responsive 16:9 container
+
+**Quote Posts** (💬 Quote button):
+1. Click the Quote button in the admin panel
+2. Tags `Post Quote` are automatically added
+3. Add custom fields:
+   - **quote-text**: The quotation itself
+   - **quote-author**: Author name
+   - **quote-source**: Book, speech, or source attribution
+4. Optionally add commentary in the main text area
+5. Save tiddler - displays with large centered quote and decorative formatting
 
 ### Creating Featured Posts
 
@@ -187,7 +351,7 @@ To add a post to the "Favorite Articles" sidebar:
 
 ### Creating Static Pages
 
-1. Log in and click **New Page** in the admin panel
+1. Click **Admin** in the sidebar, then click **New Page** in the admin panel
 2. Add the following fields:
    - **Title**: Page name (e.g., `About`, `Contact`)
    - **Tags**: `Page` (required)
@@ -209,13 +373,112 @@ To save a post as a draft (not visible on the site):
 2. Remove `Draft` from the tags
 3. Save the tiddler
 
-### Logging Out
+### Using Search
 
-1. Click the **Logout** link in the sidebar
-2. Admin panel will hide and Login link will reappear
-3. Remember to save any changes before logging out
+The plugin includes powerful search capabilities accessible from two locations:
+
+**Quick Search (Sidebar)**:
+1. Click the **Search** tab in the left sidebar
+2. Type your search query in the input box
+3. See instant results (top 5 matches) as you type
+4. View result count and metadata
+5. Click category tags to filter by topic
+6. Click **View All Results →** for advanced search
+
+**Advanced Search Page**:
+1. Navigate to the Advanced Search page (link in search sidebar)
+2. Enter search terms in the large search box
+3. Use filters to narrow results:
+   - **Post Type**: Filter by Standard Post, Event, Gallery, Video, Quote, or Page
+   - **Category**: Select from available category tags
+   - **Author**: Filter by post author
+4. View detailed result cards with:
+   - Post type badges (color-coded)
+   - Publication date and author
+   - Excerpt or preview text
+   - Category tags
+5. Click **Clear** button to reset all filters
+
+**Search Tips**:
+- Search matches both titles and full text content
+- Draft posts are excluded from results
+- Combine filters for precise results
+- Search is case-insensitive
+- Use category filters to explore topics
+
+### Setting Up Analytics
+
+Track visitor statistics with privacy-friendly or traditional analytics services:
+
+**Supported Providers**:
+- **Plausible Analytics** (Recommended) - Privacy-friendly, cookieless, GDPR compliant
+- **Simple Analytics** - Privacy-first alternative, no cookies
+- **Google Analytics (GA4)** - Comprehensive analytics with advanced features
+- **Custom Analytics** - Use any provider with custom script injection
+
+**Configuration Steps**:
+
+1. Navigate to **Control Panel → Settings → Analytics**
+2. Check **Enable analytics tracking**
+3. Select your analytics provider:
+
+**For Plausible Analytics** (Recommended):
+- Select "Plausible Analytics"
+- Enter your domain (e.g., `myblog.com`)
+- Sign up at [plausible.io](https://plausible.io) if you haven't already
+- Add your site in Plausible dashboard
+- Save your wiki
+
+**For Simple Analytics**:
+- Select "Simple Analytics"
+- Sign up at [simpleanalytics.com](https://simpleanalytics.com)
+- Add your site in Simple Analytics dashboard
+- Save your wiki - no additional configuration needed
+
+**For Google Analytics (GA4)**:
+- Select "Google Analytics (GA4)"
+- Enter your Measurement ID (format: G-XXXXXXXXXX)
+- Find your ID in Google Analytics → Admin → Data Streams
+- Save your wiki
+- Consider adding cookie consent banner if required by law
+
+**For Custom Analytics**:
+- Select "Custom Analytics Script"
+- Paste your complete HTML/JavaScript code (including `<script>` tags)
+- Save your wiki
+
+4. After saving, verify analytics is working:
+   - Open browser DevTools (F12)
+   - Go to Network tab
+   - Reload page
+   - Look for analytics script loading
+   - Check provider dashboard for data (may take a few minutes)
+
+**Privacy Considerations**:
+- Plausible and Simple Analytics are privacy-friendly by default (no cookies, GDPR/CCPA compliant)
+- Google Analytics may require cookie consent banners in some jurisdictions (EU, California)
+- Always add a Privacy Policy page explaining your analytics use
+- Respect "Do Not Track" signals when possible
+- Consider using privacy-friendly alternatives to avoid cookie consent requirements
 
 ## Customization
+
+### Choose a Theme
+
+The plugin includes 5 professionally designed themes:
+
+1. **Historical Society** (Default) - Traditional serif fonts, navy/burgundy palette, perfect for heritage organizations
+2. **Modern Minimalist** - Clean sans-serif, high contrast black/white with blue accents, ideal for contemporary blogs
+3. **Dark Mode** - Eye-friendly dark backgrounds with purple/teal accents, great for tech blogs
+4. **Vibrant Creative** - Bold orange/pink/yellow palette with playful design, perfect for creative portfolios
+5. **Professional Business** - Corporate blue/gray scheme with refined styling, suited for business sites
+
+**To change themes:**
+1. Click **Admin** in sidebar → **Control Panel** → **Appearance** tab
+2. Scroll to "Theme Selection" section
+3. Select your preferred theme from the radio buttons
+4. Theme applies immediately - no save or refresh needed
+5. Preview color palette swatches before selecting
 
 ### Change Site Title and Subtitle
 
@@ -229,22 +492,33 @@ Edit `$:/plugins/collaborative-blog/Navigation` to change menu links. The naviga
 - Custom menu links
 - Recently Updated section (5 most recent posts)
 - Favorite Articles section (posts tagged "Favorite")
-- Login/Admin/Logout links
+- Admin panel toggle link
 
-### Modify Color Scheme
+### Modify Color Scheme and Create Custom Themes
 
-Edit `$:/plugins/collaborative-blog/styles` to customize:
-- Colors (backgrounds, text, links, accents)
-- Fonts (typefaces, sizes, weights)
-- Layout (spacing, widths, breakpoints)
-- Admin panel appearance
-- Login modal styling
+The plugin uses CSS custom properties (variables) for easy theme customization:
 
-**Key CSS variables to modify:**
+**Quick customization** - Edit `$:/plugins/collaborative-blog/theme-controller` to modify existing themes or create new ones:
+
+**Available CSS variables** (40+ customizable properties):
+- **Colors**: `--cb-primary`, `--cb-accent`, `--cb-bg-page`, `--cb-text-body`, `--cb-border-light`
+- **Typography**: `--cb-font-serif`, `--cb-font-sans`, `--cb-font-mono`, `--cb-font-body`, `--cb-font-heading`
+- **Shadows**: `--cb-shadow-sm`, `--cb-shadow-md`, `--cb-shadow-lg`, `--cb-shadow-xl`
+- **Spacing**: `--cb-radius-sm`, `--cb-radius-md`, `--cb-radius-lg`
+
+**To create a custom theme:**
+1. Edit `$:/plugins/collaborative-blog/theme-controller`
+2. Copy one of the existing theme blocks (e.g., `<$list filter="[<selectedTheme>match[modern]]">`)
+3. Change the filter to your custom theme name (e.g., `match[mytheme]`)
+4. Modify CSS variable values to your preferences
+5. Edit `$:/plugins/collaborative-blog/theme-switcher` to add radio button for your theme
+6. Save both tiddlers
+
+**Advanced customization** - Edit `$:/plugins/collaborative-blog/styles` to modify base styles, layout, and components:
 - `.cb-sidebar` - Sidebar background and width
 - `.cb-post` - Post card styling
 - `.cb-admin-panel` - Admin panel appearance
-- `.cb-login-modal` - Login modal styling
+- `.tc-notification-banner` - Save notification styling
 
 ### Change Homepage Layout
 
@@ -366,8 +640,6 @@ To ensure your blog functions correctly, follow these data format requirements:
 | Excerpt not displaying | Excerpt field missing | Add excerpt field for better control |
 | Post not in "Recently Updated" | Modified date not recent | Edit and save to update modified date |
 | Post not in "Favorite Articles" | Missing `Favorite` tag | Add `Favorite` tag to post |
-| Can't edit after login | Wrong password | Check password in `$:/config/collaborative-blog/password` |
-| Admin panel won't appear | Not authenticated | Click Login and enter correct password |
 
 ## File Structure
 
@@ -375,52 +647,82 @@ To ensure your blog functions correctly, follow these data format requirements:
 plugins/collaborative-blog/
 ├── plugin.info                          # Plugin metadata
 └── tiddlers/
-    ├── styles.tid                       # Main stylesheet (includes login modal styles)
-    ├── navigation.tid                   # Left sidebar (with login/recently updated/favorites)
-    ├── admin-panel.tid                  # Admin interface (password-protected)
-    ├── login-modal.tid                  # Password login interface
-    ├── password-config.tid              # Admin password storage (DEFAULT: "changeme")
+    ├── styles.tid                       # Main stylesheet (refactored with CSS variables)
+    ├── navigation.tid                   # Left sidebar with recently updated/favorites
+    ├── admin-panel.tid                  # Admin interface with post type selector
     ├── viewtemplate-systemtiddler.tid   # Hides system tiddlers from story view
-    ├── homepage.tid                     # Homepage template
-    ├── viewtemplate-post.tid            # Blog post layout
+    ├── viewtemplate-post.tid            # Standard blog post layout
     ├── viewtemplate-page.tid            # Static page layout
-    ├── all-posts.tid                    # Post archive page
-    ├── categories.tid                   # Category browser
+    ├── viewtemplate-post-event.tid      # Event post template with date/time/location
+    ├── viewtemplate-post-gallery.tid    # Gallery post template with image grid
+    ├── viewtemplate-post-video.tid      # Video post template with YouTube/Vimeo embed
+    ├── viewtemplate-post-quote.tid      # Quote post template with large centered display
+    ├── theme-controller.tid             # Dynamic CSS variable injection for themes
+    ├── theme-switcher.tid               # Control Panel theme selection UI
+    ├── search-panel.tid                 # Quick search interface in sidebar
+    ├── search-results.tid               # Advanced search page with filters
+    ├── analytics-controller.tid         # Analytics script injection controller
+    ├── analytics-settings.tid           # Control Panel analytics configuration UI
     ├── readme.tid                       # Plugin documentation
-    ├── about.tid                        # Example About page
-    ├── contact.tid                      # Example Contact page
-    ├── post1.tid                        # Example blog post (featured)
-    ├── post2.tid                        # Example blog post
-    ├── post3.tid                        # Example blog post
-    ├── post4.tid                        # Example blog post
-    ├── site-title.tid                   # Site title configuration
-    ├── site-subtitle.tid                # Site subtitle configuration
-    └── default-tiddlers.tid             # Default page on load
+    ├── cloudflare-saver.js              # Main save mechanism (module-type: saver)
+    ├── cloudflare-startup.js            # Startup initialization
+    ├── cloudflare-test-action.js        # Connection test widget
+    ├── cloudflare-clear-password-action.js  # Password clearing widget
+    ├── cloudflare-settings.tid          # Control Panel configuration UI
+    ├── cloudflare-wizard.tid            # Setup wizard
+    ├── notification-saving.tid          # "Saving..." notification
+    ├── notification-success.tid         # "Success!" notification
+    ├── notification-failure.tid         # "Failed" notification
+    ├── homepage.tid                     # Example homepage (not in core plugin)
+    ├── all-posts.tid                    # Example post archive (not in core plugin)
+    ├── categories.tid                   # Example category browser (not in core plugin)
+    ├── about.tid                        # Example About page (not in core plugin)
+    ├── contact.tid                      # Example Contact page (not in core plugin)
+    ├── post1.tid                        # Example blog post (not in core plugin)
+    ├── post2.tid                        # Example blog post (not in core plugin)
+    ├── post3.tid                        # Example blog post (not in core plugin)
+    ├── post4.tid                        # Example blog post (not in core plugin)
+    ├── site-title.tid                   # Example site title (not in core plugin)
+    ├── site-subtitle.tid                # Example site subtitle (not in core plugin)
+    └── default-tiddlers.tid             # Example default page config (not in core plugin)
 
 Distribution Files:
-├── collaborative-blog-plugin.tid        # Single-file plugin (9 core tiddlers, no examples)
-└── collaborative-blog-plugin.json       # Complete package (21 tiddlers with examples)
+├── collaborative-blog-plugin.tid        # Single-file plugin (26 core tiddlers, no examples)
+└── collaborative-blog-plugin.json       # Complete package (34 tiddlers with examples)
 ```
 
 ## Troubleshooting
 
-### Authentication Issues
+### Save and Deployment Issues
 
-**Can't log in / Invalid password error:**
-- Check that you're entering the correct password
-- Verify the password in `$:/config/collaborative-blog/password`
-- Ensure there are no extra spaces or line breaks in the password tiddler
-- Password comparison is case-sensitive
+**Save fails with "Unauthorized" error:**
+- Check that your password matches the `SAVE_PASSWORD` environment variable in Cloudflare
+- Verify the environment variable is properly set in your Cloudflare Pages settings
+- Password is case-sensitive
+- Try clearing the session password: Control Panel → Saving → "Clear Session Password"
 
-**Admin panel not appearing after login:**
+**Save fails with "GitHub API error":**
+- Verify your `GITHUB_TOKEN` has the correct permissions (repo access)
+- Check that `GITHUB_REPO` is in the format `username/repo-name`
+- Ensure `FILE_PATH` points to the correct file (default: `index.html`)
+- Check GitHub API rate limits: https://api.github.com/rate_limit
+
+**Save fails silently or times out:**
+- Check browser console for detailed error messages
+- Verify your Cloudflare Function is deployed correctly
+- Test the connection using Control Panel → Saving → "Test Connection"
+- Ensure your `functions/save.js` file is in the repository root
+
+**Admin panel not appearing:**
 - Click the "Admin" link in the sidebar to toggle panel visibility
-- Check that `$:/state/collaborative-blog/authenticated` contains "yes"
+- Check that `$:/state/admin-panel-visible` is set to "yes"
 - Clear browser cache and try again
 
-**Logged out after refresh:**
-- This is expected behavior - login state is session-based
-- You must log in again after refreshing the page
-- This is a security feature to prevent unauthorized access
+**Changes not appearing after save:**
+- Cloudflare Pages may take 30-60 seconds to rebuild and deploy
+- Check the Cloudflare Pages dashboard for deployment status
+- Hard refresh your browser (Ctrl+Shift+R or Cmd+Shift+R)
+- Verify the commit was made to GitHub
 
 ### Content Display Issues
 
@@ -465,7 +767,7 @@ Distribution Files:
 **Admin panel always visible / won't hide:**
 - Click the "Admin" link to toggle visibility
 - Check `$:/state/admin-panel-visible` tiddler value (should be "yes" when visible, "no" when hidden)
-- Log out and log back in to reset state
+- Try setting the state tiddler to "no" manually to reset
 
 ### Performance Issues
 
@@ -501,41 +803,43 @@ Distribution Files:
 
 ### Workflow 1: Publishing Your First Post
 
-1. **Set up security** - Change default password in `$:/config/collaborative-blog/password`
-2. **Log in** - Click Login link, enter password
-3. **Create post** - Click Admin → New Post
+1. **Set up Cloudflare deployment** - Follow the Cloudflare Setup section to configure saving
+2. **Open admin panel** - Click Admin link in sidebar
+3. **Create post** - Click New Post in admin panel
 4. **Add metadata:**
    - Title: "Welcome to Our Blog"
    - Tags: `Post News`
    - Author: Your name
-   - Date: `20251115` (today's date in YYYYMMDD format)
+   - Date: `20251118` (today's date in YYYYMMDD format)
    - Excerpt: "Welcome to our new blog! We're excited to share our stories."
 5. **Write content** - Use TiddlyWiki markup or plain text
 6. **Save tiddler** - Click the checkmark button
-7. **Save wiki** - Click Save Changes in admin panel
-8. **View result** - Navigate to homepage to see your post
+7. **Save to GitHub** - Click Save Changes in admin panel, enter your password when prompted
+8. **Wait for deployment** - Cloudflare Pages will auto-deploy (30-60 seconds)
+9. **View result** - Navigate to your Cloudflare Pages URL to see your post live
 
 ### Workflow 2: Featuring a Post
 
-1. Log in
-2. Navigate to the post you want to feature
-3. Click the edit button (pencil icon at top of post)
-4. Add `Featured` to the tags field (e.g., change `Post News` to `Post News Featured`)
-5. Save the tiddler
+1. Navigate to the post you want to feature
+2. Click the edit button (pencil icon at top of post)
+3. Add `Featured` to the tags field (e.g., change `Post News` to `Post News Featured`)
+4. Save the tiddler
+5. Click Save Changes in admin panel and enter password
 6. Navigate to homepage to see post in featured section
 7. Remember: Only one post should be featured at a time for best visual impact
 
 ### Workflow 3: Adding a Static Page to Navigation
 
-1. Log in
-2. Create new page via Admin → New Page
+1. Click Admin in sidebar
+2. Create new page via New Page button
 3. Add title (e.g., "Projects") and tag `Page`
-4. Write page content and save
+4. Write page content and save tiddler
 5. Edit `$:/plugins/collaborative-blog/Navigation`
 6. Find the navigation links section
 7. Add a new link: `<$link to="Projects">Projects</$link>`
 8. Save the navigation tiddler
-9. The new link will appear in the left sidebar
+9. Click Save Changes and enter password
+10. The new link will appear in the left sidebar after deployment
 
 ### Workflow 4: Curating Favorite Articles
 
@@ -570,24 +874,25 @@ Distribution Files:
 
 ### Security
 
-13. **Change default password immediately** - Replace "changeme" with a strong password on first use
-14. **Use unique passwords** - Don't reuse passwords from other accounts
-15. **Keep password secure** - Don't share the password or the wiki file publicly
-16. **Regular password changes** - Update your password periodically
-17. **Understand limitations** - Remember this is client-side security suitable for basic protection only
+13. **Use strong passwords** - Set a strong `SAVE_PASSWORD` in Cloudflare environment variables
+14. **Protect your tokens** - Keep your `GITHUB_TOKEN` secure and never commit it to the repository
+15. **Use unique passwords** - Don't reuse passwords from other accounts
+16. **Regular password rotation** - Update your Cloudflare `SAVE_PASSWORD` periodically
+17. **Monitor access** - Check Cloudflare and GitHub logs for unauthorized access attempts
+18. **Environment variables only** - Never hardcode passwords in your `functions/save.js` file
 
 ### Performance
 
-18. **Optimize images** - Compress images before embedding to keep file size manageable
-19. **Archive old content** - For large blogs (100+ posts), consider archiving old content to separate wiki files
-20. **Use excerpts** - Prevents homepage from loading full post content
+19. **Optimize images** - Compress images before embedding to keep file size manageable
+20. **Archive old content** - For large blogs (100+ posts), consider archiving old content to separate wiki files
+21. **Use excerpts** - Prevents homepage from loading full post content
 
 ### Customization
 
-21. **Customize incrementally** - Make small changes and test frequently
-22. **Keep backups before major changes** - Save a copy before modifying core plugin tiddlers
-23. **Document customizations** - Add comments to your custom CSS and templates
-24. **Test on mobile** - Check responsive design on different screen sizes
+22. **Customize incrementally** - Make small changes and test frequently
+23. **Keep backups before major changes** - Save a copy before modifying core plugin tiddlers
+24. **Document customizations** - Add comments to your custom CSS and templates
+25. **Test on mobile** - Check responsive design on different screen sizes
 
 ## Advanced Features
 
@@ -627,15 +932,6 @@ Add social sharing:
 3. Use services like AddThis or ShareThis
 4. Or create custom share links (Twitter, Facebook, LinkedIn)
 
-### Search Functionality
-
-Add search to sidebar:
-
-1. Edit `$:/plugins/collaborative-blog/Navigation`
-2. Add TiddlyWiki's search widget: `<$search />`
-3. Customize search appearance in `styles.tid`
-4. Consider adding advanced search link
-
 ### Custom Categories Page
 
 Create dynamic category browser:
@@ -647,14 +943,11 @@ Create dynamic category browser:
 
 ## Customization Ideas
 
-- Add a search box to the sidebar for easy content discovery
 - Create author profile pages with bios and photos
 - Add social media links to sidebar or footer
 - Implement a newsletter signup form
-- Add image galleries for photo-heavy posts
-- Create custom post templates for different content types (tutorials, announcements, photo essays)
+- Create custom post templates for different content types (tutorials, announcements, book reviews)
 - Add comment functionality using third-party services (Disqus, Commento)
-- Integrate analytics (Google Analytics, Plausible)
 - Add RSS feed for blog syndication
 - Create landing pages for different audiences
 - Implement related posts suggestions
@@ -662,6 +955,8 @@ Create dynamic category browser:
 - Create author archives (all posts by specific author)
 - Add estimated reading time to posts
 - Implement table of contents for long posts
+- Create custom themes using the CSS variable system
+- Add email subscription forms
 
 ## Accessibility Features
 
@@ -683,11 +978,113 @@ To further improve accessibility:
 
 ## Version History
 
+### v2.2.0 (November 2025)
+
+**New Features:**
+
+**Enhanced Search:**
+- **Quick Search Panel** - Sidebar search with instant results (top 5 matches)
+- **Advanced Search Page** - Full-featured search with multiple filters
+- **Post Type Filtering** - Filter by Standard Post, Event, Gallery, Video, Quote, or Page
+- **Category Filtering** - Filter results by category tags
+- **Author Filtering** - Find posts by specific authors
+- **Rich Result Cards** - Detailed cards showing post type badges, metadata, excerpts, and tags
+- **Real-time Results** - Search as you type with instant feedback
+
+**Analytics Integration:**
+- **Plausible Analytics** - Privacy-friendly, cookieless analytics (recommended)
+- **Simple Analytics** - Privacy-first alternative with no cookies
+- **Google Analytics (GA4)** - Optional comprehensive analytics support
+- **Custom Analytics** - Flexible custom script injection for any provider
+- **Control Panel Configuration** - Easy setup in Settings → Analytics
+- **Privacy Guidance** - Built-in privacy notices and compliance recommendations
+
+**Architecture:**
+- Added 4 new core files (2 search + 2 analytics)
+- Core plugin now includes 26 tiddlers (up from 22)
+- Total package size: ~112KB with 34 tiddlers
+- Search uses TiddlyWiki's powerful filter operators
+- Analytics uses dynamic script injection via `$:/tags/RawMarkup`
+
+**Backward Compatibility:**
+- Fully compatible with v2.1.0 and v2.0.0
+- Search adds new sidebar tab (non-breaking)
+- Analytics disabled by default (opt-in)
+- No configuration changes required
+
+### v2.1.0 (November 2025)
+
+**New Features:**
+
+**Theme System:**
+- **5 Professional Themes** - Historical Society (default), Modern Minimalist, Dark Mode, Vibrant Creative, Professional Business
+- **One-Click Switching** - Select themes in Control Panel → Appearance with instant preview
+- **CSS Variable System** - 40+ customizable properties for complete design control
+- **Theme Controller** - Dynamic CSS injection for theme management
+- **Color Palette Previews** - Visual swatches for each theme before selection
+
+**Custom Post Types:**
+- **Event Posts** - Specialized template with date, time, location, status, and RSVP link fields
+- **Gallery Posts** - Responsive image grid layout with hover effects
+- **Video Posts** - YouTube/Vimeo auto-embed with optional transcripts
+- **Quote Posts** - Large centered quotation display with author/source attribution
+- **Post Type Selector** - Color-coded buttons in admin panel (📝 Post, 📅 Event, 🖼️ Gallery, 🎥 Video, 💬 Quote)
+
+**Architecture:**
+- Added 6 new core files (4 post type templates + 2 theme system files)
+- Refactored `styles.tid` to use CSS variables for themability
+- Updated `admin-panel.tid` with post type selector buttons
+- Core plugin now includes 22 tiddlers (up from 16)
+- Total package size: ~91KB with 30 tiddlers
+
+**Backward Compatibility:**
+- Fully compatible with v2.0.0 content
+- Default theme matches v2.0.0 visual design
+- Standard posts continue to work without changes
+- Existing custom styles override theme variables as expected
+
+### v2.0.0 (November 2025)
+
+**BREAKING CHANGES:**
+- Complete Cloudflare deployment integration - requires Cloudflare Pages setup
+- Removed client-side password authentication in favor of server-side auth
+- Removed login/logout UI - admin panel now always accessible
+- Password required only when saving changes (via Cloudflare Function)
+
+**New Features:**
+- **Integrated Cloudflare Saver** - Automatic GitHub saves built into plugin
+- **Server-side authentication** - Password validation via Cloudflare environment variables
+- **Auto-deployment** - Cloudflare Pages deploys on every save
+- **Save notifications** - Visual feedback for save status (saving, success, failure)
+- **Save statistics** - Track successful and failed saves
+- **Connection testing** - Test Cloudflare endpoint from Control Panel
+- **Session password memory** - Optional password caching during browser session
+- **Setup wizard** - Guided Cloudflare configuration
+
+**Removed:**
+- `login-modal.tid` - No longer needed with server-side auth
+- `password-config.tid` - Replaced by Cloudflare environment variables
+- Login/logout sidebar links - Admin panel now toggle-based
+
+**Updated:**
+- `navigation.tid` - Simplified to admin toggle only
+- `admin-panel.tid` - Removed authentication checks
+- All documentation updated for Cloudflare deployment workflow
+
+**Added Files:**
+- `cloudflare-saver.js` - Main save mechanism (module-type: saver)
+- `cloudflare-startup.js` - Module initialization
+- `cloudflare-test-action.js` - Connection test widget
+- `cloudflare-clear-password-action.js` - Password clearing widget
+- `cloudflare-settings.tid` - Control Panel configuration UI
+- `cloudflare-wizard.tid` - Setup wizard
+- `notification-saving.tid`, `notification-success.tid`, `notification-failure.tid`
+
 ### v1.0.0 (November 2025)
 
-**Features:**
-- Initial release with blog-style interface
-- Password-protected admin panel
+**Initial Release:**
+- Blog-style interface with WordPress-like feel
+- Client-side password authentication
 - Login/logout system
 - Featured posts on homepage
 - Favorite articles sidebar
@@ -696,21 +1093,8 @@ To further improve accessibility:
 - Categories and tags
 - Static pages support
 - Responsive design
+- Admin panel with password protection
 - Comprehensive documentation
-
-**Accessibility:**
-- ARIA labels for all interactive elements
-- Keyboard navigation support
-- Semantic HTML structure
-
-**Bug Fixes:**
-- Fixed admin panel toggle using TiddlyWiki state management instead of JavaScript
-- Fixed system tiddlers (like ControlPanel) appearing in story view
-
-**Security:**
-- Client-side password authentication
-- Session-based login state
-- Plain-text password storage (see Security Limitations)
 
 ## Support
 
@@ -736,11 +1120,11 @@ This plugin is released under the same license as TiddlyWiki (BSD 3-Clause).
 
 Built with [TiddlyWiki](https://tiddlywiki.com/) by Jeremy Ruston and the TiddlyWiki community.
 
-Password authentication inspired by the [Cloudflare saver plugin](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver).
+Cloudflare Functions integration enables seamless GitHub saves and automatic deployment.
 
 ---
 
-**Version**: 1.0.0
+**Version**: 2.2.0
 **Author**: BenSweaterVest
 **Last Updated**: November 2025
 **Repository**: https://github.com/BenSweaterVest/TiddlySite

@@ -15,24 +15,49 @@ type: text/vnd.tiddlywiki
   - Fixed position at top of page when active
 
   State management: Uses $:/state/admin-panel-visible tiddler to track visibility
-  Authentication: Only renders if user is authenticated ($:/state/collaborative-blog/authenticated = "yes")
+  Authentication: Handled by Cloudflare saver when saving changes
 -->
 
-<!-- Only render admin panel if authenticated AND panel visibility is "yes" -->
-<$list filter="[[$:/state/collaborative-blog/authenticated]get[text]match[yes]]" variable="null">
-  <$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]" variable="null">
+<!-- Only render admin panel if panel visibility is "yes" -->
+<$list filter="[[$:/state/admin-panel-visible]get[text]match[yes]]" variable="null">
 <div class="cb-admin-panel active">
   <h3>Admin Panel</h3>
   <div class="cb-admin-actions">
 
-    <!-- New Post Button
-         Creates a new tiddler with the "Post" tag pre-applied
-         ARIA: Screen readers will announce "Create new blog post"
-    -->
-    <$button class="cb-admin-button" aria-label="Create new blog post">
-      {{$:/core/images/new-button}} New Post
-      <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
-    </$button>
+    <!-- New Post Type Selector -->
+    <div class="cb-post-type-group">
+      <div class="cb-post-type-label">Create New:</div>
+
+      <!-- Standard Post -->
+      <$button class="cb-admin-button cb-post-type-button" aria-label="Create standard blog post">
+        📝 Post
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post" />
+      </$button>
+
+      <!-- Event Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-event-button" aria-label="Create event post">
+        📅 Event
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Event" event-status="upcoming" />
+      </$button>
+
+      <!-- Gallery Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-gallery-button" aria-label="Create gallery post">
+        🖼️ Gallery
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Gallery" />
+      </$button>
+
+      <!-- Video Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-video-button" aria-label="Create video post">
+        🎥 Video
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Video" />
+      </$button>
+
+      <!-- Quote Post -->
+      <$button class="cb-admin-button cb-post-type-button cb-quote-button" aria-label="Create quote post">
+        💬 Quote
+        <$action-sendmessage $message="tm-new-tiddler" tags="Post Quote" />
+      </$button>
+    </div>
 
     <!-- New Page Button
          Creates a new tiddler with the "Page" tag pre-applied
@@ -71,5 +96,4 @@ type: text/vnd.tiddlywiki
     </$button>
   </div>
 </div>
-  </$list>
 </$list>
