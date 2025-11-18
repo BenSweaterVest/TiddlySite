@@ -55,6 +55,18 @@ Add `Draft` to tags to hide from public view
 
 For full documentation, see the README.md file in the repository.
 
+!! Automatic Saving & Deployment
+
+This plugin pairs perfectly with the [[TiddlyWiki Cloudflare Saver|https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver]] for automatic GitHub saving and deployment.
+
+''Together they provide:''
+
+* This plugin → Beautiful blog UI and editing experience
+* Cloudflare Saver → Automatic save and deployment mechanism
+* Result → Edit in browser → Auto-save to GitHub → Instant deployment
+
+Learn more: https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver
+
 !! Support
 
 * GitHub: https://github.com/BenSweaterVest/TiddlySite

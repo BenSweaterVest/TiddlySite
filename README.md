@@ -2,6 +2,8 @@
 
 A WordPress-style collaborative blog plugin for TiddlyWiki, designed to create a clean, professional website with a non-wiki feel. Perfect for historical societies, nonprofits, and small organizations.
 
+**Pairs perfectly with the [TiddlyWiki Cloudflare Saver](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver)** for automatic GitHub saving and deployment.
+
 ## Features
 
 ### Content Management
@@ -126,6 +128,44 @@ The plugin ships with a default password of `changeme`. **You MUST change this i
 - Hosting on platforms with built-in access control (e.g., TiddlyHost, TiddlySpot)
 - Using the [Cloudflare saver](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver) for server-side password protection
 - Implementing full encryption solutions for sensitive data
+
+## Deployment & Automatic Saving
+
+### Hosting Your Blog
+
+This plugin works with any TiddlyWiki hosting method:
+- **Single HTML file** - Download and open locally, or host on any web server
+- **GitHub Pages** - Host directly from your GitHub repository
+- **Cloudflare Pages** - Fast, global CDN hosting (recommended for public sites)
+- **Node.js** - Run TiddlyWiki as a server application
+- **TiddlyHost / TiddlySpot** - Managed TiddlyWiki hosting services
+
+### Automatic Saving with Cloudflare
+
+**Want automatic saves to GitHub?** This plugin pairs perfectly with the [TiddlyWiki Cloudflare Saver](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver).
+
+The **Cloudflare Saver plugin** provides:
+- ✅ Automatic saving to GitHub via Cloudflare Functions
+- ✅ Server-side password authentication
+- ✅ Real-time deployment on every save
+- ✅ Save statistics and status monitoring
+- ✅ Conflict resolution and auto-retry logic
+
+**Together, these plugins provide a complete blogging solution:**
+- **Collaborative Blog Plugin** (this plugin) → Provides the beautiful blog UI and editing experience
+- **Cloudflare Saver Plugin** → Handles automatic saving and deployment
+
+**Setup workflow:**
+1. Install this collaborative blog plugin (gives you the blog UI)
+2. Install the [Cloudflare Saver plugin](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver) (enables auto-save)
+3. Host on Cloudflare Pages (free hosting with auto-deployment)
+4. Edit your blog in the browser → Automatic saves to GitHub → Instant deployment
+
+**Note:** The two plugins use different passwords:
+- **Blog password** (this plugin) - Controls who can access editing features in the UI
+- **Save password** (Cloudflare saver) - Authenticates saves to your GitHub repository
+
+See the [Cloudflare Saver documentation](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver) for complete setup instructions.
 
 ## Usage
 
@@ -711,6 +751,25 @@ To further improve accessibility:
 - Client-side password authentication
 - Session-based login state
 - Plain-text password storage (see Security Limitations)
+
+## Related Projects
+
+### TiddlyWiki Cloudflare Saver
+
+This plugin pairs perfectly with the **[TiddlyWiki Cloudflare Saver](https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver)** for a complete blogging and deployment solution.
+
+**What it does:**
+- Automatically saves your TiddlyWiki to GitHub via Cloudflare Functions
+- Provides server-side password authentication for saves
+- Enables real-time deployment on every save
+- Tracks save statistics and connection status
+
+**Why use both plugins together:**
+- This plugin provides the beautiful blog interface and editing experience
+- The Cloudflare Saver provides the automatic save and deployment mechanism
+- Together they create a seamless workflow: Edit → Auto-save → Auto-deploy
+
+**Learn more:** https://github.com/BenSweaterVest/tiddlywiki-cloudflare-saver
 
 ## Support
 
