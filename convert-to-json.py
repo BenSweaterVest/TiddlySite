@@ -28,8 +28,39 @@ def parse_tid_file(filepath):
 
     return tiddler
 
+def parse_js_file(filepath):
+    """Parse a .js file and return a dictionary of its contents."""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Extract metadata from JS comment block
+    tiddler = {}
+    lines = content.split('\n')
+    in_metadata = False
+    text_lines = []
+
+    for line in lines:
+        if line.strip() == '/*\\':
+            in_metadata = True
+            continue
+        elif line.strip() == '\\*/':
+            in_metadata = False
+            continue
+
+        if in_metadata:
+            if ': ' in line:
+                key, value = line.split(': ', 1)
+                tiddler[key.strip()] = value.strip()
+        else:
+            text_lines.append(line)
+
+    # Everything outside the metadata block is the text
+    tiddler['text'] = '\n'.join(text_lines)
+
+    return tiddler
+
 def convert_plugin_to_json():
-    """Convert all .tid files in the plugin to a single JSON file."""
+    """Convert all .tid and .js files in the plugin to a single JSON file."""
     tiddlers = {}
 
     # Find all .tid files
@@ -38,6 +69,14 @@ def convert_plugin_to_json():
     for tid_file in sorted(tid_files):
         tiddler = parse_tid_file(tid_file)
         title = tiddler.get('title', os.path.basename(tid_file).replace('.tid', ''))
+        tiddlers[title] = tiddler
+
+    # Find all .js files
+    js_files = glob.glob('plugins/collaborative-blog/tiddlers/*.js')
+
+    for js_file in sorted(js_files):
+        tiddler = parse_js_file(js_file)
+        title = tiddler.get('title', os.path.basename(js_file).replace('.js', ''))
         tiddlers[title] = tiddler
 
     # Create the final JSON structure
