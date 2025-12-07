@@ -1,0 +1,15 @@
+# Build outputs
+collaborative-blog-plugin.tid
+collaborative-blog-plugin.json
+
+# TiddlyWiki files
+empty.html
+
+# Node modules
+node_modules/
+
+# Archive
+To Delete/
+
+# Git
+.git/

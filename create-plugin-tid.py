@@ -86,6 +86,16 @@ core_tiddlers = [
     # Analytics integration
     'plugins/collaborative-blog/tiddlers/analytics-controller.tid',
     'plugins/collaborative-blog/tiddlers/analytics-settings.tid',
+    # SEO features
+    'plugins/collaborative-blog/tiddlers/rss-feed.tid',
+    'plugins/collaborative-blog/tiddlers/rss-config.tid',
+    'plugins/collaborative-blog/tiddlers/sitemap.tid',
+    'plugins/collaborative-blog/tiddlers/social-meta-tags.tid',
+    'plugins/collaborative-blog/tiddlers/seo-config-og-image.tid',
+    'plugins/collaborative-blog/tiddlers/seo-config-twitter.tid',
+    # Content features
+    'plugins/collaborative-blog/tiddlers/reading-time-macro.tid',
+    'plugins/collaborative-blog/tiddlers/table-of-contents-macro.tid',
     # Cloudflare saver JavaScript modules
     'plugins/collaborative-blog/tiddlers/cloudflare-saver.js',
     'plugins/collaborative-blog/tiddlers/cloudflare-startup.js',
