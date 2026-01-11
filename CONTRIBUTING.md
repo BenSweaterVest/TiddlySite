@@ -78,7 +78,8 @@ TiddlySite/
 ├── README.md                       # User documentation
 ├── CHANGELOG.md                    # Version history
 ├── CONTRIBUTING.md                 # This file
-└── RELEASE_NOTES_*.md              # Detailed release notes
+├── SECURITY.md                     # Security guidelines
+└── ACCESSIBILITY.md                # Accessibility documentation
 ```
 
 ## Development Workflow
@@ -426,7 +427,7 @@ We use [Semantic Versioning](https://semver.org/):
    - Move [Unreleased] changes to new version section
    - Add release date
 
-3. **Create release notes** (RELEASE_NOTES_vX.X.X.md)
+3. **Update documentation** as needed
 
 4. **Build packages**:
    ```bash

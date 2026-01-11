@@ -1,0 +1,60 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test Build Process
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run tests
+        run: python test_build.py
+
+      - name: Check output files exist
+        run: |
+          test -f collaborative-blog-plugin.tid || exit 1
+          test -f collaborative-blog-plugin.json || exit 1
+          echo "Build artifacts verified"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-builds
+          path: |
+            collaborative-blog-plugin.tid
+            collaborative-blog-plugin.json
+          retention-days: 30
+
+  lint:
+    name: Lint JavaScript
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ESLint
+        run: npm install --no-save eslint
+
+      - name: Lint JavaScript modules
+        run: npx eslint plugins/collaborative-blog/tiddlers/*.js
+        continue-on-error: true

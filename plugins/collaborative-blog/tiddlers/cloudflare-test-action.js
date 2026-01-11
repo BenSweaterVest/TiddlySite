@@ -89,7 +89,7 @@ Action widget to test Cloudflare save connection
           return response.json().then((data) => {
             self.showNotification('$:/plugins/collaborative-blog/notifications/success');
             self.showAlert(
-              `✅ Test successful!\n\nConnection to Cloudflare Function verified.\nCommit SHA: ${data.commit || 'N/A'}\n\nYour Cloudflare Saver is configured correctly.`,
+              `Test successful\n\nConnection to Cloudflare Function verified.\nCommit SHA: ${data.commit || 'N/A'}\n\nYour Cloudflare Saver is configured correctly.`,
               'success'
             );
           });
@@ -101,13 +101,13 @@ Action widget to test Cloudflare save connection
               if (errorData.error) {
                 errorMsg = errorData.error;
               }
-            } catch(e) {
+            } catch (e) {
               // Use status text
             }
 
             self.showNotification('$:/plugins/collaborative-blog/notifications/failure');
             self.showAlert(
-              `❌ Test failed!\n\nError: ${errorMsg}\n\nPlease check:\n• Your endpoint URL is correct\n• Your password matches SAVE_PASSWORD in Cloudflare\n• Environment variables are configured\n• The Cloudflare Function is deployed`,
+              `Test failed\n\nError: ${errorMsg}\n\nPlease check:\n• Endpoint URL is correct\n• Password matches SAVE_PASSWORD in Cloudflare\n• Environment variables are configured\n• Cloudflare Function is deployed`,
               'error'
             );
           });
@@ -125,7 +125,7 @@ Action widget to test Cloudflare save connection
 
         self.showNotification('$:/plugins/collaborative-blog/notifications/failure');
         self.showAlert(
-          `❌ Test failed!\n\nError: ${errorMsg}\n\nPlease check:\n• Your internet connection\n• The endpoint URL is accessible\n• CORS is configured to allow your origin\n• The Cloudflare Function is deployed`,
+          `Test failed\n\nError: ${errorMsg}\n\nPlease check:\n• Internet connection\n• Endpoint URL is accessible\n• CORS is configured to allow your origin\n• Cloudflare Function is deployed`,
           'error'
         );
       });
@@ -134,32 +134,25 @@ Action widget to test Cloudflare save connection
   };
 
   TestCloudflareAction.prototype.showAlert = function(message, type) {
-    // Use TiddlyWiki's modal dialog
     const tempTiddler = '$:/temp/cloudflare-test-result';
 
-    // Format message with proper TiddlyWiki markup
-    let icon = '';
     let title = 'Cloudflare Save Test';
     let color = '';
 
     if (type === 'success') {
-      icon = '✅';
       title = 'Test Successful';
       color = 'green';
     } else if (type === 'error') {
-      icon = '❌';
       title = 'Test Failed';
       color = 'red';
     } else if (type === 'info') {
-      icon = 'ℹ️';
       title = 'Test Cancelled';
       color = 'blue';
     }
 
-    // Create formatted content using TiddlyWiki markup
     const formattedText = `<div style="background-color: ${color === 'green' ? '#d4edda' : color === 'red' ? '#f8d7da' : '#d1ecf1'}; border: 1px solid ${color === 'green' ? '#c3e6cb' : color === 'red' ? '#f5c6cb' : '#bee5eb'}; border-radius: 4px; padding: 15px; margin: 10px 0;">
 
-!! ${icon} ${title}
+!! ${title}
 
 ${message.split('\n').map(line => line.trim()).filter(line => line).join('\n\n')}
 
@@ -175,9 +168,6 @@ ${message.split('\n').map(line => line.trim()).filter(line => line).join('\n\n')
     $tw.modal.display(tempTiddler, {
       downloadLink: null
     });
-
-    // Don't auto-delete - let the user close the modal
-    // The modal will be recreated next time anyway
   };
 
   TestCloudflareAction.prototype.showNotification = function(tiddlerTitle) {

@@ -1,0 +1,39 @@
+{
+  "name": "tiddlysite",
+  "version": "2.2.0",
+  "description": "TiddlyWiki Collaborative Blog Plugin - WordPress-style blogging with automatic GitHub deployment",
+  "main": "index.js",
+  "scripts": {
+    "test": "python test_build.py",
+    "build": "python create-plugin-tid.py && python convert-to-json.py",
+    "build:tid": "python create-plugin-tid.py",
+    "build:json": "python convert-to-json.py",
+    "lint": "eslint plugins/collaborative-blog/tiddlers/*.js",
+    "lint:fix": "eslint --fix plugins/collaborative-blog/tiddlers/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenSweaterVest/TiddlySite.git"
+  },
+  "keywords": [
+    "tiddlywiki",
+    "blog",
+    "cloudflare",
+    "github",
+    "cms",
+    "wiki"
+  ],
+  "author": "BenSweaterVest",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/BenSweaterVest/TiddlySite/issues"
+  },
+  "homepage": "https://github.com/BenSweaterVest/TiddlySite#readme",
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.7"
+  }
+}

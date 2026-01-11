@@ -16,9 +16,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Run tests
+        run: python test_build.py
 
       - name: Extract version from tag
         id: get_version
@@ -45,7 +48,7 @@ jobs:
             echo "Error: plugin.info version ($PLUGIN_VERSION) does not match tag version ($TAG_VERSION)"
             exit 1
           fi
-          echo "✓ Version verification passed"
+          echo "Version verification passed"
 
       - name: Build core plugin package (.tid)
         run: |
@@ -68,7 +71,7 @@ jobs:
             echo "Error: Expected at least 4 JavaScript modules, found $JS_COUNT"
             exit 1
           fi
-          echo "✓ Package verification passed"
+          echo "Package verification passed"
 
       - name: Generate checksums
         run: |
@@ -76,27 +79,17 @@ jobs:
           sha256sum collaborative-blog-plugin.json >> checksums.txt
           cat checksums.txt
 
-      - name: Create release notes from RELEASE_NOTES
+      - name: Create release notes
         id: release_notes
         run: |
-          VERSION="${{ steps.get_version.outputs.version }}"
-          RELEASE_FILE="RELEASE_NOTES_v${VERSION}.md"
-
-          if [ -f "$RELEASE_FILE" ]; then
-            echo "Using release notes from $RELEASE_FILE"
-            echo "notes_file=$RELEASE_FILE" >> $GITHUB_OUTPUT
-          else
-            echo "Release notes file not found: $RELEASE_FILE"
-            echo "Creating default release notes..."
-            cat > temp_release_notes.md << 'EOF'
-          # Release ${{ steps.get_version.outputs.tag_name }}
-
+          echo "Creating release notes..."
+          cat > release_notes.md << 'EOF'
           ## Installation
 
           Download one of the plugin packages below and import it into your TiddlyWiki:
 
           - **collaborative-blog-plugin.json** - Complete package with example content (recommended for new users)
-          - **collaborative-blog-plugin.tid** - Core plugin only, no examples (recommended for existing wikis)
+          - **collaborative-blog-plugin.tid** - Core plugin only (recommended for existing wikis)
 
           ## Changes
 
@@ -105,9 +98,12 @@ jobs:
           ## Documentation
 
           Full documentation available in [README.md](https://github.com/BenSweaterVest/TiddlySite/blob/main/README.md)
+
+          ## Verification
+
+          SHA256 checksums are provided in checksums.txt
           EOF
-            echo "notes_file=temp_release_notes.md" >> $GITHUB_OUTPUT
-          fi
+          echo "notes_file=release_notes.md" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1

@@ -1,50 +1,55 @@
 # TiddlyWiki Collaborative Blog Plugin
 
-A complete blogging solution for TiddlyWiki with WordPress-style UI and automatic GitHub saving via Cloudflare Functions. Designed to create a clean, professional website with a non-wiki feel. Perfect for historical societies, nonprofits, and small organizations.
+A complete blogging solution for TiddlyWiki with WordPress-style UI and automatic GitHub saving via Cloudflare Functions. Designed to create a clean, professional website with a non-wiki feel. Suitable for historical societies, nonprofits, and small organizations.
 
-**All-in-one package:** Beautiful blog theme + automatic save/deploy mechanism integrated into a single plugin.
+All-in-one package: Beautiful blog theme + automatic save/deploy mechanism integrated into a single plugin.
 
 ## Features
 
 ### Content Management
-- **Clean, blog-style interface** - Hides typical wiki elements for a professional look
-- **Multiple authors** - Built-in support for author attribution on posts
-- **Custom post types** - Specialized templates for Events, Galleries, Videos, and Quotes
-- **Featured posts** - Highlight important content on the homepage
-- **Favorite articles** - Curate a list of your best or most important posts
-- **Recently updated** - Automatic sidebar showing the 5 most recently modified posts
-- **Categories/tags** - Organize content by topic
-- **Post archive** - Automatic table of contents for all posts
-- **Static pages** - Create About, Contact, and other non-blog pages
-- **Draft management** - Save posts as drafts before publishing
+
+- Clean, blog-style interface that hides typical wiki elements for a professional look
+- Multiple author support with attribution on posts
+- Custom post types with specialized templates for Events, Galleries, Videos, and Quotes
+- Featured posts to highlight important content on the homepage
+- Favorite articles list to curate your best or most important posts
+- Recently updated sidebar showing the 5 most recently modified posts
+- Categories and tags to organize content by topic
+- Automatic post archive with table of contents
+- Static pages for About, Contact, and other non-blog content
+- Draft management to save posts before publishing
 
 ### User Interface
-- **Fixed left sidebar navigation** - Always-visible menu with customizable links
-- **Enhanced search** - Quick search in sidebar + advanced search page with filters (post type, category, author)
-- **Responsive design** - Works on desktop and mobile devices
-- **5 professional themes** - Historical, Modern, Dark, Vibrant, and Professional themes with one-click switching
-- **Theme customization** - Complete CSS variable system for full design control
-- **System tiddler hiding** - Control panel and other system tiddlers hidden from story view
+
+- Fixed left sidebar navigation with always-visible menu and customizable links
+- Enhanced search with quick search in sidebar and advanced search page with filters (post type, category, author)
+- Responsive design that works on desktop and mobile devices
+- 5 professional themes (Historical, Modern, Dark, Vibrant, and Professional) with one-click switching
+- Complete CSS variable system for full design control
+- System tiddler hiding to keep control panel and other system tiddlers out of story view
 
 ### Automatic Saving & Deployment
-- **Cloudflare Functions integration** - Automatic GitHub saves built-in
-- **Password-protected saves** - Server-side authentication via environment variables
-- **Real-time deployment** - Cloudflare Pages auto-deploys on every save
-- **Save notifications** - Visual feedback for save status (saving, success, failure)
-- **Save statistics** - Track successful and failed saves
-- **Session password memory** - Optional password caching during session
-- **Admin panel** - Quick access to editing features
+
+- Cloudflare Functions integration for automatic GitHub saves
+- Password-protected saves with server-side authentication via environment variables
+- Real-time deployment with Cloudflare Pages auto-deploying on every save
+- Save notifications providing visual feedback for save status (saving, success, failure)
+- Save statistics to track successful and failed saves
+- Session password memory with optional password caching during session
+- Admin panel for quick access to editing features
 
 ### Analytics & Insights
-- **Privacy-friendly analytics** - Built-in support for Plausible and Simple Analytics (cookieless, GDPR compliant)
-- **Google Analytics support** - Optional GA4 integration for advanced analytics
-- **Custom analytics** - Flexible integration for any analytics provider
-- **Easy configuration** - Enable and configure analytics in Control Panel
+
+- Privacy-friendly analytics with built-in support for Plausible and Simple Analytics (cookieless, GDPR compliant)
+- Google Analytics support with optional GA4 integration for advanced analytics
+- Custom analytics with flexible integration for any analytics provider
+- Configuration through Control Panel
 
 ### Accessibility
-- **ARIA labels** - Screen reader support for all interactive elements
-- **Semantic HTML** - Proper heading hierarchy and document structure
-- **Keyboard navigation** - All features accessible via keyboard
+
+- ARIA labels for screen reader support on all interactive elements
+- Semantic HTML with proper heading hierarchy and document structure
+- Keyboard navigation support for all features
 
 ## Installation
 
@@ -108,31 +113,41 @@ In your repository, create a file at `functions/save.js`:
 export async function onRequest(context) {
   const { request, env } = context;
 
-  // Only allow POST requests
   if (request.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
   }
 
   try {
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return new Response('Invalid content type', { status: 400 });
+    }
+
     const { content, password } = await request.json();
 
-    // Verify password
+    if (!content || !password) {
+      return new Response('Missing required fields', { status: 400 });
+    }
+
     if (password !== env.SAVE_PASSWORD) {
       return new Response('Unauthorized', { status: 401 });
     }
 
-    // GitHub API configuration
     const githubToken = env.GITHUB_TOKEN;
-    const repo = env.GITHUB_REPO; // format: "username/repo-name"
+    const repo = env.GITHUB_REPO;
     const filePath = env.FILE_PATH || 'index.html';
 
-    // Get current file SHA (required for updates)
+    if (!githubToken || !repo) {
+      throw new Error('Server configuration error');
+    }
+
     const getResponse = await fetch(
       `https://api.github.com/repos/${repo}/contents/${filePath}`,
       {
         headers: {
           'Authorization': `Bearer ${githubToken}`,
-          'User-Agent': 'TiddlyWiki-Saver'
+          'User-Agent': 'TiddlyWiki-Saver',
+          'Accept': 'application/vnd.github.v3+json'
         }
       }
     );
@@ -143,7 +158,6 @@ export async function onRequest(context) {
       sha = data.sha;
     }
 
-    // Update file on GitHub
     const updateResponse = await fetch(
       `https://api.github.com/repos/${repo}/contents/${filePath}`,
       {
@@ -151,7 +165,8 @@ export async function onRequest(context) {
         headers: {
           'Authorization': `Bearer ${githubToken}`,
           'Content-Type': 'application/json',
-          'User-Agent': 'TiddlyWiki-Saver'
+          'User-Agent': 'TiddlyWiki-Saver',
+          'Accept': 'application/vnd.github.v3+json'
         },
         body: JSON.stringify({
           message: 'Update TiddlyWiki',
@@ -166,14 +181,29 @@ export async function onRequest(context) {
       throw new Error(`GitHub API error: ${error}`);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      headers: { 'Content-Type': 'application/json' }
+    const result = await updateResponse.json();
+
+    return new Response(JSON.stringify({
+      success: true,
+      commit: result.commit?.sha
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store'
+      }
     });
 
   } catch (error) {
+    console.error('Save error:', error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store'
+        }
+      }
     );
   }
 }
@@ -220,22 +250,25 @@ In your Cloudflare Pages project settings:
 2. Click **Admin** in the sidebar
 3. Click **Control Panel** → **Saving** tab → **CloudFlare Saver** section
 4. Configure:
-   - ☑ **Enable saving to Cloudflare Functions**
-   - **Endpoint URL:** `https://your-site.pages.dev/save`
-   - Optionally enable **Remember password for session**
+   - Enable saving to Cloudflare Functions
+   - Endpoint URL: `https://your-site.pages.dev/save`
+   - Optionally enable Remember password for session
 5. Click the save button in the admin panel
 6. Enter your `SAVE_PASSWORD` when prompted
-7. Your wiki will save to GitHub and auto-deploy!
+7. Your wiki will save to GitHub and auto-deploy
 
 ### Security Best Practices
 
-- ✅ **DO:** Use a strong, unique `SAVE_PASSWORD`
-- ✅ **DO:** Keep environment variables secret
-- ✅ **DO:** Use GitHub token with minimal required scope (`repo` only)
-- ✅ **DO:** Regularly rotate your GitHub token and save password
-- ❌ **DON'T:** Commit environment variables to your repository
-- ❌ **DON'T:** Share your Cloudflare dashboard access
-- ❌ **DON'T:** Use the same password for multiple services
+**DO:**
+- Use a strong, unique `SAVE_PASSWORD`
+- Keep environment variables secret
+- Use GitHub token with minimal required scope (`repo` only)
+- Regularly rotate your GitHub token and save password
+
+**DON'T:**
+- Commit environment variables to your repository
+- Share your Cloudflare dashboard access
+- Use the same password for multiple services
 
 ### How It Works
 
@@ -246,6 +279,7 @@ In your Cloudflare Pages project settings:
 5. **Deploy** - Cloudflare Pages automatically deploys the updated site
 
 **Benefits:**
+
 - Server-side password authentication (more secure than client-side)
 - Automatic deployment on every save
 - Version control via Git
@@ -259,11 +293,11 @@ In your Cloudflare Pages project settings:
 Click the **Admin** link in the left sidebar to toggle the admin panel. The panel provides quick access to:
 
 - **Create New (Post Type Selector)** - Create different types of posts:
-  - 📝 **Post** - Standard blog post
-  - 📅 **Event** - Event with date, time, location, and RSVP
-  - 🖼️ **Gallery** - Image gallery with grid layout
-  - 🎥 **Video** - Video post with YouTube/Vimeo embed
-  - 💬 **Quote** - Featured quote with author attribution
+  - **Post** - Standard blog post
+  - **Event** - Event with date, time, location, and RSVP
+  - **Gallery** - Image gallery with grid layout
+  - **Video** - Video post with YouTube/Vimeo embed
+  - **Quote** - Featured quote with author attribution
 - **New Page** - Create a new static page
 - **Control Panel** - Access TiddlyWiki settings (including Cloudflare saver and theme configuration)
 - **Save Changes** - Save to GitHub via Cloudflare (prompts for password)
@@ -285,13 +319,13 @@ Click the **Admin** link in the left sidebar to toggle the admin panel. The pane
 5. Save the tiddler (checkmark button)
 6. Click **Save Changes** in the admin panel
 7. Enter your Cloudflare save password when prompted
-8. Your changes are committed to GitHub and auto-deployed!
+8. Your changes are committed to GitHub and auto-deployed
 
 ### Creating Custom Post Types
 
 The plugin includes specialized templates for different content types:
 
-**Event Posts** (📅 Event button):
+**Event Posts:**
 1. Click the Event button in the admin panel
 2. Tags `Post Event` are automatically added
 3. Add custom fields:
@@ -303,7 +337,7 @@ The plugin includes specialized templates for different content types:
 4. Write event description in the main text area
 5. Save tiddler - displays with event badge and formatted details
 
-**Gallery Posts** (🖼️ Gallery button):
+**Gallery Posts:**
 1. Click the Gallery button in the admin panel
 2. Tags `Post Gallery` are automatically added
 3. Add the **gallery-images** field with comma-separated image URLs:
@@ -311,7 +345,7 @@ The plugin includes specialized templates for different content types:
 4. Optionally tag image tiddlers to include them in the gallery
 5. Save tiddler - displays in responsive grid layout with hover effects
 
-**Video Posts** (🎥 Video button):
+**Video Posts:**
 1. Click the Video button in the admin panel
 2. Tags `Post Video` are automatically added
 3. Add the **video-url** field with YouTube or Vimeo URL
@@ -319,7 +353,7 @@ The plugin includes specialized templates for different content types:
 5. Write commentary/description in the main text area
 6. Save tiddler - video auto-embeds in responsive 16:9 container
 
-**Quote Posts** (💬 Quote button):
+**Quote Posts:**
 1. Click the Quote button in the admin panel
 2. Tags `Post Quote` are automatically added
 3. Add custom fields:
@@ -375,7 +409,7 @@ To save a post as a draft (not visible on the site):
 
 ### Using Search
 
-The plugin includes powerful search capabilities accessible from two locations:
+The plugin includes search capabilities accessible from two locations:
 
 **Quick Search (Sidebar)**:
 1. Click the **Search** tab in the left sidebar
@@ -467,10 +501,10 @@ Track visitor statistics with privacy-friendly or traditional analytics services
 
 The plugin includes 5 professionally designed themes:
 
-1. **Historical Society** (Default) - Traditional serif fonts, navy/burgundy palette, perfect for heritage organizations
-2. **Modern Minimalist** - Clean sans-serif, high contrast black/white with blue accents, ideal for contemporary blogs
-3. **Dark Mode** - Eye-friendly dark backgrounds with purple/teal accents, great for tech blogs
-4. **Vibrant Creative** - Bold orange/pink/yellow palette with playful design, perfect for creative portfolios
+1. **Historical Society** (Default) - Traditional serif fonts, navy/burgundy palette, suited for heritage organizations
+2. **Modern Minimalist** - Clean sans-serif, high contrast black/white with blue accents, suited for contemporary blogs
+3. **Dark Mode** - Eye-friendly dark backgrounds with purple/teal accents, suited for tech blogs
+4. **Vibrant Creative** - Bold orange/pink/yellow palette with playful design, suited for creative portfolios
 5. **Professional Business** - Corporate blue/gray scheme with refined styling, suited for business sites
 
 **To change themes:**
@@ -496,7 +530,7 @@ Edit `$:/plugins/collaborative-blog/Navigation` to change menu links. The naviga
 
 ### Modify Color Scheme and Create Custom Themes
 
-The plugin uses CSS custom properties (variables) for easy theme customization:
+The plugin uses CSS custom properties (variables) for theme customization:
 
 **Quick customization** - Edit `$:/plugins/collaborative-blog/theme-controller` to modify existing themes or create new ones:
 
@@ -573,8 +607,8 @@ To ensure your blog functions correctly, follow these data format requirements:
 
 **Required format:** `YYYYMMDD` (8 digits, no separators)
 
-- ✅ **Correct:** `20251115` (November 15, 2025)
-- ❌ **Incorrect:** `2025-11-15`, `11/15/2025`, `2025/11/15`
+- **Correct:** `20251115` (November 15, 2025)
+- **Incorrect:** `2025-11-15`, `11/15/2025`, `2025/11/15`
 
 **Why it matters:**
 - The date field is used for chronological sorting
@@ -608,8 +642,8 @@ To ensure your blog functions correctly, follow these data format requirements:
 
 **Recommended:** Plain text only (no TiddlyWiki markup)
 
-- ✅ **Correct:** `This post discusses the history of our organization.`
-- ⚠️ **Avoid:** Complex wikitext formatting, links, or embedded widgets
+- **Correct:** `This post discusses the history of our organization.`
+- **Avoid:** Complex wikitext formatting, links, or embedded widgets
 
 **Why it matters:**
 - Excerpts appear on the homepage in a simplified format
@@ -624,8 +658,8 @@ To ensure your blog functions correctly, follow these data format requirements:
 
 **Format:** Plain text name
 
-- ✅ **Correct:** `Sarah Johnson`, `Dr. Emily Chen`, `The Editorial Team`
-- ✅ **Also okay:** Author with credentials or title
+- **Correct:** `Sarah Johnson`, `Dr. Emily Chen`, `The Editorial Team`
+- **Also okay:** Author with credentials or title
 
 **Note:** The plugin does not currently support author profile linking, but author names display prominently on posts.
 
@@ -996,14 +1030,14 @@ To further improve accessibility:
 - **Simple Analytics** - Privacy-first alternative with no cookies
 - **Google Analytics (GA4)** - Optional comprehensive analytics support
 - **Custom Analytics** - Flexible custom script injection for any provider
-- **Control Panel Configuration** - Easy setup in Settings → Analytics
+- **Control Panel Configuration** - Configure in Settings → Analytics
 - **Privacy Guidance** - Built-in privacy notices and compliance recommendations
 
 **Architecture:**
 - Added 4 new core files (2 search + 2 analytics)
 - Core plugin now includes 26 tiddlers (up from 22)
 - Total package size: ~112KB with 34 tiddlers
-- Search uses TiddlyWiki's powerful filter operators
+- Search uses TiddlyWiki's filter operators
 - Analytics uses dynamic script injection via `$:/tags/RawMarkup`
 
 **Backward Compatibility:**
@@ -1028,7 +1062,7 @@ To further improve accessibility:
 - **Gallery Posts** - Responsive image grid layout with hover effects
 - **Video Posts** - YouTube/Vimeo auto-embed with optional transcripts
 - **Quote Posts** - Large centered quotation display with author/source attribution
-- **Post Type Selector** - Color-coded buttons in admin panel (📝 Post, 📅 Event, 🖼️ Gallery, 🎥 Video, 💬 Quote)
+- **Post Type Selector** - Color-coded buttons in admin panel (Post, Event, Gallery, Video, Quote)
 
 **Architecture:**
 - Added 6 new core files (4 post type templates + 2 theme system files)
@@ -1120,7 +1154,7 @@ This plugin is released under the same license as TiddlyWiki (BSD 3-Clause).
 
 Built with [TiddlyWiki](https://tiddlywiki.com/) by Jeremy Ruston and the TiddlyWiki community.
 
-Cloudflare Functions integration enables seamless GitHub saves and automatic deployment.
+Cloudflare Functions integration enables GitHub saves and automatic deployment.
 
 ---
 

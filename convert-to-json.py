@@ -1,17 +1,36 @@
 #!/usr/bin/env python3
+"""
+Build script for collaborative-blog-plugin.json
+
+Generates JSON plugin package containing all tiddlers (core + examples).
+"""
 import json
-import os
+import sys
 import glob
+from pathlib import Path
 
 def parse_tid_file(filepath):
-    """Parse a .tid file and return a dictionary of its contents."""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        content = f.read()
+    """
+    Parse TiddlyWiki .tid file format.
 
-    # Split headers from body
+    Args:
+        filepath: Path to .tid file
+
+    Returns:
+        Dictionary containing tiddler metadata and text content
+    """
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except FileNotFoundError:
+        print(f"Error: File not found: {filepath}", file=sys.stderr)
+        return None
+    except Exception as e:
+        print(f"Error reading {filepath}: {e}", file=sys.stderr)
+        return None
+
     parts = content.split('\n\n', 1)
 
-    # Parse headers
     tiddler = {}
     if len(parts) > 0:
         header_lines = parts[0].split('\n')
@@ -20,20 +39,30 @@ def parse_tid_file(filepath):
                 key, value = line.split(': ', 1)
                 tiddler[key] = value
 
-    # Add body text
-    if len(parts) > 1:
-        tiddler['text'] = parts[1]
-    else:
-        tiddler['text'] = ''
+    tiddler['text'] = parts[1] if len(parts) > 1 else ''
 
     return tiddler
 
 def parse_js_file(filepath):
-    """Parse a .js file and return a dictionary of its contents."""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        content = f.read()
+    """
+    Parse JavaScript module file with TiddlyWiki metadata block.
 
-    # Extract metadata from JS comment block
+    Args:
+        filepath: Path to .js file
+
+    Returns:
+        Dictionary containing module metadata and code
+    """
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except FileNotFoundError:
+        print(f"Error: File not found: {filepath}", file=sys.stderr)
+        return None
+    except Exception as e:
+        print(f"Error reading {filepath}: {e}", file=sys.stderr)
+        return None
+
     tiddler = {}
     lines = content.split('\n')
     in_metadata = False
@@ -54,44 +83,60 @@ def parse_js_file(filepath):
         else:
             text_lines.append(line)
 
-    # Everything outside the metadata block is the text
     tiddler['text'] = '\n'.join(text_lines)
 
     return tiddler
 
-def convert_plugin_to_json():
-    """Convert all .tid and .js files in the plugin to a single JSON file."""
+def main():
+    """Main build process."""
     tiddlers = {}
+    errors = []
 
-    # Find all .tid files
     tid_files = glob.glob('plugins/collaborative-blog/tiddlers/*.tid')
+    if not tid_files:
+        print("Warning: No .tid files found", file=sys.stderr)
 
     for tid_file in sorted(tid_files):
         tiddler = parse_tid_file(tid_file)
-        title = tiddler.get('title', os.path.basename(tid_file).replace('.tid', ''))
-        tiddlers[title] = tiddler
+        if tiddler:
+            title = tiddler.get('title', Path(tid_file).stem)
+            tiddlers[title] = tiddler
+        else:
+            errors.append(tid_file)
 
-    # Find all .js files
     js_files = glob.glob('plugins/collaborative-blog/tiddlers/*.js')
+    if not js_files:
+        print("Warning: No .js files found", file=sys.stderr)
 
     for js_file in sorted(js_files):
         tiddler = parse_js_file(js_file)
-        title = tiddler.get('title', os.path.basename(js_file).replace('.js', ''))
-        tiddlers[title] = tiddler
+        if tiddler:
+            title = tiddler.get('title', Path(js_file).stem)
+            tiddlers[title] = tiddler
+        else:
+            errors.append(js_file)
 
-    # Create the final JSON structure
+    if errors:
+        print(f"\nWarning: {len(errors)} files had errors:", file=sys.stderr)
+        for f in errors:
+            print(f"  - {f}", file=sys.stderr)
+
+    if not tiddlers:
+        print("Error: No tiddlers processed", file=sys.stderr)
+        sys.exit(1)
+
     plugin_json = {
         "tiddlers": tiddlers
     }
 
-    # Write to file
-    with open('collaborative-blog-plugin.json', 'w', encoding='utf-8') as f:
-        json.dump(plugin_json, f, indent=4, ensure_ascii=False)
+    try:
+        with open('collaborative-blog-plugin.json', 'w', encoding='utf-8') as f:
+            json.dump(plugin_json, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Error writing output file: {e}", file=sys.stderr)
+        sys.exit(1)
 
-    print(f"Converted {len(tiddlers)} tiddlers to collaborative-blog-plugin.json")
-    print("Tiddlers included:")
-    for title in sorted(tiddlers.keys()):
-        print(f"  - {title}")
+    print(f"Created collaborative-blog-plugin.json with {len(tiddlers)} tiddlers")
 
 if __name__ == '__main__':
-    convert_plugin_to_json()
+    main()

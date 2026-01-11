@@ -3,17 +3,10 @@ title: $:/plugins/collaborative-blog/saver.js
 type: application/javascript
 module-type: saver
 
-Cloudflare Functions saver for TiddlyWiki - Additional Saver Option
+Cloudflare Functions saver module for TiddlyWiki.
 
-This saver allows TiddlyWiki to save to GitHub via a Cloudflare Function.
-It works as an additional save option alongside other savers.
-
-Features:
-- Password authentication
-- Auto-retry with exponential backoff
-- Session password memory
-- Visual notifications
-- Comprehensive error handling
+Provides server-side GitHub integration via Cloudflare Functions.
+Implements password authentication, retry logic, and error handling.
 
 \*/
 (function(){
@@ -21,14 +14,14 @@ Features:
   'use strict';
 
   /**
- * CloudflareSaver constructor
- * @param {Object} wiki - TiddlyWiki wiki object
- */
+   * CloudflareSaver constructor
+   * @param {Object} wiki - TiddlyWiki wiki object
+   */
   const CloudflareSaver = function(wiki) {
     this.wiki = wiki;
-    this.sessionPassword = null; // Store password for session if enabled
+    this.sessionPassword = null;
 
-    // Listen for clear password events
+    // Register event listener for password clearing
     const self = this;
     $tw.rootWidget.addEventListener('cloudflare-clear-password', () => {
       self.sessionPassword = null;
@@ -39,23 +32,24 @@ Features:
     const self = this;
     options = options || {};
 
-    // Check if this saver is enabled
+    // Verify saver is enabled in configuration
     const enabled = self.wiki.getTiddlerText('$:/config/cloudflare-saver/enabled', 'no') === 'yes';
-    if(!enabled) {
-      return false; // Let other savers handle it
-    }
-
-    // Validate configuration before claiming to handle the save
-    const endpoint = self.wiki.getTiddlerText('$:/config/cloudflare-saver/endpoint', '');
-    if(!endpoint || endpoint.trim() === '') {
-      return false; // Let other savers handle it if not configured
-    }
-
-    // We can handle save and autosave methods
-    if(method !== 'save' && method !== 'autosave') {
+    if (!enabled) {
       return false;
     }
 
+    // Verify endpoint is configured
+    const endpoint = self.wiki.getTiddlerText('$:/config/cloudflare-saver/endpoint', '');
+    if (!endpoint || endpoint.trim() === '') {
+      return false;
+    }
+
+    // Only handle save and autosave methods
+    if (method !== 'save' && method !== 'autosave') {
+      return false;
+    }
+
+    // Load configuration from tiddlers
     const config = {
       endpoint,
       timeout: Math.max(5, parseInt(self.wiki.getTiddlerText('$:/config/cloudflare-saver/timeout', '30')) || 30) * 1000,
@@ -65,25 +59,27 @@ Features:
       debug: self.wiki.getTiddlerText('$:/config/cloudflare-saver/debug', 'no') === 'yes'
     };
 
-    if(config.debug) {
-      console.log('[CloudflareSaver] Starting save process');
+    if (config.debug) {
+      console.log('[CloudflareSaver] Save initiated');
     }
 
+    // Retrieve password from session or prompt user
     let password = null;
-    if(config.rememberPassword && self.sessionPassword) {
+    if (config.rememberPassword && self.sessionPassword) {
       password = self.sessionPassword;
     } else {
       password = prompt('Enter Cloudflare save password:');
       if (!password) {
-        callback('Cloudflare save cancelled by user');
+        callback('Save cancelled by user');
         return false;
       }
-      if(config.rememberPassword) {
+      if (config.rememberPassword) {
         self.sessionPassword = password;
       }
     }
 
-    if(config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
+    // Display saving notification
+    if (config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
       $tw.notifier.display('$:/plugins/collaborative-blog/notifications/saving');
     }
 
@@ -115,27 +111,25 @@ Features:
 
       clearTimeout(timeoutId);
 
-      if(response.ok) {
-        if(config.debug) {
-          console.log('[CloudflareSaver] Save successful');
+      if (response.ok) {
+        if (config.debug) {
+          console.log('[CloudflareSaver] Save completed successfully');
         }
 
-        // Update statistics
         self._incrementStat('successful-saves');
         self._updateLastSave('success');
 
         callback(null);
-        if(config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
+        if (config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
           $tw.notifier.display('$:/plugins/collaborative-blog/notifications/success');
         }
       } else {
         const responseText = await response.text();
         self._handleSaveError(response.status, response.statusText, responseText, password, text, callback, config, retryCount);
       }
-    } catch(error) {
+    } catch (error) {
       clearTimeout(timeoutId);
 
-      // Handle abort/timeout separately
       if (error.name === 'AbortError') {
         self._handleSaveError(0, 'Request timeout', '', password, text, callback, config, retryCount);
       } else {
@@ -148,45 +142,44 @@ Features:
     const self = this;
     const maxRetries = config.autoRetry ? 3 : 0;
 
-    let errorMsg = 'Cloudflare save failed';
-    if(status) {
-      errorMsg += `: HTTP ${  status}`;
-      if(statusText) {
-        errorMsg += ` ${  statusText}`;
+    let errorMsg = 'Save failed';
+    if (status) {
+      errorMsg += `: HTTP ${status}`;
+      if (statusText) {
+        errorMsg += ` ${statusText}`;
       }
     }
 
-    // Parse response for detailed error information
-    if(responseText) {
+    // Parse JSON error response if available
+    if (responseText) {
       try {
         const response = JSON.parse(responseText);
-        if(response.error) {
-          errorMsg += ` - ${  response.error}`;
+        if (response.error) {
+          errorMsg += ` - ${response.error}`;
         }
-        // Add rate limit information if available
-        if(response.resetIn) {
-          errorMsg += ` (retry in ${  response.resetIn  } seconds)`;
+        if (response.resetIn) {
+          errorMsg += ` (retry in ${response.resetIn} seconds)`;
         }
-      } catch(e) {
-        if(responseText.length < 200) {
-          errorMsg += ` - ${  responseText}`;
+      } catch (e) {
+        if (responseText.length < 200) {
+          errorMsg += ` - ${responseText}`;
         }
       }
     }
 
     // Handle specific HTTP status codes
-    if(status === 401) {
+    if (status === 401) {
       self.sessionPassword = null;
-      errorMsg = 'Cloudflare authentication failed. Please check your password.';
-    } else if(status === 429) {
-      errorMsg = 'Rate limit exceeded. Please wait a minute before trying again.';
-    } else if(status === 413) {
-      errorMsg = 'Content too large. Your TiddlyWiki exceeds the maximum allowed size.';
-    } else if(status === 409) {
+      errorMsg = 'Authentication failed. Check your password.';
+    } else if (status === 429) {
+      errorMsg = 'Rate limit exceeded. Wait before retrying.';
+    } else if (status === 413) {
+      errorMsg = 'Content too large. TiddlyWiki exceeds maximum size.';
+    } else if (status === 409) {
       errorMsg = 'Conflict detected. Another save may be in progress.';
     }
 
-    if(config.debug) {
+    if (config.debug) {
       console.error('[CloudflareSaver] Error:', errorMsg, {
         status,
         retryCount,
@@ -194,22 +187,21 @@ Features:
       });
     }
 
-    // Retry logic (don't retry auth failures or rate limits)
-    if(retryCount < maxRetries && status !== 401 && status !== 429) {
+    // Implement retry with exponential backoff (skip auth failures and rate limits)
+    if (retryCount < maxRetries && status !== 401 && status !== 429) {
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 10000);
-      if(config.debug) {
-        console.log(`[CloudflareSaver] Retrying in ${  retryDelay / 1000  } seconds...`);
+      if (config.debug) {
+        console.log(`[CloudflareSaver] Retrying in ${retryDelay / 1000} seconds`);
       }
       setTimeout(() => {
         self._performSave(text, password, callback, config, retryCount + 1);
       }, retryDelay);
     } else {
-      // Update statistics for final failure
       self._incrementStat('failed-saves');
       self._updateLastSave('failure', errorMsg);
 
       callback(errorMsg);
-      if(config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
+      if (config.notifications && typeof $tw !== 'undefined' && $tw.notifier) {
         $tw.notifier.display('$:/plugins/collaborative-blog/notifications/failure');
       }
     }
@@ -236,23 +228,19 @@ Features:
 
   CloudflareSaver.prototype.info = {
     name: 'cloudflare',
-    priority: 2000, // High priority - when enabled, prefer this over download saver
+    priority: 2000,
     capabilities: ['save', 'autosave']
   };
 
-  // Export saver info at module level
   exports.info = {
     name: 'cloudflare',
     priority: 2000,
     capabilities: ['save', 'autosave']
   };
 
-  // Export module-level functions as required by TiddlyWiki
   exports.canSave = function(wiki) {
-    // Use $tw.wiki global instead of wiki parameter during initialization
     const enabled = $tw.wiki.getTiddlerText('$:/config/cloudflare-saver/enabled', 'no') === 'yes';
     const endpoint = $tw.wiki.getTiddlerText('$:/config/cloudflare-saver/endpoint', '');
-    // Only claim we can save if both enabled AND endpoint is configured
     return enabled && endpoint && endpoint.trim() !== '';
   };
 
