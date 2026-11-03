@@ -1,0 +1,7 @@
+title: $:/
+
+DefaultTiddlers: Home
+view: zoomin
+config/Navigation/UpdateAddressBar: permalink
+config/Navigation/UpdateHistory: yes
+config/AnimationDuration: 200

@@ -1,0 +1,3 @@
+title: $:/tags/cb/SettingsTab
+list: $:/plugins/collaborative-blog/settings/general $:/plugins/collaborative-blog/settings/appearance $:/plugins/collaborative-blog/settings/menu $:/plugins/collaborative-blog/saver/settings $:/plugins/collaborative-blog/settings/seo $:/plugins/collaborative-blog/settings/analytics
+

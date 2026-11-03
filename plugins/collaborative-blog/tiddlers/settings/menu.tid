@@ -1,0 +1,38 @@
+title: $:/plugins/collaborative-blog/settings/menu
+tags: $:/tags/cb/SettingsTab
+caption: Menu
+
+\whitespace trim
+\parsermode inline
+<p>The sidebar menu shows these pages, in this order:</p>
+<ol class="cb-menu-editor">
+<$list filter="[list[$:/config/collaborative-blog/menu]]" counter="n">
+<li>
+<$link to=<<currentTiddler>>><$text text={{{ [<currentTiddler>get[caption]] :else[<currentTiddler>] }}}/></$link>
+<span class="cb-menu-editor-buttons">
+<$button class="cb-button cb-button-small" tooltip="Move up" disabled={{{ [<n-first>match[yes]then[yes]else[no]] }}}>
+<$action-listops $tiddler="$:/config/collaborative-blog/menu" $subfilter="+[move:-1<currentTiddler>]"/>↑
+</$button>
+<$button class="cb-button cb-button-small" tooltip="Move down" disabled={{{ [<n-last>match[yes]then[yes]else[no]] }}}>
+<$action-listops $tiddler="$:/config/collaborative-blog/menu" $subfilter="+[move:1<currentTiddler>]"/>↓
+</$button>
+<$button class="cb-button cb-button-small" tooltip="Remove from menu">
+<$action-listops $tiddler="$:/config/collaborative-blog/menu" $subfilter="-[<currentTiddler>]"/>✕
+</$button>
+</span>
+</li>
+</$list>
+</ol>
+<p>Add a page to the menu:</p>
+<$select tiddler="$:/temp/cb/menu-add" default="">
+<option value="">Choose a page...</option>
+<$list filter="[all[tiddlers+shadows]!is[system]tag[Page]] [[Home]] -[list[$:/config/collaborative-blog/menu]] +[sort[]]">
+<option value=<<currentTiddler>>><$text text=<<currentTiddler>>/></option>
+</$list>
+</$select>
+<$button class="cb-button cb-button-small" disabled={{{ [{$:/temp/cb/menu-add}is[blank]then[yes]else[no]] }}}>
+<$action-listops $tiddler="$:/config/collaborative-blog/menu" $subfilter="[{$:/temp/cb/menu-add}]"/>
+<$action-deletetiddler $tiddler="$:/temp/cb/menu-add"/>
+Add
+</$button>
+<p class="cb-setting-hint">Give a page a <code>caption</code> field to use a shorter label in the menu.</p>

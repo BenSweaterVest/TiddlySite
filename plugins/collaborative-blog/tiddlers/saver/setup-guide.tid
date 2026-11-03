@@ -1,0 +1,54 @@
+title: $:/plugins/collaborative-blog/saver/setup-guide
+caption: Publishing setup guide
+
+\whitespace trim
+<div class="cb-post-content">
+
+!! Publishing setup guide
+
+You need a free GitHub account and a free Cloudflare account. This takes about 15 minutes.
+
+!!! 1. Put the starter kit in a GitHub repository
+
+# Download `tiddlysite-starter.zip` from the [[TiddlySite releases page|https://github.com/BenSweaterVest/TiddlySite/releases]] and unzip it.
+# Create a new repository at https://github.com/new (private is fine).
+# Upload the unzipped files (`index.html` and the `functions` folder) to the repository.
+
+!!! 2. Create a GitHub token
+
+# Open https://github.com/settings/personal-access-tokens/new (fine-grained token).
+# Under ''Repository access'' choose ''Only select repositories'' and pick your site repository.
+# Under ''Permissions'' set ''Contents'' to ''Read and write''.
+# Generate the token and copy it.
+
+!!! 3. Connect the repository to Cloudflare Pages
+
+# In the Cloudflare dashboard open ''Workers & Pages'', choose ''Create'', then ''Pages'' and ''Connect to Git''.
+# Pick your repository. Leave the build command empty and set the output directory to `/`.
+# Deploy.
+
+!!! 4. Add the settings
+
+In the Pages project open ''Settings'' then ''Variables and Secrets'' and add:
+
+|!Name |!Value |!Type |
+|`GITHUB_TOKEN` |the token from step 2 |Secret |
+|`GITHUB_REPO` |`your-name/your-repository` |Text |
+|`SAVE_PASSWORD` |a long password shared with your editors |Secret |
+|`FILE_PATH` |`index.html` (optional) |Text |
+|`GITHUB_BRANCH` |branch to save to (optional, default branch if blank) |Text |
+
+Then redeploy the project so the function picks them up.
+
+!!! 5. Turn on publishing
+
+<$button class="cb-button cb-button-primary">
+<$action-setfield $tiddler="$:/config/cloudflare-saver/enabled" text="yes"/>
+<$action-setfield $tiddler="$:/config/cloudflare-saver/endpoint" text="/save"/>
+<$action-sendmessage $message="tm-modal" $param="$:/plugins/collaborative-blog/settings"/>
+Enable publishing and open settings
+</$button>
+
+Then choose ''Test connection''. When it succeeds, use ''Save changes'' in the admin panel to publish.
+
+</div>

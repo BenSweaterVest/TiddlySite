@@ -1,0 +1,28 @@
+title: $:/plugins/collaborative-blog/sections/event
+tags: $:/tags/cb/PostSection
+cb-filter: [tag[Event]]
+cb-position: before
+
+\whitespace trim
+\parsermode inline
+<$let
+	status={{{ [<currentTiddler>get[event-status]match[cancelled]] :else[cb.event.key[]!is[blank]compare:string:lt<cb-today>then[past]] :else[[upcoming]] }}}
+>
+<section class={{{ [<status>addprefix[cb-event-details cb-event-]] }}} aria-label="Event details">
+<p class="cb-event-status"><$text text={{{ [<status>match[cancelled]then[Cancelled]] [<status>match[past]then[This event has ended]] [<status>match[upcoming]then[Upcoming event]] +[first[]] }}}/></p>
+<dl class="cb-event-list">
+<$list filter="[<currentTiddler>has[event-date]]" variable="ignore">
+<div><dt>Date</dt><dd><$transclude $variable="cb-date" field="event-date"/></dd></div>
+</$list>
+<$list filter="[<currentTiddler>has[event-time]]" variable="ignore">
+<div><dt>Time</dt><dd><$text text={{!!event-time}}/></dd></div>
+</$list>
+<$list filter="[<currentTiddler>has[event-location]]" variable="ignore">
+<div><dt>Location</dt><dd><$text text={{!!event-location}}/></dd></div>
+</$list>
+</dl>
+<$list filter="[<currentTiddler>has[event-rsvp-link]] :filter[<status>match[upcoming]]" variable="ignore">
+<a class="cb-button" href={{!!event-rsvp-link}} target="_blank" rel="noopener noreferrer">RSVP / Register</a>
+</$list>
+</section>
+</$let>

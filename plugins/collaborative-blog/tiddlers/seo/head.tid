@@ -1,0 +1,5 @@
+title: $:/plugins/collaborative-blog/seo/head
+tags: $:/tags/RawMarkupWikified/TopHead
+type: text/vnd.tiddlywiki
+
+<$text text={{{ [cb-head-markup[]] }}}/>

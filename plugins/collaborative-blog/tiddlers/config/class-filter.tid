@@ -1,0 +1,4 @@
+title: $:/config/collaborative-blog/tiddler-class-filter
+tags: $:/tags/ClassFilters/TiddlerTemplate
+
+[<storyTiddler>] :cascade[all[shadows+tiddlers]tag[$:/tags/ViewTemplateBodyFilter]!is[draft]get[text]] +[prefix[$:/plugins/collaborative-blog/templates/]then[cb-frame]]

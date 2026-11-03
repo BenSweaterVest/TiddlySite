@@ -1,0 +1,42 @@
+title: $:/plugins/collaborative-blog/themes/modern
+tags: $:/tags/cb/Theme
+type: application/x-tiddler-dictionary
+caption: Modern Minimalist
+description: Clean white space, light sidebar and sans-serif type.
+
+sidebar-width: 280px
+content-width: 860px
+font-size: 17px
+bg-page: #ffffff
+bg-content: #ffffff
+bg-highlight: #f4f4f5
+bg-sidebar: #f4f4f5
+text-primary: #18181b
+text-secondary: #3f3f46
+text-meta: #71717a
+heading: #09090b
+link: #0055d4
+accent: #0055d4
+accent-hover: #0044aa
+text-on-accent: #ffffff
+secondary: #7c3aed
+text-on-sidebar: #18181b
+text-on-sidebar-muted: #52525b
+sidebar-hover: rgba(0,0,0,0.05)
+sidebar-accent: #0055d4
+sidebar-border: #e4e4e7
+border: #e4e4e7
+focus: #0055d4
+warning: #b91c1c
+badge-event: #047857
+badge-gallery: #7c3aed
+badge-video: #b91c1c
+badge-quote: #a16207
+font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-quote: Georgia, Cambria, 'Times New Roman', serif
+radius-sm: 6px
+radius-md: 8px
+radius-lg: 12px
+shadow-md: 0 0 0 1px #e4e4e7
+shadow-sidebar: inset -1px 0 0 #e4e4e7

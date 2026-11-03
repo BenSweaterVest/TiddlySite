@@ -1,15 +1,16 @@
 {
   "name": "tiddlysite",
-  "version": "2.2.0",
-  "description": "TiddlyWiki Collaborative Blog Plugin - WordPress-style blogging with automatic GitHub deployment",
-  "main": "index.js",
+  "version": "3.0.0",
+  "description": "TiddlyWiki blog plugin and Cloudflare Pages starter kit for small organizations",
   "scripts": {
-    "test": "python test_build.py",
-    "build": "python create-plugin-tid.py && python convert-to-json.py",
-    "build:tid": "python create-plugin-tid.py",
-    "build:json": "python convert-to-json.py",
-    "lint": "eslint plugins/collaborative-blog/tiddlers/*.js",
-    "lint:fix": "eslint --fix plugins/collaborative-blog/tiddlers/*.js"
+    "build": "node scripts/build.mjs",
+    "build:quick": "node scripts/build.mjs --skip-zip",
+    "test": "npm run test:functions && npm run build:quick && npm run test:e2e",
+    "test:functions": "node --test tests/functions/",
+    "test:e2e": "node --test --test-concurrency=1 tests/e2e/",
+    "lint": "eslint plugins site scripts tests",
+    "lint:fix": "eslint --fix plugins site scripts tests",
+    "serve": "node scripts/serve.mjs"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,11 @@
   "keywords": [
     "tiddlywiki",
     "blog",
-    "cloudflare",
+    "cloudflare-pages",
     "github",
     "cms",
-    "wiki"
+    "static-site",
+    "nonprofit"
   ],
   "author": "BenSweaterVest",
   "license": "BSD-3-Clause",
@@ -30,10 +32,12 @@
   },
   "homepage": "https://github.com/BenSweaterVest/TiddlySite#readme",
   "devDependencies": {
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "playwright": "^1.64.1",
+    "tiddlywiki": "^5.3.8"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "python": ">=3.7"
-  }
+    "node": ">=20"
+  },
+  "type": "module"
 }

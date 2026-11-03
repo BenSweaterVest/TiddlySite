@@ -1,0 +1,22 @@
+title: $:/plugins/collaborative-blog/sections/toc
+tags: $:/tags/cb/PostSection
+cb-filter: [field:toc[yes]]
+cb-position: before
+
+\whitespace trim
+\parsermode inline
+<$let post=<<currentTiddler>>>
+<nav class="cb-table-of-contents" aria-label="Table of contents">
+<p class="cb-toc-title">On this page</p>
+<ol class="cb-toc-list">
+<$list filter="[<post>get[text]splitregexp[\n]regexp[^!{1,6}\s*\S]]" variable="line" counter="index">
+<li class={{{ [<line>search-replace::regexp[^(!+).*$],[$1]length[]addprefix[cb-toc-level-]] }}}>
+<$button class="tc-btn-invisible cb-toc-link">
+<$action-cb-scroll-to-heading tiddler=<<post>> index={{{ [<index>subtract[1]] }}}/>
+<$text text={{{ [<line>search-replace::regexp[^!+\s*],[]search-replace:g:regexp[''|//|__|~~|\^\^|,,],[]] }}}/>
+</$button>
+</li>
+</$list>
+</ol>
+</nav>
+</$let>

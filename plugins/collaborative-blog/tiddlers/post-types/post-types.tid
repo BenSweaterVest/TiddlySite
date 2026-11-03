@@ -1,0 +1,6 @@
+title: $:/tags/cb/PostType
+list: $:/plugins/collaborative-blog/post-types/standard $:/plugins/collaborative-blog/post-types/event $:/plugins/collaborative-blog/post-types/gallery $:/plugins/collaborative-blog/post-types/video $:/plugins/collaborative-blog/post-types/quote
+
+Post type definitions. Each tiddler with this tag adds a "Create" button to the admin panel.
+
+Fields: `caption` (button label), `icon`, `type-tag` (extra tag added to new posts, blank for a standard post) and `description`.

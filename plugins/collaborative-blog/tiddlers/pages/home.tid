@@ -1,0 +1,31 @@
+title: Home
+cb-layout: bare
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<$let cb-today=<<now YYYY0MM0DD>> featured={{{ [cb.posts.sorted[]tag[Featured]first[]] }}}>
+<h1 class="cb-visually-hidden"><$text text={{$:/SiteTitle}}/></h1>
+<$list filter="[<featured>!is[blank]]" variable="ignore">
+<$tiddler tiddler=<<featured>>>
+<$transclude $variable="cb-post-card" featured="yes"/>
+</$tiddler>
+</$list>
+<$list filter="[{$:/config/collaborative-blog/home-show-events}match[yes]] :filter[cb.upcoming.events[]first[]]" variable="ignore">
+<h2 class="cb-section-heading">Upcoming events</h2>
+<ul class="cb-archive-list">
+<$list filter="[cb.upcoming.events[]limit[3]]">
+<li><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link><span class="cb-archive-date"><$transclude $variable="cb-date" field="event-date"/></span></li>
+</$list>
+</ul>
+</$list>
+<$list filter="[cb.posts[]first[]]" variable="ignore" emptyMessage="""<div class="cb-empty-state"><p>No posts yet.</p><p>Choose <strong>Admin</strong> in the sidebar, then <strong>Post</strong> to write your first one.</p></div>""">
+<h2 class="cb-section-heading">Latest posts</h2>
+<$list filter="[cb.posts.sorted[]] -[<featured>] +[limit{$:/config/collaborative-blog/home-post-count}]">
+<<cb-post-card>>
+</$list>
+<$list filter="[cb.posts[]] -[<featured>] +[count[]] :filter[compare:number:gt{$:/config/collaborative-blog/home-post-count}]" variable="ignore">
+<p class="cb-more-link"><$link to="All Posts">See all posts&#32;→</$link></p>
+</$list>
+</$list>
+</$let>

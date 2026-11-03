@@ -1,0 +1,41 @@
+title: $:/plugins/collaborative-blog/saver/settings
+tags: $:/tags/ControlPanel/Saving $:/tags/cb/SettingsTab
+caption: Publishing
+
+\whitespace trim
+\parsermode inline
+\procedure base() $:/config/cloudflare-saver/
+<p>Publish changes to GitHub through the Cloudflare Pages function from the TiddlySite starter kit. Cloudflare then rebuilds the public site, usually within a minute.</p>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[enabled]] }}} label="Save through Cloudflare" hint="When this is off, TiddlyWiki uses its normal saving method (usually downloading a copy)."/>
+<$list filter="[<base>addsuffix[enabled]get[text]match[yes]]" variable="ignore">
+<$transclude $variable="cb-setting-text" tiddler={{{ [<base>addsuffix[endpoint]] }}} label="Save endpoint" placeholder="/save" hint="Leave as /save when the site and the function are on the same Cloudflare Pages project. Otherwise use the full address, for example https://my-site.pages.dev/save."/>
+<div class="cb-setting">
+<$button class="cb-button cb-button-primary">
+<$action-test-cloudflare/>
+Test connection
+</$button>
+<span class="cb-setting-hint"> Checks the function and your password without saving anything.</span>
+</div>
+<$list filter="[[$:/temp/cloudflare-saver/test-result]is[tiddler]]" variable="ignore">
+<div class={{{ [[$:/temp/cloudflare-saver/test-result]get[text]addprefix[cb-status cb-status-]] }}} role="status">
+<$text text={{$:/temp/cloudflare-saver/test-result!!message}}/>
+</div>
+</$list>
+<$list filter="[[$:/temp/cloudflare-saver/status]is[tiddler]]" variable="ignore">
+<p class="cb-setting-hint">Last save this session: <$text text={{$:/temp/cloudflare-saver/status!!message}}/> at <$view tiddler="$:/temp/cloudflare-saver/status" field="time" format="date" template="0hh:0mm"/></p>
+</$list>
+<h3>Options</h3>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[remember-password]] }}} label="Tick 'remember password' by default" hint="The password is only ever kept in memory and is forgotten when the page is closed or reloaded."/>
+<div class="cb-setting">
+<$button class="cb-button cb-button-small">
+<$action-clear-cloudflare-password/>
+Forget remembered password
+</$button>
+</div>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[autosave]] }}} label="Publish automatically after each edit" hint="Only works once the password is remembered. Each edit creates a commit and a new deployment, so most sites should leave this off."/>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[auto-retry]] }}} label="Retry temporary failures" default="yes"/>
+<$transclude $variable="cb-setting-text" tiddler={{{ [<base>addsuffix[timeout]] }}} label="Timeout (seconds)" type="number"/>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[debug]] }}} label="Log details to the browser console"/>
+</$list>
+<h3>Setup</h3>
+<p><$link to="$:/plugins/collaborative-blog/saver/setup-guide">Open the step-by-step setup guide</$link></p>

@@ -1,0 +1,27 @@
+title: $:/plugins/collaborative-blog/sections/video
+tags: $:/tags/cb/PostSection
+cb-filter: [tag[Video]has[video-url]]
+cb-position: before
+
+\whitespace trim
+\parsermode inline
+\procedure youtube-regex() ^.*(?:youtu\.be/|[?&]v=|/embed/|/shorts/|/live/)([\w-]{11}).*$
+\procedure vimeo-regex() ^.*vimeo\.com/(?:video/)?(\d+).*$
+<$let
+	url={{!!video-url}}
+	youtubeId={{{ [{!!video-url}regexp<youtube-regex>search-replace::regexp<youtube-regex>,[$1]] }}}
+	vimeoId={{{ [{!!video-url}regexp<vimeo-regex>search-replace::regexp<vimeo-regex>,[$1]] }}}
+	src={{{ [<youtubeId>!is[blank]addprefix[https://www.youtube-nocookie.com/embed/]] :else[<vimeoId>!is[blank]addprefix[https://player.vimeo.com/video/]] }}}
+>
+<$list filter="[<src>!is[blank]]" variable="ignore" emptyMessage="""<p class="cb-notice">This video can't be embedded. <a href=<<url>> target="_blank" rel="noopener noreferrer">Watch it on the original site</a>.</p>""">
+<div class="cb-video">
+<iframe src=<<src>> title={{{ [<currentTiddler>addprefix[Video: ]] }}} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen="allowfullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</div>
+</$list>
+<$list filter="[<currentTiddler>has[video-transcript]]" variable="ignore">
+<details class="cb-transcript">
+<summary>Transcript</summary>
+<div class="cb-transcript-text"><$transclude $field="video-transcript" $mode="block"/></div>
+</details>
+</$list>
+</$let>

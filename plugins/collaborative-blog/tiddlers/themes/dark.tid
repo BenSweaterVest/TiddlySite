@@ -1,0 +1,42 @@
+title: $:/plugins/collaborative-blog/themes/dark
+tags: $:/tags/cb/Theme
+type: application/x-tiddler-dictionary
+caption: Dark
+description: Dark backgrounds with light text, comfortable for evening reading.
+
+sidebar-width: 280px
+content-width: 860px
+font-size: 17px
+bg-page: #121212
+bg-content: #1e1e1e
+bg-highlight: #2a2a2a
+bg-sidebar: #0b0b0b
+text-primary: #e6e6e6
+text-secondary: #c2c2c2
+text-meta: #a3a3a3
+heading: #ffffff
+link: #8ab4f8
+accent: #8ab4f8
+accent-hover: #aecbfa
+text-on-accent: #0b0b0b
+secondary: #8e44ad
+text-on-sidebar: #e6e6e6
+text-on-sidebar-muted: #a3a3a3
+sidebar-hover: rgba(255,255,255,0.07)
+sidebar-accent: #8ab4f8
+sidebar-border: rgba(255,255,255,0.1)
+border: #333333
+focus: #fdd663
+warning: #f28b82
+badge-event: #137333
+badge-gallery: #7b1fa2
+badge-video: #c5221f
+badge-quote: #8d6e00
+font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-quote: Georgia, Cambria, 'Times New Roman', serif
+radius-sm: 4px
+radius-md: 6px
+radius-lg: 8px
+shadow-md: 0 2px 8px rgba(0,0,0,0.5)
+shadow-sidebar: none

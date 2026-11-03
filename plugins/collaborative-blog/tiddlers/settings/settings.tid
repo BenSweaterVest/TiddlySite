@@ -1,0 +1,10 @@
+title: $:/plugins/collaborative-blog/settings
+tags: $:/tags/ControlPanel
+caption: Blog
+subtitle: Blog settings
+
+\whitespace trim
+\parsermode inline
+<div class="cb-settings">
+<<tabs "[all[shadows+tiddlers]tag[$:/tags/cb/SettingsTab]!has[draft.of]]" "$:/plugins/collaborative-blog/settings/general" "$:/state/tab/cb-settings" "tc-vertical" "" "$:/core/ui/TabTemplate">>
+</div>

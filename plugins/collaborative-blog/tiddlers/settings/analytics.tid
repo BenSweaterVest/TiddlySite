@@ -1,0 +1,40 @@
+title: $:/plugins/collaborative-blog/settings/analytics
+tags: $:/tags/cb/SettingsTab
+caption: Analytics
+
+\whitespace trim
+\parsermode inline
+\procedure base() $:/config/collaborative-blog/analytics/
+<p>Analytics scripts are added to the page header when you save. Privacy-friendly services (Plausible, Simple Analytics) do not use cookies and usually need no consent banner.</p>
+<$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[enabled]] }}} label="Enable analytics"/>
+<$list filter="[<base>addsuffix[enabled]get[text]match[yes]]" variable="ignore">
+<div class="cb-setting">
+<label><span class="cb-setting-label">Provider</span>
+<$select tiddler={{{ [<base>addsuffix[provider]] }}}>
+<option value="plausible">Plausible Analytics</option>
+<option value="simple">Simple Analytics</option>
+<option value="google">Google Analytics 4</option>
+<option value="custom">Custom script</option>
+</$select>
+</label>
+</div>
+<$let provider={{{ [<base>addsuffix[provider]get[text]] }}}>
+<$list filter="[<provider>match[plausible]]" variable="ignore">
+<$transclude $variable="cb-setting-text" tiddler={{{ [<base>addsuffix[domain]] }}} label="Domain" placeholder="example.org" hint="Exactly as registered in your Plausible dashboard."/>
+</$list>
+<$list filter="[<provider>match[simple]]" variable="ignore">
+<p class="cb-setting-hint">No configuration needed. Add your site in the Simple Analytics dashboard.</p>
+</$list>
+<$list filter="[<provider>match[google]]" variable="ignore">
+<$transclude $variable="cb-setting-text" tiddler={{{ [<base>addsuffix[id]] }}} label="Measurement ID" placeholder="G-XXXXXXXXXX" hint="Google Analytics uses cookies. Depending on where your visitors are, you may need a consent banner."/>
+</$list>
+<$list filter="[<provider>match[custom]]" variable="ignore">
+<div class="cb-setting">
+<label><span class="cb-setting-label">Script HTML</span>
+<$edit-text tiddler={{{ [<base>addsuffix[custom-script]] }}} tag="textarea" class="cb-setting-input cb-setting-code" rows="6"/>
+</label>
+<div class="cb-setting-hint">Pasted exactly as written into the page header. Only paste code from a provider you trust.</div>
+</div>
+</$list>
+</$let>
+</$list>

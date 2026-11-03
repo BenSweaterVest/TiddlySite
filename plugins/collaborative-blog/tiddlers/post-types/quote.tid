@@ -1,0 +1,7 @@
+title: $:/plugins/collaborative-blog/post-types/quote
+tags: $:/tags/cb/PostType
+caption: Quote
+icon: 💬
+type-tag: Quote
+description: A featured quotation with attribution
+

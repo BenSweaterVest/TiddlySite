@@ -1,8 +1,9 @@
 {
   "title": "$:/plugins/collaborative-blog",
-  "description": "A complete blogging solution with WordPress-style UI and automatic GitHub saving via Cloudflare Functions",
+  "name": "Collaborative Blog",
+  "description": "Blog-style website for TiddlyWiki with themes, post types, search and GitHub saving via Cloudflare Pages",
   "author": "BenSweaterVest",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "core-version": ">=5.3.0",
   "source": "https://github.com/BenSweaterVest/TiddlySite",
   "plugin-type": "plugin",

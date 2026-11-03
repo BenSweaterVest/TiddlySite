@@ -1,147 +1,23 @@
 title: $:/plugins/collaborative-blog/readme
-type: text/vnd.tiddlywiki
 
-! Collaborative Blog Plugin
+! Collaborative Blog
 
-This plugin transforms TiddlyWiki into a WordPress-style collaborative blog with a clean, professional interface.
+Turns TiddlyWiki into a blog-style website for small organizations: a sidebar menu, a home page with featured and recent posts, an archive, category pages, search, five themes and special layouts for events, galleries, videos and quotes.
 
-!! Features
+Editors choose ''Admin'' at the bottom of the sidebar to create and edit posts, then ''Save changes'' to publish. With the Cloudflare starter kit, saving commits the site to GitHub and Cloudflare Pages republishes it within about a minute.
 
-''Content & Publishing:''
-* Clean blog layout with hidden wiki controls
-* Multiple author support with attribution
-* Featured posts and favorite articles
-* Custom post types: Events, Galleries, Videos, Quotes
-* Categories and tags for organization
-* Post archive and table of contents
-* Draft management
-* Static pages support
+!! Where things are
 
-''User Interface:''
-* Left sidebar navigation with recently updated posts
-* 5 professional themes (Historical, Modern, Dark, Vibrant, Professional)
-* Enhanced search with filters (post type, category, author)
-* Responsive design for mobile and desktop
-* Discrete admin panel with post type selector
+* ''Blog settings'': Control Panel, ''Blog'' tab (or the admin panel)
+* ''Publishing'': Control Panel, ''Saving'' tab, ''Publishing'' (or the Blog tab)
+* ''Setup guide'': [[$:/plugins/collaborative-blog/saver/setup-guide]]
 
-''Automatic Saving & Deployment:''
-* Automatic GitHub saving via Cloudflare Functions (integrated)
-* Password-protected saves with session management
-* Save notifications and statistics
-* Real-time deployment via Cloudflare Pages
+!! Writing posts
 
-''Analytics & Insights:''
-* Privacy-friendly analytics (Plausible, Simple Analytics)
-* Google Analytics (GA4) support
-* Custom analytics provider support
-* Easy Control Panel configuration
+A post is any tiddler tagged `Post`. Other tags become categories, except the reserved tags `Page`, `Featured`, `Favorite`, `Draft`, `Event`, `Gallery`, `Video` and `Quote`. The editor shows a ''Post details'' form for the author, date, excerpt and the extra fields each post type uses.
 
-!! Quick Start
+A page (About, Contact and so on) is any tiddler tagged `Page`. Add pages to the sidebar under ''Blog settings > Menu''.
 
-!!! Creating Posts
+''Drafts'' are hidden from lists and search, but they are still inside the published file, so do not put anything confidential in a draft.
 
-# Click ''Admin'' in the left sidebar
-# Choose post type:
-#* 📝 ''Post'' - Standard blog post
-#* 📅 ''Event'' - Event with date, time, location, RSVP
-#* 🖼️ ''Gallery'' - Image gallery with grid layout
-#* 🎥 ''Video'' - YouTube/Vimeo embed with transcript
-#* 💬 ''Quote'' - Featured quotation with attribution
-# Add fields:
-#* Title: Your post title
-#* Tags: Auto-added based on post type, plus category tags
-#* Author: Your name
-#* Date: YYYYMMDD format (e.g., `20251118`)
-#* Excerpt: Brief summary (recommended)
-# Add post-type specific fields (event-date, video-url, quote-text, etc.)
-# Write your content
-# Save
-
-!!! Using Search
-
-# Click ''Search'' tab in left sidebar
-# Type query to see instant results
-# Click category tags to filter
-# Click "View All Results" for advanced search with filters
-
-!!! Changing Themes
-
-# Navigate to Control Panel → Appearance
-# Select from 5 professional themes
-# Theme applies immediately
-
-!!! Setting Up Analytics
-
-# Go to Control Panel → Settings → Analytics
-# Enable analytics and choose provider
-# Configure provider-specific settings
-# Save to activate
-
-!!! Creating Featured Posts
-
-Add `Featured` to tags (e.g., `Post Featured News`)
-
-!!! Creating Static Pages
-
-# Click ''New Page'' in admin panel
-# Add Title and set Tags to `Page`
-# Write content and save
-
-!!! Saving as Draft
-
-Add `Draft` to tags to hide from public view
-
-!! Customization
-
-''Site Identity:''
-* Edit `$:/SiteTitle` and `$:/SiteSubtitle` to change site name
-
-''Themes:''
-* Choose from 5 built-in themes in Control Panel → Appearance
-* Edit `$:/plugins/collaborative-blog/theme-controller` to create custom themes
-* Modify 40+ CSS variables for complete design control
-
-''Navigation:''
-* Edit `$:/plugins/collaborative-blog/Navigation` to customize menu links
-
-''Advanced Styling:''
-* Edit `$:/plugins/collaborative-blog/styles` for base styles and components
-* All styles use CSS variables for easy theming
-
-!! Version
-
-Current version: ''2.2.0''
-
-''What's New in v2.2.0:''
-* Enhanced search with filters
-* Analytics integration (Plausible, Simple Analytics, Google Analytics, Custom)
-
-''What's New in v2.1.0:''
-* 5 professional themes with one-click switching
-* Custom post types (Event, Gallery, Video, Quote)
-
-!! Documentation
-
-For complete documentation, troubleshooting, and setup guides, see:
-* [[GitHub Repository|https://github.com/BenSweaterVest/TiddlySite]]
-* [[README.md|https://github.com/BenSweaterVest/TiddlySite/blob/main/README.md]]
-* [[Release Notes|https://github.com/BenSweaterVest/TiddlySite/blob/main/RELEASE_NOTES_v2.2.0.md]]
-
-!! Automatic Saving & Deployment
-
-This plugin includes integrated automatic saving to GitHub via Cloudflare Functions.
-
-''What's included:''
-
-* Beautiful blog UI and editing experience
-* Automatic GitHub save mechanism (built-in)
-* Real-time deployment via Cloudflare Pages
-* Password-protected saves
-* Save statistics and connection monitoring
-
-''Setup:'' Configure the Cloudflare saver in the Control Panel → Saving tab. You'll need to set up a Cloudflare Pages site with a GitHub repository containing a `functions/save.js` file.
-
-!! Support
-
-* GitHub: https://github.com/BenSweaterVest/TiddlySite
-* TiddlyWiki Community: https://talk.tiddlywiki.org/
+Full documentation: https://github.com/BenSweaterVest/TiddlySite

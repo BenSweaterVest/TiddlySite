@@ -1,0 +1,14 @@
+title: $:/plugins/collaborative-blog/stylesheets/theme
+tags: $:/tags/Stylesheet
+list-before: $:/plugins/collaborative-blog/stylesheets/base
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline html
+<$let theme={{{ [{$:/config/collaborative-blog/theme}is[tiddler]] [{$:/config/collaborative-blog/theme}is[shadow]] [{$:/config/collaborative-blog/theme}addprefix[$:/plugins/collaborative-blog/themes/]is[shadow]] [[$:/plugins/collaborative-blog/themes/historical]] +[first[]] }}}>
+:root {
+<$list filter="[<theme>indexes[]]" variable="key">
+--cb-<<key>>: <$text text={{{ [<theme>getindex<key>] }}}/>;
+</$list>
+}
+</$let>

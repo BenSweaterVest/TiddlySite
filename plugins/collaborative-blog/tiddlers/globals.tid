@@ -1,0 +1,134 @@
+title: $:/plugins/collaborative-blog/globals
+tags: $:/tags/Global
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+
+\procedure cb-utc() [UTC]
+
+\function cb.reserved.tags() [enlist{$:/config/collaborative-blog/reserved-tags}]
+
+\function cb.posts() [all[tiddlers]!is[system]!is[draft]tag[Post]!tag[Draft]]
+
+\function cb.sortkey() [<currentTiddler>get[date]] :else[<currentTiddler>get[created]] +[search-replace:g[-],[]search-replace::regexp[^(\d{8}).*$],[$1]]
+
+\function cb.posts.sorted() [cb.posts[]] :sort:string:reverse[cb.sortkey[]]
+
+\function cb.categories() [cb.posts[]tags[]] -[cb.reserved.tags[]] -[prefix[$:/]] +[sort[]]
+
+\function cb.post.categories() [<currentTiddler>tags[]] -[cb.reserved.tags[]] -[prefix[$:/]]
+
+\function cb.category.posts(category) [cb.posts.sorted[]] :filter[<currentTiddler>tag<category>]
+
+\function cb.date.format() [{$:/config/collaborative-blog/date-format}!is[blank]else[DD MMM YYYY]addprefix<cb-utc>]
+
+\function cb.event.key() [<currentTiddler>get[event-date]search-replace:g[-],[]]
+
+<!-- Callers must set the cb-today variable, e.g. <$let cb-today=<<now YYYY0MM0DD>>> -->
+\function cb.upcoming.events() [cb.posts[]tag[Event]!field:event-status[cancelled]] :filter[cb.event.key[]compare:string:gteq<cb-today>] :sort:string[cb.event.key[]]
+
+\function cb.wordcount() [<currentTiddler>get[text]splitregexp[\s+]!is[blank]count[]]
+
+\function cb.reading.minutes() [cb.wordcount[]divide{$:/config/collaborative-blog/words-per-minute}ceil[]max[1]]
+
+\function cb.type.tag() [<currentTiddler>tags[]] :filter[all[shadows+tiddlers]tag[$:/tags/cb/PostType]get[type-tag]match<currentTiddler>] +[first[]]
+
+\function cb.permalink() [<currentTiddler>encodeuricomponent[]addprefix[#]addprefix{$:/config/collaborative-blog/site-url}]
+
+<!-- Formats a YYYYMMDD or YYYY-MM-DD field (falls back to the created date) -->
+\procedure cb-date(field:"date")
+\whitespace trim
+\parsermode inline
+<$text text={{{ [<currentTiddler>get<field>] :else[<currentTiddler>get[created]] +[search-replace:g[-],[]format:date<cb.date.format>] }}}/>
+\end
+
+<!-- Link-like button that opens the Search page filtered by one author -->
+\procedure cb-author-link(author)
+\whitespace trim
+\parsermode inline
+<$button class="tc-btn-invisible cb-author-link" tooltip={{{ [<author>addprefix[More posts by ]] }}}>
+<$action-setfield $tiddler="$:/temp/cb/search" text="" tag="" type="" author=<<author>>/>
+<$action-navigate $to="Search"/>
+<$text text=<<author>>/>
+</$button>
+\end
+
+<!-- Badge naming the post type (Event, Gallery, ...) -->
+\procedure cb-type-badge()
+\whitespace trim
+\parsermode inline
+<$list filter="[cb.type.tag[]]" variable="typeTag">
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/PostType]field:type-tag<typeTag>first[]]" variable="typeDef">
+<span class={{{ [<typeTag>lowercase[]addprefix[cb-badge cb-badge-]] }}}><$text text={{{ [<typeDef>get[icon]] [<typeDef>get[caption]] +[join[ ]] }}}/></span>
+</$list>
+</$list>
+\end
+
+<!-- Category tags of the current post, rendered as links to their archive pages -->
+\procedure cb-category-links()
+\whitespace trim
+\parsermode inline
+<$list filter="[cb.post.categories[]]" variable="category">
+<$link to=<<category>> class="cb-category-tag"><$text text=<<category>>/></$link>
+</$list>
+\end
+
+<!-- Author / date / reading time line -->
+\procedure cb-post-meta(readingTime:"yes")
+\whitespace trim
+\parsermode inline
+<div class="cb-post-meta">
+<$list filter="[<currentTiddler>has[author]]" variable="ignore">
+<span class="cb-post-author">By&#32;<$transclude $variable="cb-author-link" author={{!!author}}/></span>
+</$list>
+<span class="cb-post-date"><<cb-date>></span>
+<$list filter="[<readingTime>match[yes]]" variable="ignore">
+<span class="cb-reading-time"><$text text={{{ [cb.reading.minutes[]addsuffix[ min read]] }}}/></span>
+</$list>
+</div>
+\end
+
+<!-- Short excerpt: the excerpt field, else the first plain paragraph of the text -->
+\procedure cb-excerpt()
+\whitespace trim
+\parsermode inline
+<$list filter="[<currentTiddler>has[excerpt]]" variable="ignore" emptyMessage="""<$let snippet={{{ [<currentTiddler>get[text]splitregexp[\n\s*\n]trim[]!is[blank]!prefix[!]!prefix[<]!prefix[|]!prefix[\]!prefix[*]!prefix[#]!prefix[{{]first[]] }}}><<snippet>></$let>""">
+<$text text={{!!excerpt}}/>
+</$list>
+\end
+
+<!-- Card used on the home page, archives and search results -->
+\procedure cb-post-card(featured:"no")
+\whitespace trim
+\parsermode inline
+<article class={{{ cb-post-card [<featured>match[yes]then[cb-post-card-featured]] +[join[ ]] }}}>
+<div class="cb-post-card-badges">
+<$list filter="[<featured>match[yes]]" variable="ignore"><span class="cb-badge cb-badge-featured">Featured</span></$list>
+<<cb-type-badge>>
+</div>
+<h2 class="cb-post-card-title"><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link></h2>
+<$transclude $variable="cb-post-meta" readingTime="no"/>
+<$list filter="[<currentTiddler>tag[Event]has[event-date]]" variable="ignore">
+<div class="cb-post-card-event">Event date: <$transclude $variable="cb-date" field="event-date"/><$list filter="[<currentTiddler>has[event-location]]" variable="ignore">, <$text text={{!!event-location}}/></$list></div>
+</$list>
+<$list filter="[<currentTiddler>tag[Quote]has[quote-text]]" variable="ignore" emptyMessage="""<div class="cb-post-card-excerpt"><<cb-excerpt>></div>""">
+<blockquote class="cb-post-card-quote"><$text text={{!!quote-text}}/></blockquote>
+</$list>
+<div class="cb-post-card-footer">
+<div class="cb-post-card-categories"><<cb-category-links>></div>
+<$link to=<<currentTiddler>> class="cb-read-more">Read more<span class="cb-visually-hidden">: <$text text=<<currentTiddler>>/></span>&#32;→</$link>
+</div>
+</article>
+\end
+
+<!-- Compact list item used in sidebars -->
+\procedure cb-post-link-list(filter,emptyMessage:"")
+\whitespace trim
+\parsermode inline
+<ul class="cb-sidebar-list">
+<$list filter=<<filter>> emptyMessage=<<emptyMessage>>>
+<li><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link></li>
+</$list>
+</ul>
+\end

@@ -1,0 +1,19 @@
+title: $:/plugins/collaborative-blog/sections/related
+tags: $:/tags/cb/PostSection
+cb-filter: [!tag[Draft]]
+cb-position: after
+
+\whitespace trim
+\parsermode inline
+<$let post=<<currentTiddler>>>
+<$list filter="[cb.post.categories[]] :map:flat[cb.category.posts<currentTiddler>] -[<post>] +[count[]compare:number:gt[0]]" variable="ignore">
+<aside class="cb-related" aria-label="Related posts">
+<h2 class="cb-related-title">Related posts</h2>
+<ul class="cb-related-list">
+<$list filter="[cb.post.categories[]] :map:flat[cb.category.posts<currentTiddler>] -[<post>] +[limit[3]]">
+<li><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link> <span class="cb-related-date"><<cb-date>></span></li>
+</$list>
+</ul>
+</aside>
+</$list>
+</$let>

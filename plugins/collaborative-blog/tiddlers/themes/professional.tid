@@ -1,0 +1,42 @@
+title: $:/plugins/collaborative-blog/themes/professional
+tags: $:/tags/cb/Theme
+type: application/x-tiddler-dictionary
+caption: Professional
+description: Navy and slate palette with crisp typography for business sites.
+
+sidebar-width: 280px
+content-width: 860px
+font-size: 17px
+bg-page: #f5f7fa
+bg-content: #ffffff
+bg-highlight: #f1f5f9
+bg-sidebar: #1e3a5f
+text-primary: #1a202c
+text-secondary: #4a5568
+text-meta: #64748b
+heading: #1a202c
+link: #0369a1
+accent: #0369a1
+accent-hover: #075985
+text-on-accent: #ffffff
+secondary: #b45309
+text-on-sidebar: #f1f5f9
+text-on-sidebar-muted: #b6c4d6
+sidebar-hover: rgba(255,255,255,0.08)
+sidebar-accent: #38bdf8
+sidebar-border: rgba(255,255,255,0.12)
+border: #e2e8f0
+focus: #0ea5e9
+warning: #b91c1c
+badge-event: #047857
+badge-gallery: #6d28d9
+badge-video: #b91c1c
+badge-quote: #b45309
+font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+font-quote: Georgia, Cambria, 'Times New Roman', serif
+radius-sm: 4px
+radius-md: 6px
+radius-lg: 8px
+shadow-md: 0 2px 6px rgba(15,23,42,0.08)
+shadow-sidebar: 0 0 24px rgba(0,0,0,0.08)

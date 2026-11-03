@@ -1,0 +1,32 @@
+title: $:/plugins/collaborative-blog/templates/post
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<$let cb-today=<<now YYYY0MM0DD>>>
+<article class="cb-post">
+<header class="cb-post-header">
+<div class="cb-post-badges"><<cb-type-badge>></div>
+<h1 class="cb-post-title cb-content-start" tabindex="-1"><$text text=<<currentTiddler>>/></h1>
+<<cb-post-meta>>
+<div class="cb-post-categories"><<cb-category-links>></div>
+</header>
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/PostSection]field:cb-position[before]]" variable="section">
+<$let sectionFilter={{{ [<section>get[cb-filter]] }}}>
+<$list filter="[<currentTiddler>subfilter<sectionFilter>]" variable="ignore">
+<$transclude $tiddler=<<section>> $mode="block"/>
+</$list>
+</$let>
+</$list>
+<div class="cb-post-content">
+<$transclude $field="text" $mode="block"/>
+</div>
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/PostSection]field:cb-position[after]]" variable="section">
+<$let sectionFilter={{{ [<section>get[cb-filter]] }}}>
+<$list filter="[<currentTiddler>subfilter<sectionFilter>]" variable="ignore">
+<$transclude $tiddler=<<section>> $mode="block"/>
+</$list>
+</$let>
+</$list>
+</article>
+</$let>
