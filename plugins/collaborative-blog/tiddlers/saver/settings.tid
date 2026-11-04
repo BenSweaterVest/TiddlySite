@@ -14,7 +14,7 @@ caption: Publishing
 <$action-test-cloudflare/>
 Test connection
 </$button>
-<span class="cb-setting-hint"> Checks the function and your password without saving anything.</span>
+<span class="cb-setting-hint">&#32;Checks the function and your password without saving anything.</span>
 </div>
 <$list filter="[[$:/temp/cloudflare-saver/test-result]is[tiddler]]" variable="ignore">
 <div class={{{ [[$:/temp/cloudflare-saver/test-result]get[text]addprefix[cb-status cb-status-]] }}} role="status">
@@ -22,7 +22,7 @@ Test connection
 </div>
 </$list>
 <$list filter="[[$:/temp/cloudflare-saver/status]is[tiddler]]" variable="ignore">
-<p class="cb-setting-hint">Last save this session: <$text text={{$:/temp/cloudflare-saver/status!!message}}/> at <$view tiddler="$:/temp/cloudflare-saver/status" field="time" format="date" template="0hh:0mm"/></p>
+<p class="cb-setting-hint">Last save this session:&#32;<$text text={{$:/temp/cloudflare-saver/status!!message}}/>&#32;at&#32;<$view tiddler="$:/temp/cloudflare-saver/status" field="time" format="date" template="0hh:0mm"/></p>
 </$list>
 <h3>Options</h3>
 <$transclude $variable="cb-setting-check" tiddler={{{ [<base>addsuffix[remember-password]] }}} label="Tick 'remember password' by default" hint="The password is only ever kept in memory and is forgotten when the page is closed or reloaded."/>

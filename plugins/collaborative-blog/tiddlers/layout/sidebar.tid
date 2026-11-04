@@ -5,16 +5,16 @@ list-before: $:/core/ui/PageTemplate/story
 \whitespace trim
 \parsermode inline
 \procedure menu-label() <$text text={{{ [<currentTiddler>get[caption]] :else[<currentTiddler>] }}}/>
-<header class={{{ cb-sidebar [{$:/temp/cb/nav-open}match[yes]then[cb-nav-open]] +[join[ ]] }}}>
+<header class={{{ cb-sidebar [{$:/temp/cb/nav-open}!is[blank]then[cb-nav-open]] +[join[ ]] }}}>
 <$button class="cb-skip-link" message="tm-focus-selector" param=".tc-story-river .cb-content-start">Skip to content</$button>
 <div class="cb-brand">
 <$link to={{{ [{$:/DefaultTiddlers}enlist-input[]first[]] :else[[Home]] }}} class="cb-site-title"><$text text={{$:/SiteTitle}}/></$link>
 <p class="cb-site-subtitle"><$text text={{$:/SiteSubtitle}}/></p>
 </div>
-<$button class="cb-nav-toggle" setTitle="$:/temp/cb/nav-open" setTo={{{ [{$:/temp/cb/nav-open}match[yes]then[no]else[yes]] }}} aria-expanded={{{ [{$:/temp/cb/nav-open}match[yes]then[true]else[false]] }}} aria-controls="cb-nav-panel">
-<span aria-hidden="true">☰</span> Menu
+<$button class="cb-nav-toggle tc-popup-handle" popup="$:/temp/cb/nav-open" aria-label="Menu">
+<span aria-hidden="true">☰</span>&#32;Menu
 </$button>
-<div class="cb-nav-panel" id="cb-nav-panel">
+<div class="cb-nav-panel tc-popup-keep">
 <nav aria-label="Main">
 <ul class="cb-nav-menu">
 <$list filter="[list[$:/config/collaborative-blog/menu]]">
@@ -24,10 +24,12 @@ list-before: $:/core/ui/PageTemplate/story
 </$list>
 </ul>
 </nav>
-<form class="cb-quick-search" role="search" onsubmit="return false;">
-<label for="cb-quick-search-input" class="cb-visually-hidden">Search posts</label>
-<$edit-text tiddler="$:/temp/cb/search" field="text" tag="input" type="search" placeholder="Search posts..." class="cb-search-input" id="cb-quick-search-input"/>
-</form>
+<div class="cb-quick-search" role="search">
+<label>
+<span class="cb-visually-hidden">Search posts</span>
+<$edit-text tiddler="$:/temp/cb/search" field="text" tag="input" type="search" placeholder="Search posts..." class="cb-search-input"/>
+</label>
+</div>
 <$list filter="[{$:/temp/cb/search}!is[blank]]" variable="query">
 <div class="cb-quick-results" aria-live="polite">
 <$let results={{{ [cb.posts.sorted[]search:title,text,excerpt,author,tags<query>] +[format:titlelist[]join[ ]] }}}>
@@ -53,7 +55,7 @@ list-before: $:/core/ui/PageTemplate/story
 </section>
 </$list>
 <div class="cb-sidebar-footer">
-<$button class="tc-btn-invisible cb-admin-toggle" setTitle="$:/temp/cb/admin" setTo={{{ [{$:/temp/cb/admin}match[yes]then[no]else[yes]] }}} aria-pressed={{{ [{$:/temp/cb/admin}match[yes]then[true]else[false]] }}}>
+<$button class="tc-btn-invisible cb-admin-toggle" setTitle="$:/temp/cb/admin" setTo={{{ [{$:/temp/cb/admin}match[yes]then[no]else[yes]] }}}>
 <$text text={{{ [{$:/temp/cb/admin}match[yes]then[Close admin]else[Admin]] }}}/>
 </$button>
 </div>

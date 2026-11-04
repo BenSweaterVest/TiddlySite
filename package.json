@@ -6,10 +6,10 @@
     "build": "node scripts/build.mjs",
     "build:quick": "node scripts/build.mjs --skip-zip",
     "test": "npm run test:functions && npm run build:quick && npm run test:e2e",
-    "test:functions": "node --test tests/functions/",
-    "test:e2e": "node --test --test-concurrency=1 tests/e2e/",
-    "lint": "eslint plugins site scripts tests",
-    "lint:fix": "eslint --fix plugins site scripts tests",
+    "test:functions": "node --test \"tests/functions/*.test.js\"",
+    "test:e2e": "node --test --test-concurrency=1 \"tests/e2e/*.test.js\"",
+    "lint": "eslint plugins site scripts tests --ext .js,.mjs --max-warnings 0",
+    "lint:fix": "eslint --fix plugins site scripts tests --ext .js,.mjs",
     "serve": "node scripts/serve.mjs"
   },
   "repository": {

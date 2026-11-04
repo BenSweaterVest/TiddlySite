@@ -34,6 +34,8 @@ type: text/vnd.tiddlywiki
 
 \function cb.type.tag() [<currentTiddler>tags[]] :filter[all[shadows+tiddlers]tag[$:/tags/cb/PostType]get[type-tag]match<currentTiddler>] +[first[]]
 
+\function cb.plural(n,word) [<n>match[1]then<word>addprefix[1 ]] :else[<n>addsuffix[ ]addsuffix<word>addsuffix[s]]
+
 \function cb.permalink() [<currentTiddler>encodeuricomponent[]addprefix[#]addprefix{$:/config/collaborative-blog/site-url}]
 
 <!-- Formats a YYYYMMDD or YYYY-MM-DD field (falls back to the created date) -->
@@ -110,7 +112,7 @@ type: text/vnd.tiddlywiki
 <h2 class="cb-post-card-title"><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link></h2>
 <$transclude $variable="cb-post-meta" readingTime="no"/>
 <$list filter="[<currentTiddler>tag[Event]has[event-date]]" variable="ignore">
-<div class="cb-post-card-event">Event date: <$transclude $variable="cb-date" field="event-date"/><$list filter="[<currentTiddler>has[event-location]]" variable="ignore">, <$text text={{!!event-location}}/></$list></div>
+<div class="cb-post-card-event">Event date:&#32;<$transclude $variable="cb-date" field="event-date"/><$list filter="[<currentTiddler>has[event-location]]" variable="ignore">,&#32;<$text text={{!!event-location}}/></$list></div>
 </$list>
 <$list filter="[<currentTiddler>tag[Quote]has[quote-text]]" variable="ignore" emptyMessage="""<div class="cb-post-card-excerpt"><<cb-excerpt>></div>""">
 <blockquote class="cb-post-card-quote"><$text text={{!!quote-text}}/></blockquote>

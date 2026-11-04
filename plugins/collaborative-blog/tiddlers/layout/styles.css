@@ -57,7 +57,7 @@ html body.tc-body .tc-tiddler-view-frame.cb-frame {
 html body.tc-body .tc-storyview-zoomin-tiddler {
   left: 2rem;
   right: 2rem;
-  width: auto;
+  width: auto !important;
 }
 
 .cb-frame .tc-tiddler-title {

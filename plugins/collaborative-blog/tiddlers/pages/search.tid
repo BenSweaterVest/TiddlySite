@@ -54,7 +54,7 @@ type: text/vnd.tiddlywiki
 	results={{{ [cb.posts.sorted[]] [all[tiddlers]!is[system]!is[draft]tag[Page]!tag[Draft]!field:cb-exclude-from-search[yes]sort[title]] +[function<textFilter>] +[function<tagFilter>] +[function<typeFilter>] +[function<authorFilter>] +[format:titlelist[]join[ ]] }}}
 >
 <div class="cb-search-summary" aria-live="polite">
-<span><$text text={{{ [enlist<results>count[]] +[addsuffix[ results]] }}}/></span>
+<span><$text text={{{ [enlist<results>count[]] :map[cb.plural<currentTiddler>,[result]] }}}/></span>
 <$list filter="[<query>!is[blank]] [<filterTag>!is[blank]] [<filterType>!is[blank]] [<filterAuthor>!is[blank]] +[first[]]" variable="ignore">
 <$button class="cb-button cb-button-secondary">
 <$action-setfield $tiddler=<<state>> text="" tag="" type="" author=""/>

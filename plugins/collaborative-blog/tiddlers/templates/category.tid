@@ -10,7 +10,7 @@ type: text/vnd.tiddlywiki
 <$list filter="[<category>is[tiddler]has[text]]" variable="ignore">
 <div class="cb-post-content cb-category-description"><$transclude $field="text" $mode="block"/></div>
 </$list>
-<p class="cb-post-meta"><$text text={{{ [cb.category.posts<category>count[]] }}}/> posts</p>
+<p class="cb-post-meta"><$text text={{{ [cb.category.posts<category>count[]] :map[cb.plural<currentTiddler>,[post]] }}}/></p>
 <$list filter="[cb.category.posts<category>]">
 <<cb-post-card>>
 </$list>

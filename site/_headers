@@ -1,0 +1,12 @@
+# Security headers for Cloudflare Pages. See https://developers.cloudflare.com/pages/configuration/headers/
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  X-Frame-Options: SAMEORIGIN
+
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache

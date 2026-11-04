@@ -10,7 +10,7 @@ type: text/vnd.tiddlywiki
 <$list filter="[cb.categories[]]" variable="category" emptyMessage="""<p class="cb-empty-state">No categories yet. Add tags such as <code>History</code> to your posts.</p>""">
 <$link to=<<category>> class="cb-category-card">
 <span class="cb-category-card-name"><$text text=<<category>>/></span>
-<span class="cb-category-card-count"><$text text={{{ [cb.category.posts<category>count[]] }}}/> posts</span>
+<span class="cb-category-card-count"><$text text={{{ [cb.category.posts<category>count[]] :map[cb.plural<currentTiddler>,[post]] }}}/></span>
 </$link>
 </$list>
 </div>
