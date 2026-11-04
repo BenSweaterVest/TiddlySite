@@ -6,7 +6,7 @@
     dist/collaborative-blog-plugin.tid    plugin only, .tid format
     dist/collaborative-blog-starter.json  plugin plus example content
     dist/index.html                       complete starter site
-    dist/tiddlysite-starter.zip           index.html + Cloudflare functions, ready to upload to GitHub
+    dist/tiddlysite-starter.zip           index.html, Cloudflare functions and headers, ready to upload to GitHub
 
   Usage: node scripts/build.mjs [--skip-zip]
 */
@@ -68,8 +68,9 @@ if (!process.argv.includes('--skip-zip')) {
   cpSync(join(dist, 'index.html'), join(staging, 'index.html'));
   cpSync(join(root, 'site/functions'), join(staging, 'functions'), {recursive: true});
   cpSync(join(root, 'site/README.md'), join(staging, 'README.md'));
+  cpSync(join(root, 'site/_headers'), join(staging, '_headers'));
   const zipPath = join(dist, 'tiddlysite-starter.zip');
-  execFileSync('python3', ['-m', 'zipfile', '-c', zipPath, 'index.html', 'functions', 'README.md'], {cwd: staging, stdio: 'inherit'});
+  execFileSync('python3', ['-m', 'zipfile', '-c', zipPath, 'index.html', 'functions', '_headers', 'README.md'], {cwd: staging, stdio: 'inherit'});
   rmSync(staging, {recursive: true, force: true});
   if (!existsSync(zipPath)) {
     console.error('Failed to create the starter zip');
