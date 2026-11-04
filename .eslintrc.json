@@ -1,39 +1,123 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
+  "root": true,
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "script"
-  },
-  "globals": {
-    "$tw": "readonly",
-    "exports": "writable"
+    "ecmaVersion": 2022
   },
   "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 0
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_|^(parent|nextSibling|options|operator|source|wiki|changedTiddlers)$"
+      }
+    ],
     "no-console": "off",
-    "strict": ["error", "function"],
-    "eqeqeq": ["error", "always"],
-    "curly": ["error", "all"],
-    "brace-style": ["error", "1tbs"],
-    "comma-dangle": ["error", "never"],
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
+    "curly": [
+      "error",
+      "all"
+    ],
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
     "no-trailing-spaces": "error",
-    "no-multiple-empty-lines": ["error", { "max": 2 }],
-    "space-before-function-paren": ["error", {
-      "anonymous": "never",
-      "named": "never",
-      "asyncArrow": "always"
-    }],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2
+      }
+    ],
     "keyword-spacing": "error",
     "space-infix-ops": "error",
-    "arrow-spacing": "error"
+    "arrow-spacing": "error",
+    "no-control-regex": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "plugins/**/*.js"
+      ],
+      "env": {
+        "browser": true
+      },
+      "parserOptions": {
+        "sourceType": "script"
+      },
+      "globals": {
+        "$tw": "readonly",
+        "exports": "writable",
+        "require": "readonly",
+        "module": "readonly"
+      },
+      "rules": {
+        "strict": [
+          "error",
+          "function"
+        ]
+      }
+    },
+    {
+      "files": [
+        "site/**/*.js"
+      ],
+      "env": {
+        "browser": true,
+        "worker": true
+      },
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    },
+    {
+      "files": [
+        "scripts/**/*.mjs",
+        "scripts/**/*.js",
+        "tests/**/*.js"
+      ],
+      "env": {
+        "node": true,
+        "browser": true
+      },
+      "parserOptions": {
+        "sourceType": "module"
+      },
+      "globals": {
+        "$tw": "readonly"
+      }
+    }
+  ],
+  "env": {
+    "es2022": true
   }
 }

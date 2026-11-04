@@ -1,0 +1,63 @@
+title: $:/plugins/collaborative-blog/layout/sidebar
+tags: $:/tags/PageTemplate
+list-before: $:/core/ui/PageTemplate/story
+
+\whitespace trim
+\parsermode inline
+\procedure menu-label() <$text text={{{ [<currentTiddler>get[caption]] :else[<currentTiddler>] }}}/>
+<header class={{{ cb-sidebar [{$:/temp/cb/nav-open}!is[blank]then[cb-nav-open]] +[join[ ]] }}}>
+<$button class="cb-skip-link" message="tm-focus-selector" param=".tc-story-river .cb-content-start">Skip to content</$button>
+<div class="cb-brand">
+<$link to={{{ [{$:/DefaultTiddlers}enlist-input[]first[]] :else[[Home]] }}} class="cb-site-title"><$text text={{$:/SiteTitle}}/></$link>
+<p class="cb-site-subtitle"><$text text={{$:/SiteSubtitle}}/></p>
+</div>
+<$button class="cb-nav-toggle tc-popup-handle" popup="$:/temp/cb/nav-open" aria-label="Menu">
+<span aria-hidden="true">☰</span>&#32;Menu
+</$button>
+<div class="cb-nav-panel tc-popup-keep">
+<nav aria-label="Main">
+<ul class="cb-nav-menu">
+<$list filter="[list[$:/config/collaborative-blog/menu]]">
+<li>
+<$link to=<<currentTiddler>> class={{{ cb-nav-link [{$:/StoryList!!list}enlist-input[]first[]match<currentTiddler>then[cb-nav-current]] +[join[ ]] }}} aria-current={{{ [{$:/StoryList!!list}enlist-input[]first[]match<currentTiddler>then[page]] }}}><<menu-label>></$link>
+</li>
+</$list>
+</ul>
+</nav>
+<div class="cb-quick-search" role="search">
+<label>
+<span class="cb-visually-hidden">Search posts</span>
+<$edit-text tiddler="$:/temp/cb/search" field="text" tag="input" type="search" placeholder="Search posts..." class="cb-search-input"/>
+</label>
+</div>
+<$list filter="[{$:/temp/cb/search}!is[blank]]" variable="query">
+<div class="cb-quick-results" aria-live="polite">
+<$let results={{{ [cb.posts.sorted[]search:title,text,excerpt,author,tags<query>] +[format:titlelist[]join[ ]] }}}>
+<ul class="cb-sidebar-list">
+<$list filter="[enlist<results>limit[5]]" emptyMessage="""<li class="cb-sidebar-empty">No matching posts</li>""">
+<li><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link></li>
+</$list>
+</ul>
+<$list filter="[enlist<results>count[]compare:number:gt[0]]" variable="count">
+<$button class="tc-btn-invisible cb-sidebar-more" to="Search">See all&#32;<$text text=<<count>>/>&#32;results&#32;→</$button>
+</$list>
+</$let>
+</div>
+</$list>
+<section class="cb-sidebar-section" aria-labelledby="cb-recent-heading">
+<h2 class="cb-sidebar-heading" id="cb-recent-heading">Recently updated</h2>
+<$transclude $variable="cb-post-link-list" filter="[cb.posts[]!sort[modified]limit{$:/config/collaborative-blog/recently-updated-count}]" emptyMessage="""<li class="cb-sidebar-empty">No posts yet</li>"""/>
+</section>
+<$list filter="[cb.posts[]tag[Favorite]first[]]" variable="ignore">
+<section class="cb-sidebar-section" aria-labelledby="cb-favorites-heading">
+<h2 class="cb-sidebar-heading" id="cb-favorites-heading">Favorites</h2>
+<$transclude $variable="cb-post-link-list" filter="[cb.posts.sorted[]tag[Favorite]limit{$:/config/collaborative-blog/favorites-count}]"/>
+</section>
+</$list>
+<div class="cb-sidebar-footer">
+<$button class="tc-btn-invisible cb-admin-toggle" setTitle="$:/temp/cb/admin" setTo={{{ [{$:/temp/cb/admin}match[yes]then[no]else[yes]] }}}>
+<$text text={{{ [{$:/temp/cb/admin}match[yes]then[Close admin]else[Admin]] }}}/>
+</$button>
+</div>
+</div>
+</header>

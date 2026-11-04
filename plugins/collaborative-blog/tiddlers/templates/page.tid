@@ -1,0 +1,13 @@
+title: $:/plugins/collaborative-blog/templates/page
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<article class="cb-page">
+<$list filter="[<currentTiddler>!field:cb-hide-title[yes]]" variable="ignore">
+<h1 class="cb-post-title cb-content-start" tabindex="-1"><$text text={{{ [<currentTiddler>get[caption]] :else[<currentTiddler>] }}}/></h1>
+</$list>
+<div class="cb-post-content">
+<$transclude $field="text" $mode="block"/>
+</div>
+</article>

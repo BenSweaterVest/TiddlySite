@@ -1,0 +1,27 @@
+title: $:/plugins/collaborative-blog/settings/macros
+tags: $:/tags/Global
+
+\whitespace trim
+\parsermode inline
+\procedure cb-setting-text(tiddler,label,hint:"",placeholder:"",type:"text")
+\whitespace trim
+\parsermode inline
+<div class="cb-setting">
+<label>
+<span class="cb-setting-label"><$text text=<<label>>/></span>
+<$edit-text tiddler=<<tiddler>> tag="input" type=<<type>> placeholder=<<placeholder>> class="cb-setting-input"/>
+</label>
+<$list filter="[<hint>!is[blank]]" variable="ignore"><div class="cb-setting-hint"><$transclude $variable="hint" $mode="inline"/></div></$list>
+</div>
+\end
+\procedure cb-setting-check(tiddler,label,hint:"",default:"no")
+\whitespace trim
+\parsermode inline
+<div class="cb-setting">
+<label class="cb-setting-check">
+<$checkbox tiddler=<<tiddler>> field="text" checked="yes" unchecked="no" default=<<default>>/>
+<span class="cb-setting-label"><$text text=<<label>>/></span>
+</label>
+<$list filter="[<hint>!is[blank]]" variable="ignore"><div class="cb-setting-hint"><$transclude $variable="hint" $mode="inline"/></div></$list>
+</div>
+\end

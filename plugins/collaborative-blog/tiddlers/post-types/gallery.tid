@@ -1,0 +1,7 @@
+title: $:/plugins/collaborative-blog/post-types/gallery
+tags: $:/tags/cb/PostType
+caption: Gallery
+icon: 🖼️
+type-tag: Gallery
+description: A grid of images
+

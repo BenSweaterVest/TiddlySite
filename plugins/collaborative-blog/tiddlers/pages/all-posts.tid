@@ -1,0 +1,20 @@
+title: All Posts
+caption: Archive
+tags: Page
+cb-exclude-from-search: yes
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<p class="cb-post-meta"><$text text={{{ [cb.posts[]count[]] :map[cb.plural<currentTiddler>,[post]addsuffix[, newest first.]] }}}/></p>
+<$list filter="[cb.posts.sorted[]] :map[cb.sortkey[]split[]first[4]join[]] +[unique[]]" variable="year">
+<h2 class="cb-archive-year"><$text text=<<year>>/></h2>
+<ul class="cb-archive-list">
+<$list filter="[cb.posts.sorted[]] :filter[cb.sortkey[]prefix<year>]">
+<li>
+<span><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link> <$list filter="[<currentTiddler>has[author]]" variable="ignore"><span class="cb-archive-date">&#32;by&#32;<$text text={{!!author}}/></span></$list></span>
+<span class="cb-archive-date"><<cb-date>></span>
+</li>
+</$list>
+</ul>
+</$list>

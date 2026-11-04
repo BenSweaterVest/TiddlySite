@@ -1,0 +1,4 @@
+title: $:/config/cloudflare-saver/
+
+enabled: yes
+endpoint: /save

@@ -1,0 +1,55 @@
+title: $:/plugins/collaborative-blog/layout/admin-panel
+tags: $:/tags/PageTemplate
+list-before: $:/core/ui/PageTemplate/story
+
+\whitespace trim
+\parsermode inline
+\procedure new-post-actions()
+\whitespace trim
+\parsermode inline
+<$let typeTag={{{ [<typeDef>get[type-tag]] }}} baseTitle={{{ [<typeDef>get[caption]addprefix[New ]] }}}>
+<$action-sendmessage $message="tm-new-tiddler"
+	title=<<unusedtitle baseName:"New post">>
+	tags={{{ [[Post]] [<typeTag>!is[blank]] +[format:titlelist[]join[ ]] }}}
+	date=<<now YYYY0MM0DD>>
+	author={{{ [{$:/config/collaborative-blog/default-author}!is[blank]] :else[{$:/status/UserName}] }}}
+/>
+</$let>
+\end
+<$list filter="[{$:/temp/cb/admin}match[yes]]" variable="ignore">
+<section class="cb-admin-panel" aria-label="Admin panel">
+<div class="cb-admin-row">
+<span class="cb-admin-label">Create</span>
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/PostType]]" variable="typeDef">
+<$button class="cb-button cb-admin-button" actions=<<new-post-actions>> tooltip={{{ [<typeDef>get[description]] }}}>
+<$text text={{{ [<typeDef>get[icon]] [<typeDef>get[caption]] +[join[ ]] }}}/>
+</$button>
+</$list>
+<$button class="cb-button cb-admin-button" tooltip="A standalone page such as About or Contact">
+<$action-sendmessage $message="tm-new-tiddler" title=<<unusedtitle baseName:"New page">> tags="Page"/>
+📄 Page
+</$button>
+</div>
+<div class="cb-admin-row">
+<span class="cb-admin-label">Site</span>
+<$button class="cb-button cb-admin-button cb-button-primary" message="tm-save-wiki">
+{{$:/core/images/save-button-dynamic}} Save changes
+</$button>
+<$button class="cb-button cb-admin-button" message="tm-modal" param="$:/plugins/collaborative-blog/settings">⚙️ Blog settings</$button>
+<$button class="cb-button cb-admin-button" message="tm-modal" param="$:/ControlPanel">Control panel</$button>
+<$button class="cb-button cb-admin-button" message="tm-modal" param="$:/AdvancedSearch">All tiddlers</$button>
+</div>
+<$list filter="[all[tiddlers]tag[Post]tag[Draft]!is[draft]] [all[tiddlers]tag[Page]tag[Draft]!is[draft]] +[first[]]" variable="ignore">
+<div class="cb-admin-row">
+<span class="cb-admin-label">Drafts</span>
+<$list filter="[all[tiddlers]tag[Post]tag[Draft]!is[draft]] [all[tiddlers]tag[Page]tag[Draft]!is[draft]] +[sort[title]]">
+<$link to=<<currentTiddler>> class="cb-admin-draft"><$text text=<<currentTiddler>>/></$link>
+</$list>
+</div>
+</$list>
+<p class="cb-admin-hint">
+<span class="cb-unsaved-indicator">You have unsaved changes.&#32;</span>
+Use the pencil icon on any post or page to edit it. Changes are published when you choose Save changes.
+</p>
+</section>
+</$list>

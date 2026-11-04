@@ -1,0 +1,22 @@
+title: $:/plugins/collaborative-blog/sections/gallery
+tags: $:/tags/cb/PostSection
+cb-filter: [tag[Gallery]]
+cb-position: before
+
+\whitespace trim
+\parsermode inline
+<div class="cb-gallery" role="list">
+<$list filter="[<currentTiddler>get[gallery-images]splitregexp[,|\n]trim[]!is[blank]]" variable="image" counter="n">
+<figure class="cb-gallery-item" role="listitem">
+<a href=<<image>> target="_blank" rel="noopener noreferrer">
+<img src=<<image>> alt={{{ [<currentTiddler>addsuffix[, image ]addsuffix<n>] }}} loading="lazy"/>
+</a>
+</figure>
+</$list>
+<$list filter="[all[tiddlers]tag<currentTiddler>is[image]sort[title]]" variable="image">
+<figure class="cb-gallery-item" role="listitem">
+<$image source=<<image>> alt={{{ [<image>get[alt]] :else[<image>get[caption]] :else[<image>] }}} loading="lazy"/>
+<$list filter="[<image>has[caption]]" variable="ignore"><figcaption><$text text={{{ [<image>get[caption]] }}}/></figcaption></$list>
+</figure>
+</$list>
+</div>

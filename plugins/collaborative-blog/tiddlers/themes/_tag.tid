@@ -1,0 +1,4 @@
+title: $:/tags/cb/Theme
+list: $:/plugins/collaborative-blog/themes/historical $:/plugins/collaborative-blog/themes/modern $:/plugins/collaborative-blog/themes/dark $:/plugins/collaborative-blog/themes/vibrant $:/plugins/collaborative-blog/themes/professional
+
+Themes for the Collaborative Blog plugin. Each theme is a data dictionary of CSS custom property values (without the `--cb-` prefix).

@@ -1,0 +1,70 @@
+title: Search
+tags: Page
+cb-exclude-from-search: yes
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+\procedure state() $:/temp/cb/search
+\function by.text() [search:title,text,excerpt,author,tags<query>]
+\function by.tag() [tag<filterTag>]
+\function by.type() [tag<filterType>]
+\function by.author() [field:author<filterAuthor>]
+\function by.nothing() [!is[blank]]
+<div class="cb-search-form" role="search">
+<label class="cb-search-main">Search for
+<$edit-text tiddler=<<state>> field="text" tag="input" type="search" placeholder="Words in the title, text, author or tags"/>
+</label>
+<label>Type
+<$select tiddler=<<state>> field="type" default="">
+<option value="">Posts and pages</option>
+<option value="Post">Posts</option>
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/PostType]get[type-tag]!is[blank]]" variable="typeTag">
+<option value=<<typeTag>>><$text text={{{ [<typeTag>addsuffix[s]] }}}/></option>
+</$list>
+<option value="Page">Pages</option>
+</$select>
+</label>
+<label>Category
+<$select tiddler=<<state>> field="tag" default="">
+<option value="">All categories</option>
+<$list filter="[cb.categories[]]" variable="category">
+<option value=<<category>>><$text text=<<category>>/></option>
+</$list>
+</$select>
+</label>
+<label>Author
+<$select tiddler=<<state>> field="author" default="">
+<option value="">All authors</option>
+<$list filter="[cb.posts[]get[author]unique[]sort[]]" variable="author">
+<option value=<<author>>><$text text=<<author>>/></option>
+</$list>
+</$select>
+</label>
+</div>
+<$let
+	query={{{ [<state>get[text]] }}}
+	filterTag={{{ [<state>get[tag]] }}}
+	filterType={{{ [<state>get[type]] }}}
+	filterAuthor={{{ [<state>get[author]] }}}
+	textFilter={{{ [<query>!is[blank]then[by.text]else[by.nothing]] }}}
+	tagFilter={{{ [<filterTag>!is[blank]then[by.tag]else[by.nothing]] }}}
+	typeFilter={{{ [<filterType>!is[blank]then[by.type]else[by.nothing]] }}}
+	authorFilter={{{ [<filterAuthor>!is[blank]then[by.author]else[by.nothing]] }}}
+	results={{{ [cb.posts.sorted[]] [all[tiddlers]!is[system]!is[draft]tag[Page]!tag[Draft]!field:cb-exclude-from-search[yes]sort[title]] +[function<textFilter>] +[function<tagFilter>] +[function<typeFilter>] +[function<authorFilter>] +[format:titlelist[]join[ ]] }}}
+>
+<div class="cb-search-summary" aria-live="polite">
+<span><$text text={{{ [enlist<results>count[]] :map[cb.plural<currentTiddler>,[result]] }}}/></span>
+<$list filter="[<query>!is[blank]] [<filterTag>!is[blank]] [<filterType>!is[blank]] [<filterAuthor>!is[blank]] +[first[]]" variable="ignore">
+<$button class="cb-button cb-button-secondary">
+<$action-setfield $tiddler=<<state>> text="" tag="" type="" author=""/>
+Clear search
+</$button>
+</$list>
+</div>
+<$list filter="[enlist<results>]" emptyMessage="""<p class="cb-empty-state">No results. Try fewer words or clear the filters.</p>""">
+<$list filter="[<currentTiddler>tag[Post]]" variable="ignore" emptyMessage="""<article class="cb-post-card"><div class="cb-post-card-badges"><span class="cb-badge">Page</span></div><h2 class="cb-post-card-title"><$link to=<<currentTiddler>>><$text text=<<currentTiddler>>/></$link></h2></article>""">
+<<cb-post-card>>
+</$list>
+</$list>
+</$let>

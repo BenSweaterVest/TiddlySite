@@ -1,0 +1,25 @@
+title: $:/plugins/collaborative-blog/sections/footer
+tags: $:/tags/cb/PostSection
+cb-filter: [all[]]
+cb-position: after
+
+\whitespace trim
+\parsermode inline
+<$let post=<<currentTiddler>>>
+<footer class="cb-post-footer">
+<nav class="cb-post-nav" aria-label="More posts">
+<$list filter="[cb.posts.sorted[]before<post>]">
+<$link to=<<currentTiddler>> class="cb-post-nav-link cb-post-nav-newer"><span class="cb-post-nav-label">Newer</span><$text text=<<currentTiddler>>/></$link>
+</$list>
+<$list filter="[cb.posts.sorted[]after<post>]">
+<$link to=<<currentTiddler>> class="cb-post-nav-link cb-post-nav-older"><span class="cb-post-nav-label">Older</span><$text text=<<currentTiddler>>/></$link>
+</$list>
+</nav>
+<div class="cb-post-actions">
+<$link to="All Posts" class="cb-back-link">← All posts</$link>
+<$list filter="[{$:/config/collaborative-blog/site-url}!is[blank]]" variable="ignore">
+<$button class="cb-button cb-button-secondary" message="tm-copy-to-clipboard" param={{{ [cb.permalink[]] }}} tooltip="Copy a link to this post">Copy link</$button>
+</$list>
+</div>
+</footer>
+</$let>

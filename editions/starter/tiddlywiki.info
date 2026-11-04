@@ -1,0 +1,11 @@
+{
+  "description": "TiddlySite starter site: the Collaborative Blog plugin with example content",
+  "plugins": [
+    "collaborative-blog"
+  ],
+  "themes": [
+    "tiddlywiki/vanilla",
+    "tiddlywiki/snowwhite"
+  ],
+  "build": {}
+}

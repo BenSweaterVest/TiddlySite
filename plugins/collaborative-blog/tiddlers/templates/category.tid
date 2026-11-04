@@ -1,0 +1,18 @@
+title: $:/plugins/collaborative-blog/templates/category
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<$let category=<<currentTiddler>>>
+<section class="cb-category-archive">
+<p class="cb-eyebrow">Category</p>
+<h1 class="cb-post-title cb-content-start" tabindex="-1"><$text text=<<category>>/></h1>
+<$list filter="[<category>is[tiddler]has[text]]" variable="ignore">
+<div class="cb-post-content cb-category-description"><$transclude $field="text" $mode="block"/></div>
+</$list>
+<p class="cb-post-meta"><$text text={{{ [cb.category.posts<category>count[]] :map[cb.plural<currentTiddler>,[post]] }}}/></p>
+<$list filter="[cb.category.posts<category>]">
+<<cb-post-card>>
+</$list>
+</section>
+</$let>

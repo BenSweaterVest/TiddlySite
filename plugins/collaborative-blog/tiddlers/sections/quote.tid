@@ -1,0 +1,16 @@
+title: $:/plugins/collaborative-blog/sections/quote
+tags: $:/tags/cb/PostSection
+cb-filter: [tag[Quote]has[quote-text]]
+cb-position: before
+
+\whitespace trim
+\parsermode inline
+<figure class="cb-quote">
+<blockquote class="cb-quote-text"><$text text={{!!quote-text}}/></blockquote>
+<$list filter="[<currentTiddler>has[quote-author]] [<currentTiddler>has[quote-source]] +[first[]]" variable="ignore">
+<figcaption class="cb-quote-attribution">
+<$list filter="[<currentTiddler>has[quote-author]]" variable="ignore"><span class="cb-quote-author"><$text text={{!!quote-author}}/></span></$list>
+<$list filter="[<currentTiddler>has[quote-source]]" variable="ignore"><cite class="cb-quote-source"><$text text={{!!quote-source}}/></cite></$list>
+</figcaption>
+</$list>
+</figure>

@@ -1,0 +1,5 @@
+title: $:/config/ViewTemplateBodyFilters/collaborative-blog-bare
+tags: $:/tags/ViewTemplateBodyFilter
+list-after: $:/config/ViewTemplateBodyFilters/collaborative-blog-page
+
+[!is[system]!is[draft]field:cb-layout[bare]then[$:/plugins/collaborative-blog/templates/bare]]

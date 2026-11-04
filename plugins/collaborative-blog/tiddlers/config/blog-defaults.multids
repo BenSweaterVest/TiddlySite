@@ -1,0 +1,22 @@
+title: $:/config/collaborative-blog/
+
+theme: $:/plugins/collaborative-blog/themes/historical
+site-url: 
+site-description: 
+default-author: 
+date-format: DD MMM YYYY
+words-per-minute: 200
+home-post-count: 10
+home-show-events: yes
+reserved-tags: Post Page Featured Favorite Draft Event Gallery Video Quote
+recently-updated-count: 5
+favorites-count: 5
+og-image: 
+twitter-handle: 
+robots: index, follow
+rss-enabled: yes
+analytics/enabled: no
+analytics/provider: plausible
+analytics/domain: 
+analytics/id: 
+analytics/custom-script: 

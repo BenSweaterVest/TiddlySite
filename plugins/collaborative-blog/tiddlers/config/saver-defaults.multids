@@ -1,0 +1,9 @@
+title: $:/config/cloudflare-saver/
+
+enabled: no
+endpoint: /save
+timeout: 60
+auto-retry: yes
+remember-password: no
+autosave: no
+debug: no

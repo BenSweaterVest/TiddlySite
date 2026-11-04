@@ -1,0 +1,5 @@
+title: $:/config/ViewTemplateBodyFilters/collaborative-blog-post
+tags: $:/tags/ViewTemplateBodyFilter
+list-before: 
+
+[!is[system]!is[draft]tag[Post]then[$:/plugins/collaborative-blog/templates/post]]

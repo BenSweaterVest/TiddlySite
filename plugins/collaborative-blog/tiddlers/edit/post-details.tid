@@ -1,0 +1,107 @@
+title: $:/plugins/collaborative-blog/edit/post-details
+tags: $:/tags/EditTemplate
+list-before: $:/core/ui/EditTemplate/body
+
+\whitespace trim
+\parsermode inline
+\procedure cb-field(field,label,placeholder:"",type:"text",hint:"")
+\whitespace trim
+\parsermode inline
+<div class="cb-edit-field">
+<label>
+<span class="cb-edit-label"><$text text=<<label>>/></span>
+<$edit-text field=<<field>> tag="input" type=<<type>> placeholder=<<placeholder>> class="cb-edit-input"/>
+</label>
+<$list filter="[<hint>!is[blank]]" variable="ignore"><span class="cb-edit-hint"><$text text=<<hint>>/></span></$list>
+</div>
+\end
+\procedure cb-tag-toggle(tag,label,hint)
+\whitespace trim
+\parsermode inline
+<label class="cb-edit-check">
+<$checkbox tag=<<tag>>/>
+<span><$text text=<<label>>/></span>
+<span class="cb-edit-hint"><$text text=<<hint>>/></span>
+</label>
+\end
+<$list filter="[<currentTiddler>tag[Post]]" variable="ignore">
+<fieldset class="cb-edit-panel">
+<legend>Post details</legend>
+<div class="cb-edit-grid">
+<$transclude $variable="cb-field" field="author" label="Author" placeholder="Your name"/>
+<$transclude $variable="cb-field" field="date" label="Publish date" placeholder="YYYYMMDD" hint="Used for ordering. Format YYYYMMDD or YYYY-MM-DD."/>
+</div>
+<div class="cb-edit-field">
+<label>
+<span class="cb-edit-label">Excerpt</span>
+<$edit-text field="excerpt" tag="textarea" rows="2" placeholder="One or two sentences shown on the home page (optional)" class="cb-edit-input"/>
+</label>
+</div>
+<div class="cb-edit-checks">
+<$transclude $variable="cb-tag-toggle" tag="Draft" label="Draft" hint="Hidden from lists and search (still present in the published file)"/>
+<$transclude $variable="cb-tag-toggle" tag="Featured" label="Featured" hint="Shown at the top of the home page"/>
+<$transclude $variable="cb-tag-toggle" tag="Favorite" label="Favorite" hint="Listed in the sidebar"/>
+<label class="cb-edit-check">
+<$checkbox field="toc" checked="yes" unchecked="" default=""/>
+<span>Table of contents</span>
+<span class="cb-edit-hint">Lists the headings at the top of the post</span>
+</label>
+</div>
+<p class="cb-edit-hint">Add categories using the tags field below, for example <code>History</code> or <code>[[Oral History]]</code>.</p>
+<$list filter="[<currentTiddler>tag[Event]]" variable="ignore">
+<div class="cb-edit-subpanel">
+<p class="cb-edit-subtitle">Event</p>
+<div class="cb-edit-grid">
+<$transclude $variable="cb-field" field="event-date" label="Event date" type="date"/>
+<$transclude $variable="cb-field" field="event-time" label="Time" placeholder="6:00 PM - 8:00 PM"/>
+<$transclude $variable="cb-field" field="event-location" label="Location" placeholder="Main Library, Room 2"/>
+<$transclude $variable="cb-field" field="event-rsvp-link" label="RSVP link" type="url" placeholder="https://"/>
+</div>
+<label class="cb-edit-check">
+<$checkbox field="event-status" checked="cancelled" unchecked="" default=""/>
+<span>Cancelled</span>
+<span class="cb-edit-hint">Past and upcoming are worked out from the event date</span>
+</label>
+</div>
+</$list>
+<$list filter="[<currentTiddler>tag[Gallery]]" variable="ignore">
+<div class="cb-edit-subpanel">
+<p class="cb-edit-subtitle">Gallery</p>
+<div class="cb-edit-field">
+<label>
+<span class="cb-edit-label">Image URLs</span>
+<$edit-text field="gallery-images" tag="textarea" rows="4" placeholder="One image URL per line" class="cb-edit-input"/>
+</label>
+<span class="cb-edit-hint">Images imported into the wiki and tagged with this post's title are also shown.</span>
+</div>
+</div>
+</$list>
+<$list filter="[<currentTiddler>tag[Video]]" variable="ignore">
+<div class="cb-edit-subpanel">
+<p class="cb-edit-subtitle">Video</p>
+<$transclude $variable="cb-field" field="video-url" label="YouTube or Vimeo URL" type="url" placeholder="https://www.youtube.com/watch?v=..."/>
+<div class="cb-edit-field">
+<label>
+<span class="cb-edit-label">Transcript (optional)</span>
+<$edit-text field="video-transcript" tag="textarea" rows="4" class="cb-edit-input"/>
+</label>
+</div>
+</div>
+</$list>
+<$list filter="[<currentTiddler>tag[Quote]]" variable="ignore">
+<div class="cb-edit-subpanel">
+<p class="cb-edit-subtitle">Quote</p>
+<div class="cb-edit-field">
+<label>
+<span class="cb-edit-label">Quotation</span>
+<$edit-text field="quote-text" tag="textarea" rows="3" class="cb-edit-input"/>
+</label>
+</div>
+<div class="cb-edit-grid">
+<$transclude $variable="cb-field" field="quote-author" label="Said or written by"/>
+<$transclude $variable="cb-field" field="quote-source" label="Source" placeholder="Book, speech, letter..."/>
+</div>
+</div>
+</$list>
+</fieldset>
+</$list>

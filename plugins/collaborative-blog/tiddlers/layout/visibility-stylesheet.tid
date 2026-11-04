@@ -1,0 +1,10 @@
+title: $:/plugins/collaborative-blog/stylesheets/visibility
+tags: $:/tags/Stylesheet
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline html
+<$list filter="[{$:/temp/cb/admin}!match[yes]]" variable="ignore">
+.tc-tiddler-view-frame .tc-tiddler-controls { display: none; }
+.cb-frame .tc-tiddler-title { display: none; }
+</$list>

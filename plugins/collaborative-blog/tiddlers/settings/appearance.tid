@@ -1,0 +1,24 @@
+title: $:/plugins/collaborative-blog/settings/appearance
+tags: $:/tags/cb/SettingsTab $:/tags/ControlPanel/Appearance
+caption: Theme
+
+\whitespace trim
+\parsermode inline
+<p>Choose a theme. The change applies straight away.</p>
+<div class="cb-theme-list" role="radiogroup" aria-label="Theme">
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/cb/Theme]!has[draft.of]]" variable="theme">
+<label class={{{ cb-theme-option [{$:/config/collaborative-blog/theme}match<theme>then[cb-theme-selected]] +[join[ ]] }}}>
+<$radio tiddler="$:/config/collaborative-blog/theme" value=<<theme>>/>
+<span class="cb-theme-swatches" aria-hidden="true">
+<$list filter="bg-sidebar accent secondary bg-page" variable="key">
+<span class="cb-theme-swatch" style.background={{{ [<theme>getindex<key>] }}}></span>
+</$list>
+</span>
+<span class="cb-theme-text">
+<strong><$text text={{{ [<theme>get[caption]] :else[<theme>] }}}/></strong>
+<span class="cb-setting-hint"><$text text={{{ [<theme>get[description]] }}}/></span>
+</span>
+</label>
+</$list>
+</div>
+<p class="cb-setting-hint">To make your own theme, clone one of the theme tiddlers listed under the <code>$:/tags/cb/Theme</code> tag, change the colour values and give it a new caption. It will appear in this list.</p>

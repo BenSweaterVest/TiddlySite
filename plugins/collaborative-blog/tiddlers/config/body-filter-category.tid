@@ -1,0 +1,5 @@
+title: $:/config/ViewTemplateBodyFilters/collaborative-blog-category
+tags: $:/tags/ViewTemplateBodyFilter
+list-after: $:/config/ViewTemplateBodyFilters/collaborative-blog-bare
+
+[!is[system]!is[draft]] :filter[<currentTiddler>tagging[]tag[Post]!tag[Draft]] -[enlist{$:/config/collaborative-blog/reserved-tags}] :then[[$:/plugins/collaborative-blog/templates/category]]

@@ -1,0 +1,4 @@
+title: $:/tags/cb/PostSection
+list: $:/plugins/collaborative-blog/sections/toc $:/plugins/collaborative-blog/sections/quote $:/plugins/collaborative-blog/sections/event $:/plugins/collaborative-blog/sections/video $:/plugins/collaborative-blog/sections/gallery $:/plugins/collaborative-blog/sections/related $:/plugins/collaborative-blog/sections/footer
+
+Sections added to blog posts. Each section tiddler has a `cb-filter` field (applied to the post title; the section shows when the filter returns a result) and a `cb-position` field (`before` or `after` the post text).

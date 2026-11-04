@@ -1,0 +1,15 @@
+title: $:/plugins/collaborative-blog/settings/general
+tags: $:/tags/cb/SettingsTab
+caption: General
+
+\whitespace trim
+\parsermode inline
+<$transclude $variable="cb-setting-text" tiddler="$:/SiteTitle" label="Site title"/>
+<$transclude $variable="cb-setting-text" tiddler="$:/SiteSubtitle" label="Tagline" hint="Shown under the title in the sidebar."/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/site-url" label="Site address" type="url" placeholder="https://example.org" hint="The public address of the site, without a trailing slash. Used for share links and social media previews."/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/default-author" label="Default author" hint="Pre-filled on new posts. Leave blank to use your TiddlyWiki username."/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/home-post-count" label="Posts on the home page" type="number"/>
+<$transclude $variable="cb-setting-check" tiddler="$:/config/collaborative-blog/home-show-events" label="Show upcoming events on the home page" default="yes"/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/date-format" label="Date format" placeholder="DD MMM YYYY" hint="Uses TiddlyWiki date format codes, for example DD MMM YYYY or MMM DD, YYYY."/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/words-per-minute" label="Reading speed (words per minute)" type="number"/>
+<$transclude $variable="cb-setting-text" tiddler="$:/config/collaborative-blog/reserved-tags" label="Reserved tags" hint="Tags that have a special meaning and are never shown as categories."/>

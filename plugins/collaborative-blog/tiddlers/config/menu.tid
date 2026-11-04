@@ -1,0 +1,4 @@
+title: $:/config/collaborative-blog/menu
+list: Home About [[All Posts]] Categories Search Contact
+description: Titles of the tiddlers shown in the sidebar menu, in order. A tiddler's caption field is used as its menu label if present.
+

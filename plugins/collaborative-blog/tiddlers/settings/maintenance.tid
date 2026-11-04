@@ -1,0 +1,38 @@
+title: $:/plugins/collaborative-blog/settings/maintenance
+tags: $:/tags/cb/SettingsTab
+caption: Maintenance
+
+\whitespace trim
+\parsermode inline
+\function cb.leftovers() [all[tiddlers]prefix[$:/plugins/collaborative-blog/]] [all[tiddlers]prefix[$:/config/cloudflare-saver/stats/]] [[$:/state/admin-panel-visible]is[tiddler]] -[[$:/plugins/collaborative-blog]]
+\function old.theme() [{$:/config/collaborative-blog/theme}] :filter[enlist[historical modern dark vibrant professional]match<currentTiddler>]
+\function overridden.pages() [[Home]] [[All Posts]] [[Categories]] [[Search]] :filter[is[tiddler]is[shadow]]
+<h3>Upgrading from version 2</h3>
+<p>Version 2 of this plugin was often installed as separate tiddlers rather than as a plugin. Those copies override the new version and should be removed.</p>
+<$list filter="[cb.leftovers[]first[]]" variable="ignore" emptyMessage="""<p class="cb-status cb-status-success">No leftover version 2 tiddlers found.</p>""">
+<ul class="cb-setting-preview">
+<$list filter="[cb.leftovers[]]"><li><$link><$text text=<<currentTiddler>>/></$link></li></$list>
+</ul>
+<$button class="cb-button cb-button-primary">
+<$action-deletetiddler $filter="[cb.leftovers[]] :filter[prefix[$:/plugins/collaborative-blog/]] [cb.leftovers[]prefix[$:/config/cloudflare-saver/stats/]] [cb.leftovers[]match[$:/state/admin-panel-visible]] -[[$:/plugins/collaborative-blog]]"/>
+Remove&#32;<$text text={{{ [cb.leftovers[]count[]] }}}/>&#32;leftover tiddlers
+</$button>
+</$list>
+<$list filter="[old.theme[]]" variable="oldTheme">
+<p>The theme setting uses an old short name (<code><$text text=<<oldTheme>>/></code>).</p>
+<$button class="cb-button">
+<$action-setfield $tiddler="$:/config/collaborative-blog/theme" text={{{ [<oldTheme>addprefix[$:/plugins/collaborative-blog/themes/]] }}}/>
+Update theme setting
+</$button>
+</$list>
+<h3>Customised built-in pages</h3>
+<p>These pages come with the plugin but have been edited on this site. Edited copies do not receive improvements from plugin updates. Reset a page to get the current built-in version (your edits to it will be lost).</p>
+<$list filter="[overridden.pages[]]" emptyMessage="""<p class="cb-setting-hint">None. All built-in pages are up to date.</p>""">
+<div class="cb-setting">
+<$link><$text text=<<currentTiddler>>/></$link>&#32;
+<$button class="cb-button cb-button-small">
+<$action-deletetiddler $tiddler=<<currentTiddler>>/>
+Reset to built-in version
+</$button>
+</div>
+</$list>

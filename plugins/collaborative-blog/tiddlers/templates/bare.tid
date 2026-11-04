@@ -1,0 +1,8 @@
+title: $:/plugins/collaborative-blog/templates/bare
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+\parsermode inline
+<div class="cb-bare cb-content-start" tabindex="-1">
+<$transclude $field="text" $mode="block"/>
+</div>
